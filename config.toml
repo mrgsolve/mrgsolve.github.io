@@ -1,0 +1,49 @@
+baseurl = "/"
+relativeurls = true
+languageCode = "en-us"
+title = "mrgsolve"
+theme = "hugo-lithium-theme"
+googleAnalytics = "UA-92528248-1"
+disqusShortname = ""
+ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
+
+[permalinks]
+    post = "/:year/:month/:day/:slug/"
+[[menu.main]]
+  name="Home"
+  url="/"
+  weight=1
+[[menu.main]]
+  name = "GitHub"
+  url = "https://github.com/metrumresearchgroup/mrgsolve"
+  weight=3
+[[menu.main]]
+  name="Documentation"
+  url="/index.html#Documentation"
+  weight=5
+[[menu.main]]
+  name="Blog"
+  url="/post/"
+  weight=2
+[[menu.main]]
+  name="MetrumRG"
+  url="http://metrumrg.com"
+  weight=6
+
+[taxonimies]
+tag="tags"
+categories="categories"
+
+  
+[params]
+  description = "Simulate from ODE-based PKPD & QSP models in R"
+  # options for highlight.js (version, additional languages, and theme)
+  highlightjsVersion = "9.9.0"
+  highlightjsLang = ["r", "yaml"]
+  highlightjsTheme = "github"
+
+  [params.logo]
+  url = "mrgsolve_transparent.png"
+  alt = "Logo"
+
+   
