@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Topics on mrgsolve</title>
+    <link>/topic/</link>
+    <description>Recent content in Topics on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 23 Feb 2017 16:49:01 -0600</lastBuildDate>
+    
+	<atom:link href="/topic/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Quick hit feature demos</title>
+      <link>/topic/quick/</link>
+      <pubDate>Thu, 23 Feb 2017 16:49:01 -0600</pubDate>
+      
+      <guid>/topic/quick/</guid>
+      <description>$ operator for model object gets the parameter value Zero all random effect variances on the fly Plot formulae   These are all miscellaneous features that may be difficult to find in other documentation.
+library(mrgsolve) library(dplyr) $ operator for model object gets the parameter value If our model parameters are
+mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=13): . name value . name value . CL 1 | SEXCL 0.</description>
+    </item>
+    
+    <item>
+      <title>Access Models in the Internal Library</title>
+      <link>/topic/modmrg/</link>
+      <pubDate>Thu, 23 Feb 2017 10:13:36 +0000</pubDate>
+      
+      <guid>/topic/modmrg/</guid>
+      <description>library(mrgsolve) library(dplyr) PK model Here, we name the name of the model we want from the library (pk2cmt) and we point mread to the project directory where the internal model library is stored. This internal library is located wherever mrgsolve is installed. The install location for mrgsolve is not obvious, so we provide a function (modlib) that returns the currect path to the model library.
+mod &amp;lt;- mread(&amp;quot;pk2cmt&amp;quot;, modlib()) mod %&amp;gt;% ev(amt=100,rate=3,addl=4,ii=48,cmt=2) %&amp;gt;% mrgsim(end=320) %&amp;gt;% plot(CP~.</description>
+    </item>
+    
+    <item>
+      <title>Model Gallery</title>
+      <link>/topic/model-gallery/</link>
+      <pubDate>Thu, 23 Feb 2017 08:00:00 +0000</pubDate>
+      
+      <guid>/topic/model-gallery/</guid>
+      <description>Load packages required for the gallery Simple PK model PK model with different bioavability and dosing lag time PK model with residual error Indirect response model driven by continuous PK Indirect response model driven by metric summarizing exposure Effect compartment model Population PK model with covariates and IOV PK with dialysis sessions 3 times per week References Session Info   library(lattice) library(ggplot2) library(dplyr) Load packages required for the gallery library(mrgsolve) library(dplyr) library(ggplot2) library(magrittr) library(tidyr)  Simple PK model About this model specification code</description>
+    </item>
+    
+    <item>
+      <title>Extended examples</title>
+      <link>/topic/</link>
+      <pubDate>Sat, 04 Feb 2017 08:00:00 +0000</pubDate>
+      
+      <guid>/topic/</guid>
+      <description>A complete listing of tagged content can be found here.
+ Brief feature demonstrations Generate MAP Bayes estimates Internal model library Model gallery Working with event objects  </description>
+    </item>
+    
+    <item>
+      <title>Work with event objects</title>
+      <link>/topic/events/</link>
+      <pubDate>Tue, 31 Jan 2017 08:00:00 +0000</pubDate>
+      
+      <guid>/topic/events/</guid>
+      <description>library(mrgsolve) library(dplyr) Introduction Event objects are simple ways to implement PK dosing events into your model simulation.
+ Setup Let’s illustrate event objects with a one-compartment, PK model. We read this model from the mrgsolve internal model library.
+mod &amp;lt;- mread(&amp;quot;pk1cmt&amp;quot;, modlib(), end=216, delta=0.1)  Events Events are constructed with the ev function
+e &amp;lt;- ev(amt=100, ii=24, addl=6) This will implement 100 unit doses every 24 hours for a total of 7 doses.</description>
+    </item>
+    
+    <item>
+      <title>Generate MAP Bayes Parameter Estimates</title>
+      <link>/topic/map_bayes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/topic/map_bayes/</guid>
+      <description>library(ggplot2) library(mrgsolve) library(minqa) library(dplyr) library(magrittr) About This tutorial illustrates how to do MAP Bayes estimation with mrgsolve.
+The setup was adapted from an existing project, where only a single individual was considered. With some additional R coding, it could be expanded to consider multiple individuals in a single run.
+ One compartment model, keep it simple for now  The model specification code below is for a one-compartment model, where mrgsolve will calculate the amount in CENT from closed-form equations</description>
+    </item>
+    
+  </channel>
+</rss>

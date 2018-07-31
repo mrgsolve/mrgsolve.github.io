@@ -1,0 +1,7 @@
+---
+title: Zero out random effect variances
+date: '2017-02-23'
+---
+
+
+

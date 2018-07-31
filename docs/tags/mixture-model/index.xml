@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mixture Model on mrgsolve</title>
+    <link>/tags/mixture-model/</link>
+    <description>Recent content in Mixture Model on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 26 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/mixture-model/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Mixture model example</title>
+      <link>/2017/05/26/mixture-model-example/</link>
+      <pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/05/26/mixture-model-example/</guid>
+      <description>In NONMEM, $MIXTURE will allow you to estimate mixture models, where individuals are classified in to two or more populations with a certain probability. It is straightforward to simulate from models like these in your mrgsolve model code.
+Two Populations Let’s imagine there were two populations in the mixture model, with the second having smaller clearance than the first. In this example, we will develop some code for a simple model and then extend it to implement the mixture model component.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,259 @@
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92528248-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.21" />
+
+
+<title>Flexible, heterogeneous simulation designs in a population - mrgsolve</title>
+<meta property="og:title" content="Flexible, heterogeneous simulation designs in a population - mrgsolve">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/mrgsolve_transparent.png"
+         width=""
+         height=""
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../">Home</a></li>
+    
+    <li><a href="../../../../post/">Blog</a></li>
+    
+    <li><a href="https://github.com/metrumresearchgroup/mrgsolve">GitHub</a></li>
+    
+    <li><a href="../../../../index.html#documentation">Documentation</a></li>
+    
+    <li><a href="http://metrumrg.com">MetrumRG</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">5 min read</span>
+    
+
+    <h1 class="article-title">Flexible, heterogeneous simulation designs in a population</h1>
+
+    
+    <span class="article-date">2017/01/05</span>
+    
+
+    <div class="article-content">
+      <p>Design lists help you assign different designs to different groups in a population or specific designs to specific individuals.</p>
+<pre class="r"><code>library(mrgsolve)
+library(dplyr)</code></pre>
+<div id="assign-designs-to-individuals" class="section level3">
+<h3>Assign designs to individuals</h3>
+<p>To illustrate, let’s make a population of 4 individuals, all with different simulation <strong>end</strong> times.</p>
+<pre class="r"><code>des &lt;- data_frame(ID=1:4, end=seq(24,96,24))
+
+des</code></pre>
+<pre><code>. # A tibble: 4 × 2
+.      ID   end
+.   &lt;int&gt; &lt;dbl&gt;
+. 1     1    24
+. 2     2    48
+. 3     3    72
+. 4     4    96</code></pre>
+<p>For simplicity, we will only vary the simulation end time in this example. See later examples where <code>start</code>, <code>delta</code> and <code>add</code> can varied as well.</p>
+<p>We can turn this in to a list of designs with <code>as_deslist</code>.</p>
+<pre class="r"><code>as_deslist(des, descol=&quot;ID&quot;)</code></pre>
+<pre><code>. $ID_1
+. start:  0  end:    24  delta:  1  offset: 0  min:    0   max:    24 
+. 
+. $ID_2
+. start:  0  end:    48  delta:  1  offset: 0  min:    0   max:    48 
+. 
+. $ID_3
+. start:  0  end:    72  delta:  1  offset: 0  min:    0   max:    72 
+. 
+. $ID_4
+. start:  0  end:    96  delta:  1  offset: 0  min:    0   max:    96 
+. 
+. attr(,&quot;descol&quot;)
+. [1] &quot;ID&quot;</code></pre>
+<p><code>as_deslist</code> returns one design for each individual, one for each unique level of <code>descol</code>. The deslist is a list of <code>tgrid</code> objects (see <code>?tgrid</code>). Note also that <code>descol</code> is retained as an attribute to be used later.</p>
+<p>Let’s set up a simulation that includes these 4 IDs; we load a model and, importantly, set up an <code>idata_set</code> for the simulation that includes all 4 IDs in the design list.</p>
+<pre class="r"><code>mod &lt;- mrgsolve:::house() %&gt;% ev(amt=100)
+
+idata &lt;- select(des,ID)
+idata</code></pre>
+<pre><code>. # A tibble: 4 × 1
+.      ID
+.   &lt;int&gt;
+. 1     1
+. 2     2
+. 3     3
+. 4     4</code></pre>
+<pre class="r"><code>des1 &lt;- as_deslist(des,&quot;ID&quot;)</code></pre>
+<p>When we run the simulation, pass in the design list to <code>design</code> in the pipeline</p>
+<pre class="r"><code>out &lt;- 
+  mod %&gt;%
+  idata_set(idata) %&gt;%
+  design(des1) %&gt;%
+  mrgsim</code></pre>
+<p>We see that ID 1 has a 24 hour end time, ID 2 has 48 hour simulation time, ID 3 with 72 hour simulation time, and ID 4 96 hour simulation time as reflected in the list of the designs.</p>
+<pre class="r"><code>plot(out, CP~time|ID)</code></pre>
+<p><img src="../../../../post/2017-01-04-as_deslist_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><strong>Note</strong>: Check the arguments to <code>design</code> (<code>?design</code>). There is a <code>descol</code> argument that is required. <code>descol</code> in this function refers to a column in <code>idata_set</code> to be used as the grouping variable to assign the sampling design. <code>as_deslist</code> also had a <code>descol</code> argument that referred to a column in the input data frame for that function. We don’t need to pass <code>descol</code> to <code>design()</code> because we created the design list with <code>as_deslist</code>: <code>design()</code> reads <code>descol</code> from the attribute. We don’t <strong>have</strong> to use <code>as_deslist</code> to create the design list. It could be just a plan old <code>R</code> list created by you with <code>tgrid</code> objects. In that case, you must state what <code>descol</code> is when you call <code>design()</code>.<br />
+And it can’t be emphasized enough here that you <strong>MUST</strong> use an <code>idata_set</code> for this to work and <code>idata_set</code> must contain a valid <code>descol</code>.</p>
+</div>
+<div id="assign-designs-to-treatment-arms-or-groups" class="section level3">
+<h3>Assign designs to treatment arms or groups</h3>
+<p>Now, let’s simulate a trial with 5 patients in each of 4 treatment arms. In this trial, arm 1 lasts 24 hours, arm 2 last 48 hours … etc. But every patient with the arm 1 indicator will get simulated for 24 hours, every patient with arm 2 indicator will get simulated for 48 hours and so on.</p>
+<pre class="r"><code>idata &lt;- expand.idata(ARM=1:4,ID=1:5)
+
+head(idata)</code></pre>
+<pre><code>.   ID ARM
+. 1  1   1
+. 2  2   2
+. 3  3   3
+. 4  4   4
+. 5  5   1
+. 6  6   2</code></pre>
+<p>Now, let’s setup the designs based on <code>ARM</code> rather than <code>ID</code></p>
+<pre class="r"><code>des &lt;- distinct(idata,ARM) %&gt;% mutate(end=seq(24,96,24))
+
+des</code></pre>
+<pre><code>.   ARM end
+. 1   1  24
+. 2   2  48
+. 3   3  72
+. 4   4  96</code></pre>
+<p>The simulation works the same way</p>
+<pre class="r"><code>set.seed(11)
+
+out &lt;- 
+  mod %&gt;% 
+  idata_set(idata) %&gt;%
+  omat(dmat(1,1,1,1)/10) %&gt;%
+  design(as_deslist(des,&quot;ARM&quot;)) %&gt;% 
+  mrgsim(carry.out=&quot;ARM&quot;)
+
+plot(out, CP~time|factor(ARM))</code></pre>
+<p><img src="../../../../post/2017-01-04-as_deslist_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>plot(out, CP~time|factor(ID))</code></pre>
+<p><img src="../../../../post/2017-01-04-as_deslist_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+</div>
+<div id="list-cols-and-additional-times" class="section level3">
+<h3><code>list-cols</code> and <code>additional</code> times</h3>
+<p>Hopefully it’s clear that columns named <code>start</code>, <code>end</code>, and <code>delta</code> in the the input data frame passed to <code>as_deslist</code> are just numeric values that form the time grid object (see <code>?tgrid</code>).</p>
+<p>What about <code>add</code>, the vector of ad-hoc times for the simulation? These, too, can be accommodated with a <code>list-col</code> column in the input data frame. Note that <code>list-cols</code> are only really supported in specialized <code>tibble</code> type data frames.</p>
+<p>These are random times for IDs 1 and 2</p>
+<pre class="r"><code>set.seed(12)
+t1 &lt;- c(0,sample(1:24,12))
+t2 &lt;- c(0,sample(1:96,12))
+
+t1</code></pre>
+<pre><code>.  [1]  0  2 19 21  6  4  1 20 11 23 16 22 17</code></pre>
+<pre class="r"><code>t2</code></pre>
+<pre><code>.  [1]  0 37 96 25 41 43 50 60 11 20 69  9 61</code></pre>
+<p><strong>Note</strong>: When we simulate with <code>end &lt; 0</code>, <code>mrgsolve</code> knows to ignore <code>start/end/delta</code> and only use the times in <code>add</code> for observations.</p>
+<pre class="r"><code>des &lt;- data_frame(ID=1:2, end=-1, add=list(t1,t2))
+des</code></pre>
+<pre><code>. # A tibble: 2 × 3
+.      ID   end        add
+.   &lt;int&gt; &lt;dbl&gt;     &lt;list&gt;
+. 1     1    -1 &lt;dbl [13]&gt;
+. 2     2    -1 &lt;dbl [13]&gt;</code></pre>
+<pre class="r"><code>mod %&gt;% 
+  idata_set(des, select=ID) %&gt;%
+  design(as_deslist(des)) %&gt;% 
+  mrgsim %&gt;% 
+  plot(CP~time|factor(ID), type=&#39;b&#39;)</code></pre>
+<p><img src="../../../../post/2017-01-04-as_deslist_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Ok … not the most lovely-looking result we’ve seen before, but maybe that’s just what you needed in this simulation.</p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92528248-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

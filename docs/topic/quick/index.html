@@ -1,0 +1,202 @@
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92528248-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.21" />
+
+
+<title>Quick hit feature demos - mrgsolve</title>
+<meta property="og:title" content="Quick hit feature demos - mrgsolve">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+
+
+<link rel="stylesheet" href="../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../" class="nav-logo">
+    <img src="../../images/mrgsolve_transparent.png"
+         width=""
+         height=""
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../">Home</a></li>
+    
+    <li><a href="../../post/">Blog</a></li>
+    
+    <li><a href="https://github.com/metrumresearchgroup/mrgsolve">GitHub</a></li>
+    
+    <li><a href="../../index.html#documentation">Documentation</a></li>
+    
+    <li><a href="http://metrumrg.com">MetrumRG</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+
+    <h1 class="article-title">Quick hit feature demos</h1>
+
+    
+
+    <div class="article-content">
+      <div id="TOC">
+<ul>
+<li><a href="#operator-for-model-object-gets-the-parameter-value"><code>$</code> operator for model object gets the parameter value</a></li>
+<li><a href="#zero-all-random-effect-variances-on-the-fly">Zero all random effect variances on the fly</a></li>
+<li><a href="#plot-formulae">Plot formulae</a></li>
+</ul>
+</div>
+
+<p>These are all miscellaneous features that may be difficult to find in other documentation.</p>
+<pre class="r"><code>library(mrgsolve)
+library(dplyr)</code></pre>
+<div id="operator-for-model-object-gets-the-parameter-value" class="section level1">
+<h1><code>$</code> operator for model object gets the parameter value</h1>
+<p>If our model parameters are</p>
+<pre class="r"><code>mod &lt;- mrgsolve:::house()
+param(mod)</code></pre>
+<pre><code>. 
+.  Model parameters (N=13):
+.  name value . name  value
+.  CL   1     | SEXCL 0.7  
+.  F1   1     | SEXVC 0.85 
+.  IC50 10    | VC    20   
+.  KA   1.2   | WT    70   
+.  KIN  100   | WTCL  0.75 
+.  KOUT 2     | WTVC  1    
+.  SEX  0     | .     .</code></pre>
+<p>we can pick a parameter value with</p>
+<pre class="r"><code>mod$CL</code></pre>
+<pre><code>. CL 
+.  1</code></pre>
+<pre class="r"><code>mod$WT</code></pre>
+<pre><code>. WT 
+. 70</code></pre>
+</div>
+<div id="zero-all-random-effect-variances-on-the-fly" class="section level1">
+<h1>Zero all random effect variances on the fly</h1>
+<p>If your model has random effects, you can easily and temporarily zero them out.</p>
+<pre class="r"><code>mod &lt;- mread(&quot;popex&quot;, modlib()) %&gt;% update(end=96) %&gt;% Req(DV,CL,V)
+
+omat(mod)</code></pre>
+<pre><code>. $...
+.       [,1] [,2] [,3]
+. ECL:   0.3  0.0  0.0
+. EV:    0.0  0.1  0.0
+. EKA:   0.0  0.0  0.5</code></pre>
+<p>It is easy to simulate either with or without the random effects in the simulation: this change can be made on the fly.</p>
+<p>Use <code>zero_re</code> to make all random effect variances zero</p>
+<pre class="r"><code>mod %&gt;% zero_re %&gt;% omat</code></pre>
+<pre><code>. $...
+.       [,1] [,2] [,3]
+. ECL:     0    0    0
+. EV:      0    0    0
+. EKA:     0    0    0</code></pre>
+<p>By default, both <code>OMEGA</code> and <code>SIGMA</code> are zeroed. Check the arguments for <code>zero_re</code> to see how to selectively zero <code>OMEGA</code> or <code>SIGMA</code>.</p>
+<p>Compare the population output</p>
+<pre class="r"><code>mod %&gt;% ev(amt=100) %&gt;% mrgsim(nid=20) %&gt;% plot</code></pre>
+<p><img src="quick_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>with</p>
+<pre class="r"><code>mod %&gt;% ev(amt=100) %&gt;% zero_re %&gt;% mrgsim(nid=20) %&gt;% plot</code></pre>
+<p><img src="quick_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="plot-formulae" class="section level1">
+<h1>Plot formulae</h1>
+<p>We commonly plot simulated output with a special plot method. By default, you get all compartments and output variables in the plot.</p>
+<pre class="r"><code>mod &lt;- mrgsolve:::house() %&gt;% events(ev(amt=100))
+
+mod %&gt;% mrgsim %&gt;% plot</code></pre>
+<p><img src="quick_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The plot can be customized with a formula selecting variables to plot. Other arguments to <code>lattice::xyplot</code> can be passed as well.</p>
+<pre class="r"><code>mod %&gt;% mrgsim %&gt;% plot(CP+RESP ~ time, lty=2, col=&quot;firebrick&quot;)</code></pre>
+<p><img src="quick_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92528248-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

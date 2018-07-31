@@ -1,0 +1,168 @@
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92528248-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.21" />
+
+
+<title>qsim - mrgsolve</title>
+<meta property="og:title" content="qsim - mrgsolve">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/mrgsolve_transparent.png"
+         width=""
+         height=""
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../">Home</a></li>
+    
+    <li><a href="../../../../post/">Blog</a></li>
+    
+    <li><a href="https://github.com/metrumresearchgroup/mrgsolve">GitHub</a></li>
+    
+    <li><a href="../../../../index.html#documentation">Documentation</a></li>
+    
+    <li><a href="http://metrumrg.com">MetrumRG</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">qsim</h1>
+
+    
+    <span class="article-date">2017/06/15</span>
+    
+
+    <div class="article-content">
+      <pre class="r"><code>knitr::opts_chunk$set(message=FALSE,comment=&#39;.&#39;)
+library(rbenchmark)
+library(mrgsolve)
+library(dplyr)</code></pre>
+<p><code>qsim</code> is a function in <code>mrgsolve</code> that is similar to <code>mrgsim</code>, but quicker. In order to get that quickness, we lose some flexibility with the model. But in many circumstances, this is no big deal at all. <code>qsim</code> works with a regular model object, an event object, and (optionally) an <code>idata_set</code>. <code>qsim</code> returns simulations as a (plain/old) matrix so you will also have to do a little more work on the back end.</p>
+<p>Let’s start with a benchmark. For the example, load a 2-cmt model and update the simulation end time. We’ll create a dosing event object (<code>ev</code>).</p>
+<pre class="r"><code>mod &lt;- mread(&quot;pk2cmt&quot;, modlib()) %&gt;% update(end=120)
+ev &lt;- ev(amt=100, ii=24,addl=2)</code></pre>
+<p>Finally, we will pass the dosing event object into <code>recmatrix</code> along with the observation time grid (see <code>?stime</code>).</p>
+<pre class="r"><code>recs &lt;- recmatrix(ev,stime(mod))
+head(recs)</code></pre>
+<pre><code>.      time cmt evid amt rate
+. [1,]    0   0    0   0    0
+. [2,]    0   0    1 100    0
+. [3,]    1   0    0   0    0
+. [4,]    2   0    0   0    0
+. [5,]    3   0    0   0    0
+. [6,]    4   0    0   0    0</code></pre>
+<p><code>recmatrix</code> takes the dosing information in the event object, expands out all of the additional doses, schedules infusion end times (if <code>rate &gt; 0</code>) and inserts rows for observation records. So the <code>recs</code> object looks like a <code>data_set</code> but with slightly different information.</p>
+<p>Let’s try the benchmark:</p>
+<pre class="r"><code>benchmark(qsim(mod,recs),
+          mrgsim(mod,events=ev),replications=300)[,c(1:4)]</code></pre>
+<pre><code>.                       test replications elapsed relative
+. 2 mrgsim(mod, events = ev)          300   0.989    3.341
+. 1          qsim(mod, recs)          300   0.296    1.000</code></pre>
+<pre class="r"><code>benchmark(qsim(mod,ev),
+          mrgsim(mod,events=ev),replications=300)[,c(1:4)]</code></pre>
+<pre><code>.                       test replications elapsed relative
+. 2 mrgsim(mod, events = ev)          300   0.938    2.299
+. 1            qsim(mod, ev)          300   0.408    1.000</code></pre>
+<p>The idea is to fix all of that <strong>prior</strong> to running the simulation. It won’t always give you a huge savings (for example, if every simulation has a different design or dose, you have to call <code>recmatrix</code> every time). But it helps with replicate simulation when you can build the design once beforehand, and re-use for every replicate.</p>
+<p>The time savings you get with <code>qsim</code> totally depend on the problem, including the duration of the simulation and the number of individuals.<br />
+You might see a 100 speed up for simple simulation from a single set of parameters. Or a 30% speed up for long simulations in a big population. I would say you get the biggest speed up when it’s the shortest, simplest problem. Using <code>qsim</code> in that case gets you out of all the overhead <code>mrgsolve</code> needs in order to do complicated simulations.</p>
+<p>But beware of the limitations here. <code>mrgsolve</code> will call <code>recmatrix</code> on the event object even if you don’t. <code>qsim</code> always uses a single regimen for a single fixed design with bioavability and infusion duration fixed prior to the problem.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92528248-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

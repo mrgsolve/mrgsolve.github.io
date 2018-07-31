@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Estimation on mrgsolve</title>
+    <link>/tags/estimation/</link>
+    <description>Recent content in Estimation on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 23 Feb 2017 10:13:36 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/estimation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Generate MAP Bayes Parameter Estimates</title>
+      <link>/2017/02/23/generate-map-bayes-parameter-estimates/</link>
+      <pubDate>Thu, 23 Feb 2017 10:13:36 +0000</pubDate>
+      
+      <guid>/2017/02/23/generate-map-bayes-parameter-estimates/</guid>
+      <description>library(ggplot2) library(mrgsolve) library(minqa) library(dplyr) library(magrittr) About This tutorial illustrates how to do MAP Bayes estimation with mrgsolve.
+The setup was adapted from an existing project, where only a single individual was considered. With some additional R coding, it could be expanded to consider multiple individuals in a single run.
+ One compartment model, keep it simple for now  The model specification code below is for a one-compartment model, where mrgsolve will calculate the amount in CENT from closed-form equations</description>
+    </item>
+    
+  </channel>
+</rss>

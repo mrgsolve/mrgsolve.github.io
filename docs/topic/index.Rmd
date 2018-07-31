@@ -1,0 +1,10 @@
+---
+title: Extended help and documentation topics
+type: page
+---
+
+
+- [Generate MAP Bayes estimates](map_bayes)
+- [Internal model library](modmrg)
+- [Model gallery](model-gallery)
+- [Working with event objects](events)
