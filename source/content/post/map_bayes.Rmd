@@ -6,7 +6,7 @@ tags: "estimation"
 
 ```{r,echo=FALSE}
 library(knitr)
-knitr::opts_chunk$set(comment='.',fig.align="center",message=FALSE,cache=FALSE, autodep=TRUE)
+knitr::opts_chunk$set(comment='.',fig.align="center",message=FALSE,cache=TRUE, autodep=TRUE)
 ```
 
 ```{r,message=FALSE}

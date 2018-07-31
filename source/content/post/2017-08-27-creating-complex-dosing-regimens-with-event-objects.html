@@ -42,7 +42,7 @@ e1</code></pre>
 .   time cmt amt ii addl evid
 . 1    0   1 100 24    6    1</code></pre>
 <pre class="r"><code>mod %&gt;% mrgsim(events = e1, end = 2*168) %&gt;% plot</code></pre>
-<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 </div>
 <div id="sequences-of-event-objects" class="section level1">
 <h1><span class="header-section-number">3</span> Sequences of event objects</h1>
@@ -60,7 +60,7 @@ e3</code></pre>
 <p>When we create a sequence of event objects, <code>mrgsolve</code> calculates when each event is finished and automatically times each event according to the end time from the preceeding event. Notice that each event starts one dosing interval after the last dose of the previous event.</p>
 <p>And try that out</p>
 <pre class="r"><code>mod %&gt;% mrgsim(events = e3, end = 5*168) %&gt;% plot</code></pre>
-<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <div id="using-wait-in-event-sequence" class="section level2">
 <h2><span class="header-section-number">3.1</span> Using <code>wait</code> in event sequence</h2>
 <p>What if we want a 3-day holiday between each treatment period? Simply schedule a waiting period in the sequence:</p>
@@ -73,14 +73,14 @@ e4</code></pre>
 . 3  480   1 100 24    6    1</code></pre>
 <p>Notice that the event objects (<code>e1</code> and <code>e2</code>) are unnamed arguments. But <code>wait</code> is a named argument with a single numeric value. Introducing a <code>wait</code> period in the sequence pushes the start of the next period in the sequence forward in time.</p>
 <pre class="r"><code>mod %&gt;% mrgsim(events = e4, end = 6*168) %&gt;% plot</code></pre>
-<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>To code a cycle of 3 weeks on, one week off for two months</p>
 <pre class="r"><code>e5 &lt;- ev(amt = 200, ii = 24, addl = 20)
 
 e6 &lt;- seq(e5, wait = 168, e5)
 
 mod %&gt;% mrgsim(events = e6, end = 72*24) %&gt;% plot</code></pre>
-<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 </div>
 </div>
 <div id="repeating-a-complicated-regimen" class="section level1">
@@ -90,7 +90,7 @@ mod %&gt;% mrgsim(events = e6, end = 72*24) %&gt;% plot</code></pre>
 <pre class="r"><code>e7 &lt;- ev_rep(e5, n = 12, wait = 168)
 
 mod %&gt;% mrgsim(data = e7, end = 52*168) %&gt;% plot(CP~time/7/24)</code></pre>
-<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>In <code>ev_rep</code>, there is a single <code>wait</code>ing period in between replicates of the 3 week on period.</p>
 <p>Alternatively, we could work with the 100/200/100 sequence like this</p>
 <pre class="r"><code>e4</code></pre>
@@ -101,7 +101,7 @@ mod %&gt;% mrgsim(data = e7, end = 52*168) %&gt;% plot(CP~time/7/24)</code></pre
 . 3  480   1 100 24    6    1</code></pre>
 <pre class="r"><code>e8 &lt;- ev_rep(e4, n = 10, wait = 168)
 mod %&gt;% mrgsim(data = e8, end = 52*168) %&gt;% plot(CP~time/7/24)</code></pre>
-<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 </div>
 <div id="expand-an-event-into-a-population" class="section level1">
 <h1><span class="header-section-number">5</span> Expand an event into a population</h1>
@@ -123,7 +123,7 @@ e9</code></pre>
 <p>Now we have 5 patients each getting 100 mg daily for one week and then 200 mg daily for a week after a 3 day break.</p>
 <pre class="r"><code>mod &lt;- mread(&quot;popex&quot;, modlib()) %&gt;% update(delta=0.1)
 mod %&gt;% mrgsim(data = e9, end = 600) %&gt;% plot(DV~.)</code></pre>
-<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-14-1.png" width="672" /> # Environment</p>
+<p><img src="/post/2017-08-27-creating-complex-dosing-regimens-with-event-objects_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto auto auto 0;" /> # Environment</p>
 <pre><code>.  setting  value                       
 .  version  R version 3.5.0 (2018-04-23)
 .  system   x86_64, darwin15.6.0        
@@ -141,6 +141,7 @@ mod %&gt;% mrgsim(data = e9, end = 600) %&gt;% plot(DV~.)</code></pre>
 .  bindrcpp      * 0.2.2       2018-03-29 CRAN (R 3.5.0)
 .  blogdown        0.8         2018-07-15 CRAN (R 3.5.0)
 .  bookdown        0.7         2018-02-18 CRAN (R 3.4.2)
+.  codetools       0.2-15      2016-10-05 CRAN (R 3.5.0)
 .  compiler        3.5.0       2018-04-24 local         
 .  datasets      * 3.5.0       2018-04-24 local         
 .  devtools        1.13.6      2018-06-27 CRAN (R 3.5.0)

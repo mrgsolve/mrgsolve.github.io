@@ -1,4 +1,4 @@
-baseurl = ""
+baseurl = "/"
 relativeurls = true
 languageCode = "en-us"
 title = "mrgsolve"
