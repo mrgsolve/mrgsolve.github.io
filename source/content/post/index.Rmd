@@ -1,0 +1,15 @@
+---
+title: NULL
+type: page
+---
+
+## Extended examples
+
+A complete listing of tagged content can be found [here](/tax/).
+
+- [Brief feature demonstrations](quick)
+- [Generate MAP Bayes estimates](map_bayes)
+- [Internal model library](modmrg)
+- [Model gallery](model-gallery)
+- [Working with event objects](events)
+

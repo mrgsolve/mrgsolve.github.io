@@ -1,0 +1,11 @@
+unnamed-chunk-2	library
+unnamed-chunk-3	data_frame	seq
+unnamed-chunk-4	as_deslist	des
+unnamed-chunk-5	:::	%>%	as_deslist	des	ev	ID	select
+unnamed-chunk-6	%>%	des1	design	idata	idata_set	mod	mrgsim
+unnamed-chunk-7	~	out	plot
+unnamed-chunk-8	expand.idata	head
+unnamed-chunk-9	%>%	ARM	distinct	idata	mutate	seq
+unnamed-chunk-10	%>%	~	as_deslist	des	design	dmat	idata	idata_set	mod	mrgsim	omat	plot	set.seed
+unnamed-chunk-11	c	sample	set.seed
+unnamed-chunk-12	%>%	~	as_deslist	data_frame	design	ID	idata_set	list	mod	mrgsim	plot	t1	t2

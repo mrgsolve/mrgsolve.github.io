@@ -1,0 +1,81 @@
+---
+date: 2017-02-23T16:49:01-06:00
+title: Quick hit feature demos
+output: 
+  blogdown::html_page:
+    toc: true
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#operator-for-model-object-gets-the-parameter-value"><code>$</code> operator for model object gets the parameter value</a></li>
+<li><a href="#zero-all-random-effect-variances-on-the-fly">Zero all random effect variances on the fly</a></li>
+<li><a href="#plot-formulae">Plot formulae</a></li>
+</ul>
+</div>
+
+<p>These are all miscellaneous features that may be difficult to find in other documentation.</p>
+<pre class="r"><code>library(mrgsolve)
+library(dplyr)</code></pre>
+<div id="operator-for-model-object-gets-the-parameter-value" class="section level1">
+<h1><code>$</code> operator for model object gets the parameter value</h1>
+<p>If our model parameters are</p>
+<pre class="r"><code>mod &lt;- mrgsolve:::house()
+param(mod)</code></pre>
+<pre><code>. 
+.  Model parameters (N=13):
+.  name value . name  value
+.  CL   1     | SEXCL 0.7  
+.  F1   1     | SEXVC 0.85 
+.  IC50 10    | VC    20   
+.  KA   1.2   | WT    70   
+.  KIN  100   | WTCL  0.75 
+.  KOUT 2     | WTVC  1    
+.  SEX  0     | .     .</code></pre>
+<p>we can pick a parameter value with</p>
+<pre class="r"><code>mod$CL</code></pre>
+<pre><code>. CL 
+.  1</code></pre>
+<pre class="r"><code>mod$WT</code></pre>
+<pre><code>. WT 
+. 70</code></pre>
+</div>
+<div id="zero-all-random-effect-variances-on-the-fly" class="section level1">
+<h1>Zero all random effect variances on the fly</h1>
+<p>If your model has random effects, you can easily and temporarily zero them out.</p>
+<pre class="r"><code>mod &lt;- mread(&quot;popex&quot;, modlib()) %&gt;% update(end=96) %&gt;% Req(DV,CL,V)
+
+omat(mod)</code></pre>
+<pre><code>. $...
+.       [,1] [,2] [,3]
+. ECL:   0.3  0.0  0.0
+. EV:    0.0  0.1  0.0
+. EKA:   0.0  0.0  0.5</code></pre>
+<p>It is easy to simulate either with or without the random effects in the simulation: this change can be made on the fly.</p>
+<p>Use <code>zero_re</code> to make all random effect variances zero</p>
+<pre class="r"><code>mod %&gt;% zero_re %&gt;% omat</code></pre>
+<pre><code>. $...
+.       [,1] [,2] [,3]
+. ECL:     0    0    0
+. EV:      0    0    0
+. EKA:     0    0    0</code></pre>
+<p>By default, both <code>OMEGA</code> and <code>SIGMA</code> are zeroed. Check the arguments for <code>zero_re</code> to see how to selectively zero <code>OMEGA</code> or <code>SIGMA</code>.</p>
+<p>Compare the population output</p>
+<pre class="r"><code>mod %&gt;% ev(amt=100) %&gt;% mrgsim(nid=20) %&gt;% plot</code></pre>
+<p><img src="quick_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>with</p>
+<pre class="r"><code>mod %&gt;% ev(amt=100) %&gt;% zero_re %&gt;% mrgsim(nid=20) %&gt;% plot</code></pre>
+<p><img src="quick_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="plot-formulae" class="section level1">
+<h1>Plot formulae</h1>
+<p>We commonly plot simulated output with a special plot method. By default, you get all compartments and output variables in the plot.</p>
+<pre class="r"><code>mod &lt;- mrgsolve:::house() %&gt;% events(ev(amt=100))
+
+mod %&gt;% mrgsim %&gt;% plot</code></pre>
+<p><img src="quick_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The plot can be customized with a formula selecting variables to plot. Other arguments to <code>lattice::xyplot</code> can be passed as well.</p>
+<pre class="r"><code>mod %&gt;% mrgsim %&gt;% plot(CP+RESP ~ time, lty=2, col=&quot;firebrick&quot;)</code></pre>
+<p><img src="quick_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>

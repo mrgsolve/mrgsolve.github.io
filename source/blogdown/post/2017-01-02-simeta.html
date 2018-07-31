@@ -1,0 +1,188 @@
+---
+title: "Resimulate random effect variates on demand"
+date: 2017-01-01T13:09:13-06:00
+output:
+    blogdown::html_page:
+      toc: true
+tags: ["simeta","simeps", "population simulation"]
+---
+
+<!-- BLOGDOWN-HEAD -->
+<!-- /BLOGDOWN-HEAD -->
+
+<div id="TOC">
+<ul>
+<li><a href="#simeta-example"><code>simeta</code> example</a><ul>
+<li><a href="#simulate-without-simeta">Simulate without <code>simeta</code></a></li>
+<li><a href="#simulate-with-simeta">Simulate with <code>simeta</code></a></li>
+</ul></li>
+<li><a href="#simeps-example"><code>simeps</code> example</a><ul>
+<li><a href="#simulate-without-simeps">Simulate without <code>simeps</code></a></li>
+<li><a href="#simulate-with-simeps">Simulate with <code>simeps</code></a></li>
+</ul></li>
+</ul>
+</div>
+
+<p><BR></p>
+<pre class="r"><code>library(mrgsolve)
+library(dplyr)</code></pre>
+<div id="simeta-example" class="section level2">
+<h2><code>simeta</code> example</h2>
+<ul>
+<li>In this example, we want to simulate a patient-specific baseline response that is between 80 and 120.</li>
+<li>In the code, we start a loop that calls <code>simeta</code> with no arguments until the baseline is between the specified bounds</li>
+<li>For this example, we only calculate <code>BASE</code> when <code>NEWIND &lt;=1</code> … or whenever we are working on the first record of an individual. This ensures that we don’t re-simulate <code>BASE</code> at every simulation record.</li>
+<li>We have also implemented a counter (<code>i</code>) that ensures we only try to resimulate 100 times. If a value for <code>BASE</code> cannot be generated in 100 tries, we give up.<br />
+</li>
+<li>You probably won’t need to implement <code>FLAG</code> for your problem. I am only using <code>FLAG</code> here so we can selectively call the <code>simeta</code> code to demonstrate how it is working.</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM TVBASE = 100, FLAG = 0
+
+$CMT RESPONSE
+
+$MAIN 
+
+if(NEWIND &lt;=1) {
+
+  capture BASE = TVBASE*exp(EBASE);
+
+  int i = 0;
+
+  if(FLAG &gt; 0) {
+    while((BASE &lt; 80) || (BASE &gt; 120)) {
+      if(++i &gt; 100) {
+        report(&quot;There was a problem simulating BASE&quot;);
+      }
+      simeta();
+      BASE = TVBASE*exp(EBASE);
+    }
+  }
+  
+  RESPONSE_0 = BASE;
+}
+
+
+$OMEGA @labels EBASE
+1
+
+$CAPTURE EBASE
+&#39;</code></pre>
+<pre class="r"><code>mod &lt;- mcode(&quot;simeta&quot;, code)</code></pre>
+<div id="simulate-without-simeta" class="section level3">
+<h3>Simulate without <code>simeta</code></h3>
+<pre class="r"><code>system.time({
+  out &lt;- mod %&gt;% mrgsim(nid=100, end=-1)
+  sum &lt;- summary(out)
+})</code></pre>
+<pre><code>.    user  system elapsed 
+.   0.012   0.000   0.012</code></pre>
+<pre class="r"><code>print(sum)</code></pre>
+<pre><code>.        ID              time      RESPONSE           EBASE        
+.  Min.   :  1.00   Min.   :0   Min.   :  14.97   Min.   :-1.8989  
+.  1st Qu.: 25.75   1st Qu.:0   1st Qu.:  55.63   1st Qu.:-0.5865  
+.  Median : 50.50   Median :0   Median : 117.65   Median : 0.1625  
+.  Mean   : 50.50   Mean   :0   Mean   : 192.33   Mean   : 0.1915  
+.  3rd Qu.: 75.25   3rd Qu.:0   3rd Qu.: 245.73   3rd Qu.: 0.8990  
+.  Max.   :100.00   Max.   :0   Max.   :1372.70   Max.   : 2.6194  
+.       BASE        
+.  Min.   :  14.97  
+.  1st Qu.:  55.63  
+.  Median : 117.65  
+.  Mean   : 192.33  
+.  3rd Qu.: 245.73  
+.  Max.   :1372.70</code></pre>
+<p>When we simulate with <code>FLAG=0</code>, the <code>simeta</code> code <strong>isn’t</strong> called and we <code>BASE</code> values all over the place.</p>
+</div>
+<div id="simulate-with-simeta" class="section level3">
+<h3>Simulate with <code>simeta</code></h3>
+<pre class="r"><code>system.time({
+  out &lt;- mod %&gt;% mrgsim(nid=100, end=-1, param=list(FLAG=1))
+  sum &lt;- summary(out)
+})</code></pre>
+<pre><code>.    user  system elapsed 
+.   0.008   0.000   0.008</code></pre>
+<pre class="r"><code>print(sum)</code></pre>
+<pre><code>.        ID              time      RESPONSE          EBASE          
+.  Min.   :  1.00   Min.   :0   Min.   : 80.04   Min.   :-0.222648  
+.  1st Qu.: 25.75   1st Qu.:0   1st Qu.: 90.44   1st Qu.:-0.100474  
+.  Median : 50.50   Median :0   Median :100.98   Median : 0.009781  
+.  Mean   : 50.50   Mean   :0   Mean   :101.00   Mean   : 0.002831  
+.  3rd Qu.: 75.25   3rd Qu.:0   3rd Qu.:111.00   3rd Qu.: 0.104401  
+.  Max.   :100.00   Max.   :0   Max.   :119.97   Max.   : 0.182069  
+.       BASE       
+.  Min.   : 80.04  
+.  1st Qu.: 90.44  
+.  Median :100.98  
+.  Mean   :101.00  
+.  3rd Qu.:111.00  
+.  Max.   :119.97</code></pre>
+<p>When we simulate with <code>FLAG=1</code>, the <code>simeta</code> code <strong>is</strong> called and we <code>BASE</code> values within the specified bounds.</p>
+</div>
+</div>
+<div id="simeps-example" class="section level2">
+<h2><code>simeps</code> example</h2>
+<ul>
+<li>In this example, we want to re-simulate the residual error variate to make sure we have a concentration that is positive.</li>
+<li>We set up a loop that looks like the <code>simeta</code> example, but we work in <code>$TABLE</code> this time because we are calculating <code>CP</code>.</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM CL = 1, V = 20, FLAG=0
+
+$SIGMA 50
+
+$PKMODEL cmt=&quot;CENT&quot;
+
+$TABLE
+capture CP = CENT/V + EPS(1);
+
+int i = 0;
+while(CP &lt; 0 &amp;&amp; FLAG &gt; 0) {
+  if(++i &gt; 100) {
+    report(&quot;Problem simulating positive CP&quot;);
+  }
+  simeps();
+  CP = CENT/V + EPS(1);
+}
+
+&#39;</code></pre>
+<pre class="r"><code>mod &lt;- mcode(&quot;simeps&quot;, code)</code></pre>
+<pre><code>. Compiling simeps ...</code></pre>
+<pre><code>. done.</code></pre>
+<div id="simulate-without-simeps" class="section level3">
+<h3>Simulate without <code>simeps</code></h3>
+<pre class="r"><code>system.time({
+  out &lt;- mod %&gt;% ev(amt=100) %&gt;% mrgsim(end=48)
+  sum &lt;- summary(out)
+})</code></pre>
+<pre><code>.    user  system elapsed 
+.    0.01    0.00    0.01</code></pre>
+<pre class="r"><code>print(sum)</code></pre>
+<pre><code>.        ID         time            CENT              CP           
+.  Min.   :1   Min.   : 0.00   Min.   :  0.00   Min.   :-20.18905  
+.  1st Qu.:1   1st Qu.:11.25   1st Qu.: 15.93   1st Qu.: -3.46786  
+.  Median :1   Median :23.50   Median : 29.38   Median : -0.03189  
+.  Mean   :1   Mean   :23.52   Mean   : 37.47   Mean   : -0.21637  
+.  3rd Qu.:1   3rd Qu.:35.75   3rd Qu.: 54.21   3rd Qu.:  4.33185  
+.  Max.   :1   Max.   :48.00   Max.   :100.00   Max.   : 14.10283</code></pre>
+<p><strong>Negative</strong> concentrations are simulated when we <strong>don’t</strong> call the <code>simeps</code> loop.</p>
+</div>
+<div id="simulate-with-simeps" class="section level3">
+<h3>Simulate with <code>simeps</code></h3>
+<pre class="r"><code>system.time({
+  out &lt;- mod %&gt;% ev(amt=100) %&gt;% mrgsim(end=48, param=list(FLAG=1))
+  sum &lt;- summary(out)
+})</code></pre>
+<pre><code>.    user  system elapsed 
+.    0.01    0.00    0.01</code></pre>
+<pre class="r"><code>print(sum)</code></pre>
+<pre><code>.        ID         time            CENT              CP          
+.  Min.   :1   Min.   : 0.00   Min.   :  0.00   Min.   : 0.01688  
+.  1st Qu.:1   1st Qu.:11.25   1st Qu.: 15.93   1st Qu.: 2.44887  
+.  Median :1   Median :23.50   Median : 29.38   Median : 6.05270  
+.  Mean   :1   Mean   :23.52   Mean   : 37.47   Mean   : 6.16352  
+.  3rd Qu.:1   3rd Qu.:35.75   3rd Qu.: 54.21   3rd Qu.: 9.21095  
+.  Max.   :1   Max.   :48.00   Max.   :100.00   Max.   :14.05398</code></pre>
+<p>Better … all concentrations are positive.</p>
+</div>
+</div>

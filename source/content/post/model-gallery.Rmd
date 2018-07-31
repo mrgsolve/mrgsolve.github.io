@@ -1,0 +1,631 @@
+---
+title: Model Gallery
+date: 2017-02-23T08:00:00
+type: page
+output: 
+  blogdown::html_page: 
+    toc: TRUE
+    toc_depth: 1
+tags: "events"
+---
+
+
+```{r,echo=FALSE}
+knitr::opts_chunk$set(comment='.', fig.align="center",message=FALSE,cache=TRUE, autodep=TRUE)
+```
+
+
+```{r, message=FALSE}
+library(lattice)
+library(ggplot2)
+library(dplyr)
+```
+
+
+# Load packages required for the gallery
+```{r,message=FALSE}
+library(mrgsolve)
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+library(tidyr)
+```
+
+
+
+# Simple PK model
+
+About this model specification code
+
+  * We set a simulation grid of 0.1 units in `$SET`
+  * Compartment number (2) and names (`GUT` and `CENT`) are established in `$CMT`
+  * For dosing purposes, `GUT` is compartment 1 and `CENT` is compartment 2 due to the order of their declaration
+  * Compartment names and numbers can be checked with `init(mod)`
+
+```{r}
+code <- '
+$PARAM CL = 1.3, VC=28, KA=0.6
+
+$SET delta=0.1
+
+$CMT GUT CENT
+
+$ODE
+dxdt_GUT = -KA*GUT;
+dxdt_CENT = KA*GUT - (CL/VC)*CENT;
+
+$TABLE double CP = CENT/VC;
+
+$CAPTURE CP
+'
+```
+
+
+
+Compile and load
+```{r}
+mod <- mread("gallery1", tempdir(),code)
+
+
+mod
+```
+
+
+## Run with initial value
+```{r}
+out <- mod %>% init(GUT=1000) %>% mrgsim(end=72)
+
+plot(out)
+
+out
+```
+
+
+## Run with `events` object
+
+```{r}
+out <- mod %>% ev(amt=1000, ii=12, addl=15) %>% mrgsim(end=336)
+
+plot(out)
+```
+
+The events object was just a simple data set that looks like this
+```{r}
+dosing <- events(out)
+dosing
+```
+
+
+## Run with data set
+
+Just like the events object, but we can make it more complicated, specify more people, etc...
+
+```{r}
+data <- expand.ev(amt=c(300,1000,3000), ii=12, addl=6) %>% mutate(dose=amt)
+data
+```
+
+
+```{r}
+out <- mod %>% data_set(data) %>% carry.out(dose) %>% Req(CP) %>% mrgsim(end=168)
+```
+
+```{r}
+plot(out, CP~time|factor(dose),scales="same")
+```
+
+
+# PK model with different bioavability and dosing lag time
+
+
+About this model specification code
+
+  * Set `F_CENT` and `ALAG_CENT` in `$MAIN`
+  * Since `F_CENT` is set to `F1` and `ALAG_CENT` is set to `ALG`; since `F1` and `ALG` are named in `$PARAM`, we can update
+  them on the `R` side either through `param` or in an input data set that is also determined on the `R` side of things
+
+
+```{r}
+code <- '
+$PARAM CL = 1.3, VC=28, KA=0.6, ALG=0, F1=1,FORM=1
+
+$SET delta=0.1
+
+$CMT CENT
+
+$MAIN
+F_CENT = 1;
+
+// Formulation 2 has lower bioavailability
+if(FORM==2) F_CENT = F1;
+
+// Same lag time across formulations
+ALAG_CENT = ALG;
+
+
+$ODE dxdt_CENT = - (CL/VC)*CENT;
+
+$TABLE double CP = CENT/VC;
+
+$CAPTURE CP
+
+'
+```
+
+
+
+Compile and load
+```{r}
+mod <- mread("gallery2", tempdir(), code)
+```
+
+
+Dose into the central compartment.  Also, `ALG`, `F1`, and `FORM` are updated via
+the data set and therefore need to be columns in the data set and listed in `$PARAM`
+
+```{r}
+data <- 
+  expand.ev(amt=1000, ALG=seq(0,12,4),FORM=c(1,2)) %>% 
+  mutate(F1 = ifelse(FORM==1,1,0.5))
+
+data
+
+out <- mod %>% data_set(data) %>% carry.out(FORM,ALG) %>% mrgsim(end=72)
+
+plot(out, CP~time|factor(FORM),group=ALG, 
+     scales="same", auto.key=list(columns=4))
+```
+
+
+# PK model with residual error
+
+About this model specification code 
+
+  * `$SIGMA` sets the variance of `EPS(n)`
+  * Setting `end` to a value less than 0 will signal `mrgsolve` to skip the simulation time grid
+  * We specify `add` to get a specific set of simulation times (not necessarily evenly spaced)
+
+
+```{r}
+code <- '
+$PARAM CL = 1.3, VC=28, KA=0.6
+
+$GLOBAL #define CP (CENT/VC)
+
+$SIGMA 0.025
+
+$SET end=-1, add=c(0,0.25,0.5,1,2,4,6,8,10,12,16,24,36,48)
+
+$CMT GUT CENT
+
+$ODE
+dxdt_GUT = -KA*GUT;
+dxdt_CENT = KA*GUT - (CL/VC)*CENT;
+
+$CAPTURE CP DV
+
+$TABLE double DV = CP*exp(EPS(1));
+'
+
+mod <- mread("ruv", tempdir(), code) 
+```
+
+
+```{r}
+set.seed(3203)
+out <- 
+  mod %>% 
+  init(GUT=1000) %>% 
+  obsonly %>% 
+  mrgsim(Req="CP,DV") %>% as.data.frame
+
+ggplot(data=out, aes(x=time)) + 
+  geom_point(aes(y=DV),size=3) + 
+  geom_line(aes(y=CP), col="firebrick",lwd=1)
+
+```
+
+
+
+# Indirect response model driven by continuous PK
+
+About this model specification code
+
+  * `CP` is "defined" in `$GLOBAL`
+  * `INH` is declared as a double precision variable in `$ODE`
+  * `INH` will be available globally (`mrgsolve` will declare the variable in `$GLOBAL` for you)
+  * `INH` can be changed at any time, but `CP` cannot
+  * Both `CP` and `INH` can be inserted into output in `$TABLE` or `$CAPTURE`
+
+
+```{r}
+code <- '
+$PARAM CL = 5.3, VC=28, KA=0.6, KIN=20, KOUT=0.01, IC50=10
+
+$SET delta=0.1
+
+$CMT GUT CENT RESPONSE
+
+$GLOBAL
+#define CP (CENT/VC)
+
+$MAIN
+RESPONSE_0 = KIN/KOUT;
+
+$ODE
+
+double INH = CP/(IC50+CP);
+
+dxdt_GUT = -KA*GUT;
+dxdt_CENT = KA*GUT - (CL/VC)*CENT;
+
+dxdt_RESPONSE = KIN*(1-INH) - KOUT*RESPONSE;
+
+
+$CAPTURE CP INH
+'
+
+mod <- mread("gallery3", tempdir(), code)
+
+out <- mod %>% 
+  ev(time=120,amt=1500,rate=5) %>% 
+  Req(CP,RESPONSE) %>% mrgsim(end=480*2)
+
+plot(out)
+```
+
+
+# Indirect response model driven by metric summarizing exposure
+
+About this model specification code
+
+  * Take out the PK model 
+  * `AUC` will drive the PD model
+  * `AUC` is declared in `$PARAM`; we will manipulate that value (AUC>0 for on treatment, AUC==0 for off treatment) through 
+  the input data set
+
+```{r}
+
+code <- '
+$PARAM AUC=0, KIN=100, KOUT=0.2, AUC50=10
+
+$SET delta=0.1
+
+$CMT RESPONSE
+
+$GLOBAL
+#define INH (AUC/(AUC50+AUC))
+
+$MAIN
+RESPONSE_0 = KIN/KOUT;
+
+$ODE
+
+dxdt_RESPONSE = KIN*(1-INH) - KOUT*RESPONSE;
+
+$CAPTURE AUC
+'
+
+mod <- mread("gallery5", tempdir(), code)
+
+```
+
+
+Make a template data set with `evid`=2 and `AUC` to drive the PD model
+
+```{r}
+data <- 
+  ev(ID=1,evid=2,AUC=15, ii=48,addl=0,amt=0) %then% 
+  ev(ID=1,evid=2,AUC=0,amt=0)
+
+data
+
+out <- mod %>% data_set(data) %>% obsonly %>% mrgsim(end=120)
+
+plot(out)
+```
+
+
+# Effect compartment model
+
+
+About this model specification code
+
+  * This code replicates  model PD21 in Gabrielsson and Weiner 2007.
+
+
+
+```{r}
+code <- '
+$PARAM  
+VC = 2.44, KA = 0.92, K10 = 0.44, K12 = 0.36, K21 = 0.24
+E0 = 157, EMAX = 29.95, EC50=4.956, KEO=1.305
+
+$SET delta=0.1, end=36
+
+$CMT GUT CENT PERIPH CE
+
+$ODE 
+double CP = CENT/VC;
+
+dxdt_GUT = -KA*GUT;
+dxdt_CENT = KA*GUT - K10*CENT - K12*CENT + K21*PERIPH;
+dxdt_PERIPH = K12*CENT - K21*PERIPH;
+dxdt_CE = KEO*(CP-CE);
+
+$TABLE
+capture EFFECT = E0 - EMAX*CE/(CE+EC50);
+CP = CENT/VC;
+
+$CAPTURE EFFECT CP
+'
+
+mod <- mread("effcmt", tempdir(), code)
+
+```
+
+
+Simulate a snigle 200 unit dose
+
+```{r}
+out <- mod %>% ev(amt=200) %>% obsonly %>% mrgsim(Req="CP,CE,EFFECT")
+
+```
+
+```{r,fig.height=4}
+plot(out)
+```
+
+
+Simulate steady state PK/PD under Q12 hour dosing
+
+```{r}
+out <- 
+  mod %>% 
+  ev(amt=200,ss=1,ii=12,addl=10)%>%
+  mrgsim(Req="CP,CE,EFFECT", end=168)
+
+plot(out)
+```
+
+
+
+
+# Population PK model with covariates and `IOV` 
+
+About this control stream
+
+  * `IOV` is declared as double precision variable that is set to either `ETA(4)` or `ETA(5)`
+  * We need to make sure that $\omega^2_{4}$ and $\omega^2_{5}$ are equal
+  * We assign different names to the first and second `$OMEGA` matrices so we can update them by name later
+  * We are tabling out some `ETAs` to look at them later as well; this is for demonstration purposes
+
+```{r}
+code <- '
+$PARAM TVCL = 1.3, TVVC=28, TVKA=0.6, WT=70, OCC=1
+
+$SET delta=0.1
+
+$CMT GUT CENT
+
+$MAIN
+
+double IOV = EOC1;
+if(OCC==2) IOV = EOC2;
+
+double CLi = exp(log(TVCL) + 0.75*log(WT/70) + ECL + IOV);
+double VCi = exp(log(TVVC) + EVC);
+double KAi = exp(log(TVKA) + EKA);
+
+$OMEGA 
+@name IIV @labels ECL EVC EKA
+0 0 0
+$OMEGA @name IOV @labels EOC1 EOC2
+0 0
+
+$SIGMA 0
+
+$ODE
+dxdt_GUT = -KAi*GUT;
+dxdt_CENT = KAi*GUT - (CLi/VCi)*CENT;
+
+$TABLE
+double CP = CENT/VCi;
+double ETA1 = ETA(1);
+double ETA2 = ETA(2);
+
+$CAPTURE IOV CP ETA1 ETA2
+'
+
+mod <- mread("gallery4", tempdir(), code)
+
+```
+
+
+
+Set up dosing events; occasion 2 is the second dose
+
+```{r}
+dose <- ev(amt=300,OCC=1) + ev(amt=300,time=48,OCC=2)
+dose
+```
+
+
+
+ETAs are all zeros per the model specification code
+```{r}
+out <- mod %>% ev(dose) %>% mrgsim(end=120, nid=5)
+
+plot(out)
+```
+
+
+
+Update `$OMEGA`
+
+```{r}
+mod <- mod %>% omat(IIV=cmat(0.1, 0.45, 0.3, 0,0,0), IOV=dmat(0.5,0.5))
+```
+
+
+
+And check the result
+```{r}
+revar(mod)
+```
+
+Simulate and plot
+```{r}
+out <- mod %>% ev(dose) %>% mrgsim(end=120,nid=5,seed=9765)
+```
+
+
+ETAs
+```{r}
+plot(out,ETA1+ETA2+IOV~time|factor(ID),scales="same", layout=c(5,3))
+```
+
+PK
+```{r}
+plot(out,CP~time|factor(ID),scales="same", layout=c(5,1))
+```
+
+
+
+Just look at WT with no IIV/IOV
+```{r}
+mod <- mod %>% drop.re
+```
+
+```{r}
+data <- expand.ev(amt=300,ii=12, addl=19,WT=seq(40,140,20))
+
+out <- mod %>% data_set(data) %>% Req(CP) %>% mrgsim(end=240, carry.out="WT")
+
+out %>% 
+  as.tbl %>%
+  ggplot(data=., aes(x=time, y=CP,col=WT,group=ID)) + 
+  geom_line(lwd=1)
+```
+
+
+Cmin versus weight
+```{r}
+out %>% subset(time==240) %>%
+  ggplot(data=.,aes(x=WT,y=CP)) + 
+  geom_line(lwd=1) + geom_point(size=3) + xlab("Cmin")
+```
+
+
+
+
+# PK with dialysis sessions 3 times per week
+##'
+About this control stream
+
+  * `GUT` and `CENT` are regular compartment; we have to provide a differential equation for each
+  * `DIAL` is a compartment that only holds a value; `dxdt_DIAL` will automatically be set to `0`
+  * `CLadd` is the additional drug clearance while on dialysis
+
+
+
+```{r}
+code <- '
+$PARAM CL=0.7, VC=16, KA=1.8, CLadd = 2.1
+
+$CMT GUT CENT
+
+$VCMT DIAL
+
+$ODE
+dxdt_GUT = -KA*GUT;
+
+dxdt_CENT = KA*GUT -  (CL + CLadd*DIAL)*CENT/VC;
+
+$TABLE double CP = CENT/VC;
+
+$CAPTURE CP
+'
+
+```
+
+
+```{r}
+mod <- mread("dialysis", tempdir(), code) %>% update(end=336, delta=0.25)
+```
+
+__Data assembly for doses and dialysis sessions__
+
+Set up three weeks of dosing
+```{r}
+doses <- expand.ev(amt=300, ii=24, addl=13)
+```
+
+MWF dialysis sessions
+```{r}
+mon <- expand.ev(time=0,ii=7*24,addl=2,cmt=3,evid=8,amt=1)
+wed <- mon %>% mutate(time=2*24)
+fri <- wed %>% mutate(time=4*24)
+```
+
+
+Dialysis starts 8 hours after the AM dose
+```{r}
+dial_start <- bind_rows(mon,wed,fri) %>% mutate(time=time+8)
+```
+
+Dialysis lasts 3 hours
+```{r}
+dial_end <- dial_start %>% mutate(time = time+3, amt=0)
+```
+
+Doses and dialysis
+```{r}
+events <- 
+  bind_rows(dial_start,dial_end,doses) %>% 
+  arrange(time) %>% as.data.frame %>% as.ev
+
+events
+
+```
+
+
+__Simulate__
+```{r}
+out <- mod %>% ev(events) %>%  obsonly %>% mrgsim
+```
+
+
+
+```{r}
+plot(out)
+```
+
+
+
+PK plot with dialysis sessions marked in red
+```{r,echo=FALSE}
+dial <- left_join(as.data.frame(events), as.data.frame(out)) %>% filter(cmt==3)
+dial <- bind_rows(dial, filter(dial, DIAL==1) %>% mutate(CP=NA, time=time+0.1)) %>% arrange(time)
+
+```
+
+```{r}
+out %>% as.tbl %>% filter(time <=7*24) %>%
+  ggplot(data=., aes(x=time, y=CP)) + geom_line(lwd=1) + 
+  geom_path(data=dial,col="firebrick", lwd=6, alpha=0.4)
+```
+
+
+# References
+J. Gabrielsson and D. Weiner. Pharmacokinetic and Pharmacodynamic Data Analysis: Concepts and Applications, Fourth Edition. Taylor & Francis, 2007.
+
+
+
+
+# Session Info
+```{r}
+devtools::session_info()
+```
+
+

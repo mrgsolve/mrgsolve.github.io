@@ -1,0 +1,173 @@
+---
+title: Mixture model example
+author: ~
+date: '2017-05-26'
+slug: mixture-model-example
+categories: []
+tags: ["rcpp", "mixture-model"]
+---
+
+
+
+<p>In NONMEM, <code>$MIXTURE</code> will allow you to estimate mixture models, where individuals are classified in to two or more populations with a certain probability. It is straightforward to simulate from models like these in your <code>mrgsolve</code> model code.</p>
+<div id="two-populations" class="section level1">
+<h1>Two Populations</h1>
+<p>Let’s imagine there were two populations in the mixture model, with the second having smaller clearance than the first. In this example, we will develop some code for a simple model and then extend it to implement the mixture model component.</p>
+<p>A simple model might be:</p>
+<pre class="r"><code>library(mrgsolve)
+library(dplyr)
+
+code &lt;- &#39;
+$PARAM TVCL = 1, V = 30, KA=1.2, POP = 1, THETA1 = 0.5
+
+$PKMODEL cmt=&quot;GUT CENT&quot;, depot=TRUE
+
+$MAIN
+double CL = TVCL;
+
+if(POP==2) CL = TVCL * THETA1;
+&#39;</code></pre>
+<p>In this model, we created a parameter for the population indicator (<code>POP</code>) and if <code>POP</code> is 2 then clearance is lower than it would be otherwise.</p>
+<p>Compile this model and run</p>
+<pre class="r"><code>mod &lt;- mcode_cache(&quot;A&quot;, code) %&gt;% update(end=72, delta=0.1)
+
+idata &lt;- data_frame(POP=c(1,2))
+
+e &lt;- ev(amt=100)
+
+mod %&gt;% mrgsim(idata=idata,events=e) %&gt;% plot</code></pre>
+<p><img src="/post/2017-05-26-mixture-model-example_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>The profile in pink was for <code>POP==2</code> or the lower clearance profile and blue was for <code>POP==1</code>.</p>
+<div id="modify-the-model-to-simulate-a-population-mixture" class="section level2">
+<h2>Modify the model to simulate a population mixture</h2>
+<p>In the get-started exmaple model, we hard-coded <code>POP</code> as a parameter and we had to supply the value of <code>POP</code> in the input data set (in this case, it was via <code>idata</code>).</p>
+<p>For the mixture model, we want <code>POP</code> to be simulated and we want the simulated value to be 1 with a probability of, say, 0.8 and 2 with a probability of 0.2.</p>
+<p>To make this happen, we need to simulate a binary variate for each individual. Random numbers are easy to simulate with <code>mrgsolve</code> when you use <code>$PLUGIN</code>.</p>
+<pre class="r"><code>code &lt;- &#39;
+$PLUGIN Rcpp
+
+$MAIN
+if(NEWIND &lt;=1) {
+  int POP = 1 + R::rbinom(1,0.2);
+}
+
+$CAPTURE POP
+&#39;
+
+mod &lt;- mcode_cache(&quot;B&quot;, code)</code></pre>
+<p>Here, we invoked the <code>Rcpp</code> plugin that allows us to call <code>R::binom(1,0.8)</code>. <code>R::binom</code> is just like the regular <code>R</code> version, but it only draws one variate (<code>n=1</code>).</p>
+<p>Let’s test it out</p>
+<pre class="r"><code>set.seed(222)
+out &lt;- mrgsim(mod, nid=10000, end=-1)
+
+head(out)</code></pre>
+<pre><code>. Model:  B</code></pre>
+<pre><code>.   ID time POP
+. 1  1    0   2
+. 2  2    0   1
+. 3  3    0   1
+. 4  4    0   1
+. 5  5    0   2
+. 6  6    0   2</code></pre>
+<p>Here, we’ve got 20% of the people in the population with <code>POP</code> of 2:</p>
+<pre class="r"><code>mean(out$POP==2)</code></pre>
+<pre><code>. [1] 0.1973</code></pre>
+<p>Now, let’s modify the model again to incorporate our random <code>POP</code> calculation with the PK model. I have also included a home-brewed <code>ETA</code> using <code>R::rnorm</code> as another example and to make the summary a little more interesting.</p>
+<pre class="r"><code>code &lt;- &#39;
+$PLUGIN Rcpp
+
+$PARAM TVCL = 1, V = 30, KA=1.2, THETA1 = 0.5
+
+$PKMODEL cmt=&quot;GUT CENT&quot;, depot=TRUE
+
+$MAIN
+if(NEWIND &lt;=1) {
+  int POP = 1 + R::rbinom(1,0.2);
+  double myETA = R::rnorm(0,sqrt(0.09));
+}
+
+double CL = TVCL;
+
+if(POP==2) CL = TVCL * THETA1;
+
+double CLi = CL*exp(myETA);
+
+$CAPTURE POP CL CLi
+&#39;
+
+mod &lt;- mcode_cache(&quot;C&quot;, code)</code></pre>
+<p>And simulate again</p>
+<pre class="r"><code>set.seed(444)
+out &lt;- mrgsim(mod,nid=10000, end=72, events=e,obsonly=TRUE)</code></pre>
+<pre class="r"><code>head(out)</code></pre>
+<pre><code>. Model:  C</code></pre>
+<pre><code>.   ID time        GUT     CENT POP CL       CLi
+. 1  1    0  0.0000000  0.00000   1  1 0.7642753
+. 2  1    1 30.1194212 68.50511   1  1 0.7642753
+. 3  1    2  9.0717953 86.89259   1  1 0.7642753
+. 4  1    3  2.7323722 90.25855   1  1 0.7642753
+. 5  1    4  0.8229747 89.17134   1  1 0.7642753
+. 6  1    5  0.2478752 86.81173   1  1 0.7642753</code></pre>
+<pre class="r"><code>mean(out$CL==0.5)</code></pre>
+<pre><code>. [1] 0.1977</code></pre>
+<pre class="r"><code>out %&gt;% 
+  filter(time==0) %&gt;%
+  group_by(POP) %&gt;% 
+  summarise(N=n(), Median = median(CLi))</code></pre>
+<pre><code>. # A tibble: 2 × 3
+.     POP     N    Median
+.   &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;
+. 1     1  8023 1.0026133
+. 2     2  1977 0.4985587</code></pre>
+</div>
+</div>
+<div id="three-or-more-populations" class="section level1">
+<h1>Three (or more) Populations</h1>
+<p>There are probably several ways to simulate three populations. Here is one way. We’ll drop the PK model for now and focus on generating <code>POP</code>.</p>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM p1 = 0.33, p2 = 0.6
+
+$PLUGIN Rcpp
+
+$MAIN
+if(NEWIND &lt;=1) {
+  double mixv = R::runif(0,1);
+  int POP = 1;
+  if(mixv &gt; p1) POP = 2;
+  if(mixv &gt; (p1+p2)) POP = 3;
+}
+
+$CAPTURE POP mixv
+&#39;</code></pre>
+<p>Here’s what we did</p>
+<ul>
+<li>Code mixture probabilities in <code>$PARAM</code></li>
+<li>Draw a variate (<code>mixv</code>) from <code>uniform(0,1)</code></li>
+<li>Determine <code>POP</code> based on the probabilites and <code>mixv</code></li>
+<li>Remember: you must use <code>$PLUGIN</code> for this to work</li>
+</ul>
+<p>Now, let’s compile and test it out</p>
+<pre class="r"><code>mod &lt;- mcode_cache(&quot;D&quot;, code)
+
+set.seed(333)
+out &lt;- mrgsim(mod, nid=10000, end=-1)</code></pre>
+<pre class="r"><code>head(out)</code></pre>
+<pre><code>. Model:  D</code></pre>
+<pre><code>.   ID time POP       mixv
+. 1  1    0   2 0.46700066
+. 2  2    0   1 0.08459815
+. 3  3    0   3 0.97348527
+. 4  4    0   2 0.57130558
+. 5  5    0   1 0.02011937
+. 6  6    0   2 0.72355739</code></pre>
+<p>And check that the population is properly configured</p>
+<pre class="r"><code>out %&gt;% as.tbl %&gt;% count(POP) %&gt;% mutate(p = n/nrow(out))</code></pre>
+<pre><code>. # A tibble: 3 × 3
+.     POP     n      p
+.   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+. 1     1  3225 0.3225
+. 2     2  6053 0.6053
+. 3     3   722 0.0722</code></pre>
+<p>And we get back the 33% in population 1, 60% in population 2, and the remaining 7% in population 3.</p>
+<p>As a final note: remember to call <code>set.seed()</code> prior to simulating anything random with <code>mrgsovle</code> in order for the results to be reproducible.</p>
+</div>

@@ -1,0 +1,230 @@
+---
+title: "Generate MAP Bayes Parameter Estimates"
+author: 20170223T13:30:33
+---
+
+
+
+<pre class="r"><code>library(ggplot2)
+library(mrgsolve)
+library(minqa)
+library(dplyr)
+library(magrittr)</code></pre>
+<div id="about" class="section level1">
+<h1>About</h1>
+<p>This tutorial illustrates how to do MAP Bayes estimation with <code>mrgsolve</code>.<br />
+The setup was adapted from an existing project, where only a single individual was considered. With some additional <code>R</code> coding, it could be expanded to consider multiple individuals in a single run.</p>
+</div>
+<div id="one-compartment-model-keep-it-simple-for-now" class="section level1">
+<h1>One compartment model, keep it simple for now</h1>
+<ul>
+<li><p>The model specification code below is for a one-compartment model, where <code>mrgsolve</code> will calculate the amount in <code>CENT</code> from closed-form equations</p></li>
+<li><p>For now, <code>$OMEGA</code> and <code>$SIGMA</code> are filled with zeros; we’ll update it later</p></li>
+<li><p>The control stream is set up so that we can either simulate the etas or pass them in. <code>ETA(1)</code> and <code>ETA(2)</code> are the etas that <code>mrgsolve</code> will draw from <code>$OMEGA</code>. <code>ETA1</code> and <code>ETA2</code> are fixed and known at the time of time of the simulation. The optimizer will search for values of <code>ETA1</code> and <code>ETA2</code> that optimize the objective function. Note that <code>ETA1</code> and <code>ETA2</code> must be in the parameter list for this to work</p></li>
+<li><p>We do a trick where <code>CL=TVCL*exp(ETA1+ETA(1));</code> The assumption is that either <code>ETA1</code> (simulating) is zero or <code>ETA(1)</code> is zero (estimating)</p></li>
+<li><p>We table out <code>ETA(1)</code> and <code>ETA(2)</code> so we can know the true (simulated) values (but not both zero and not both non-zero)</p></li>
+<li><p><code>DV</code> is output as a function of <code>EPS(1)</code>; this will be zero until we add in values for <code>$SIGMA</code>. But when we’re estimating, we need to make sure that <code>EPS(1)</code> is zero; the prediction shouldn’t have any randomness in it (just the individual prediction based on known etas)</p></li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$SET request=&quot;&quot;
+
+$PARAM TVCL=1.5, TVVC=23.4, ETA1=0, ETA2=0
+
+$CMT CENT
+
+$PKMODEL ncmt=1
+
+$OMEGA 0 0
+$SIGMA 0
+
+$MAIN
+double CL = TVCL*exp(ETA1 + ETA(1));
+double V =  TVVC*exp(ETA2 + ETA(2));
+
+$TABLE 
+double DV = (CENT/V)*(1+EPS(1));
+double ET1 = ETA(1);
+double ET2 = ETA(2);
+
+$CAPTURE DV ET1 ET2
+&#39;
+
+mod &lt;- mcode(&quot;map&quot;, code)</code></pre>
+</div>
+<div id="first-simulate-some-data" class="section level1">
+<h1>First, simulate some data</h1>
+<p><code>$OMEGA</code> and <code>$SIGMA</code>;</p>
+<ul>
+<li>The result may look better or worse depending on what we choose here</li>
+<li>These will be used to both simulate and fit the data</li>
+<li>The <code>cmat</code> call makes a <code>2x2</code> matrix where the off-diagonal is a correlation (<code>?cmat</code>).</li>
+</ul>
+<pre class="r"><code>omega &lt;- cmat(0.23,-0.78, 0.62)
+omega.inv &lt;- solve(omega)
+sigma &lt;- matrix(0.0032)</code></pre>
+<p>Just a single dose to <code>CENT</code> with an events object</p>
+<pre class="r"><code>dose &lt;- ev(amt=750,cmt=1)</code></pre>
+<p>Take these times for concentration observations</p>
+<pre class="r"><code>sampl &lt;- c(0.5,12,24)</code></pre>
+<p>Simulate</p>
+<ul>
+<li>Here, we’re populating <code>$OMEGA</code> and <code>$SIGMA</code> so that the simulated data will be random</li>
+<li>It is important to <code>carry.out</code> all of the items that we will need in the estimation data set (doses, evid, etc)</li>
+<li>Using <code>end=-1</code> with <code>add=sampl</code> makes sure that we only get observation records at the times listed in <code>sampl</code></li>
+</ul>
+<pre class="r"><code>set.seed(1012) 
+sim &lt;- 
+  mod %&gt;%
+  ev(dose) %&gt;%
+  omat(omega) %&gt;%
+  smat(sigma) %&gt;%
+  carry.out(amt,evid,cmt) %&gt;%
+  mrgsim(end=-1, add=sampl)
+
+sim</code></pre>
+<pre><code>. Model:  map.cpp 
+. Dim:    4 x 8 
+. Time:   0 to 24 
+. ID:     1 
+.      ID time evid amt cmt     DV    ET1     ET2
+. [1,]  1  0.0    1 750   1 41.067 0.5196 -0.2728
+. [2,]  1  0.5    0   0   0 42.749 0.5196 -0.2728
+. [3,]  1 12.0    0   0   0  6.932 0.5196 -0.2728
+. [4,]  1 24.0    0   0   0  1.375 0.5196 -0.2728</code></pre>
+</div>
+<div id="create-input-for-optimization" class="section level1">
+<h1>Create input for optimization</h1>
+<ul>
+<li>Using the simulated data as the starting point here</li>
+</ul>
+<pre class="r"><code>sim %&lt;&gt;% as.data.frame</code></pre>
+<p>Observed data (<code>y</code>)</p>
+<ul>
+<li>Just select <code>DV</code> from observation records</li>
+</ul>
+<pre class="r"><code>y &lt;- sim %&gt;% filter(evid==0) %&gt;% select(DV) %&gt;% unlist %&gt;% unname
+
+y</code></pre>
+<pre><code>. [1] 42.749445  6.932391  1.374557</code></pre>
+<p>Create a data set to use in the optimization</p>
+<ul>
+<li>We need to drop <code>ET1</code> and <code>ET2</code> since they are in the parameter list</li>
+</ul>
+<pre class="r"><code>data &lt;- sim %&gt;% select(-ET1, -ET2)
+data</code></pre>
+<pre><code>.   ID time evid amt cmt        DV
+. 1  1  0.0    1 750   1 41.067037
+. 2  1  0.5    0   0   0 42.749445
+. 3  1 12.0    0   0   0  6.932391
+. 4  1 24.0    0   0   0  1.374557</code></pre>
+</div>
+<div id="optimize" class="section level1">
+<h1>Optimize</h1>
+<p>This function takes in a set of proposed <span class="math inline">\(\eta\)</span>s along with the observed data vector, the data set and a model object and returns the value of the EBE objective function</p>
+<ul>
+<li><p>When we do the estimation, the fixed effects and random effect variances are fixed.</p></li>
+<li><p>The estimates are the <span class="math inline">\(\eta\)</span> for clearance and volume</p></li>
+</ul>
+<p>Arguments:</p>
+<ul>
+<li><code>eta</code> the current values from the optimizer</li>
+<li><code>y</code> the observed data</li>
+<li><code>d</code> the data set that generated <code>y</code></li>
+<li><code>m</code> the model object</li>
+<li><code>pred</code> if <code>TRUE</code>, just return predicted values</li>
+</ul>
+<div id="what-is-this-function-doing" class="section level2">
+<h2>What is this function doing?</h2>
+<ol style="list-style-type: decimal">
+<li>get the matrix for residual error</li>
+<li>Make sure <code>eta</code> is a list</li>
+<li>Make sure <code>eta</code> is properly named (i.e. <code>ETA1</code> and <code>ETA2</code>)</li>
+<li>Copy <code>eta</code> into a matrix that is one row</li>
+<li>Update the model object (<code>m</code>) with the current values of <code>ETA1</code> and <code>ETA2</code></li>
+<li>If we are estimating (<code>!pred</code>), request only observations in the output (<code>obsonly</code>)</li>
+<li>Simulate from data set <code>d</code> and save output to <code>out</code> object</li>
+<li>If we are just requesting predictions (<code>if(pred)</code>) return the simulated data</li>
+<li>The final lines calculate the EBE objective function; see <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3339294/">this paper</a> for reference</li>
+<li>Notice that the function returns a single value (a number); the optimizer will minimize this value</li>
+</ol>
+<pre class="r"><code>mapbayes &lt;- function(eta,y,d,m,pred=FALSE) {
+    
+  sig2 &lt;- as.numeric(sigma)
+  eta %&lt;&gt;% as.list
+  names(eta) &lt;- names(init)
+  eta_m &lt;- eta %&gt;% unlist %&gt;% matrix(nrow=1)
+  m %&lt;&gt;% param(eta)
+  if(!pred) m %&lt;&gt;% obsonly
+  out &lt;- m %&gt;% drop.re() %&gt;% data_set(d) %&gt;% mrgsim
+  if(pred) return(out %&gt;% as.tbl)
+  # http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3339294/
+  sig2j &lt;- out$DV^2*sig2
+  sqwres &lt;- log(sig2j) + (1/sig2j)*(y-out$DV)^2
+  nOn &lt;- diag(eta_m %*% omega.inv %*% t(eta_m))
+  return(sum(sqwres) + nOn)
+
+}</code></pre>
+</div>
+<div id="initial-estimate" class="section level2">
+<h2>Initial estimate</h2>
+<ul>
+<li>Note again that we are optimizing the etas here</li>
+</ul>
+<pre class="r"><code>init &lt;- c(ETA1=-0.3, ETA2=0.2)</code></pre>
+<p>Fit the data</p>
+<ul>
+<li><code>newuoa</code> is from the <code>minqa</code> package</li>
+<li>Other optimizers (via <code>optim</code>) could probably also be used</li>
+</ul>
+<p>Arguments to <code>newuoa</code></p>
+<ul>
+<li>First: the initial estimates</li>
+<li>Second: the function to optimize</li>
+<li>The other argument are passed to <code>mapbayes</code></li>
+</ul>
+<pre class="r"><code>fit &lt;- newuoa(init,mapbayes,y=y,m=mod,d=data)</code></pre>
+<p>Here are the final estimates</p>
+<pre class="r"><code>fit$par</code></pre>
+<pre><code>. [1]  0.4995400 -0.3274858</code></pre>
+<p>Here are the simulated values</p>
+<pre class="r"><code>slice(sim,1) %&gt;% select(ET1, ET2)</code></pre>
+<pre><code>.        ET1        ET2
+. 1 0.519569 -0.2727675</code></pre>
+</div>
+</div>
+<div id="look-at-the-result" class="section level1">
+<h1>Look at the result</h1>
+<p>A data set and model to get predictions; this will give us a smooth prediction line</p>
+<pre class="r"><code>pdata &lt;- data %&gt;% filter(evid==1)
+pmod &lt;- mod %&gt;% update(end=24, delta=0.1) </code></pre>
+<p>Predicted line based on final estimates</p>
+<pre class="r"><code>pred &lt;- mapbayes(fit$par,y,pdata,pmod,pred=TRUE) %&gt;% filter(time &gt; 0)
+head(pred)</code></pre>
+<pre><code>. # A tibble: 6 × 5
+.      ID  time       DV   ET1   ET2
+.   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+. 1     1   0.1 43.82331     0     0
+. 2     1   0.2 43.18567     0     0
+. 3     1   0.3 42.55731     0     0
+. 4     1   0.4 41.93809     0     0
+. 5     1   0.5 41.32789     0     0
+. 6     1   0.6 40.72656     0     0</code></pre>
+<p>Predicted line based on initial estimates</p>
+<pre class="r"><code>initial &lt;- mapbayes(init,y,pdata,pmod,pred=TRUE) %&gt;% filter(time &gt; 0)
+head(initial)</code></pre>
+<pre><code>. # A tibble: 6 × 5
+.      ID  time       DV   ET1   ET2
+.   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+. 1     1   0.1 26.13954     0     0
+. 2     1   0.2 26.03811     0     0
+. 3     1   0.3 25.93707     0     0
+. 4     1   0.4 25.83642     0     0
+. 5     1   0.5 25.73616     0     0
+. 6     1   0.6 25.63629     0     0</code></pre>
+<p>Plot</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=pred, aes(time,DV),col=&quot;firebrick&quot;, lwd=1) + 
+  geom_line(data=initial,aes(time,DV), lty=2, col=&quot;darkgreen&quot;, lwd=1) + 
+  geom_point(data=data %&gt;% filter(evid==0), aes(time,DV), col=&quot;darkslateblue&quot;,size=3)</code></pre>
+<p><img src="map_bayes_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>

@@ -1,0 +1,189 @@
+---
+title: A Complete Example
+date: '2017-02-25'
+output: 
+  blogdown::html_page:
+    toc: true
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#population-pk-model">Population PK model</a></li>
+<li><a href="#input-data-set">Input data set</a></li>
+<li><a href="#simulation">Simulation</a></li>
+<li><a href="#output-presentation">Output presentation</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>We had a user who was learning <code>mrgsolve</code> ask for a “complete example”. I wasn’t sure what exactly that meant, but I created this example and I’m sharing it today on the blog.</p>
+<p>This is an invented example to illustrate features and workflow for <code>mrgsolve</code>. If you attend one of our training workshops, we work examples using published models to answer real questions you’ll encounter in drug development. So compared to the workshop material, this is a bit contrived. But I wanted to show how you might tackle a problem involving a population model from end to end.</p>
+<pre class="r"><code>library(mrgsolve)
+library(dplyr)
+library(dmutate)
+library(ggplot2)</code></pre>
+</div>
+<div id="population-pk-model" class="section level2">
+<h2>Population PK model</h2>
+<ul>
+<li>One compartment with first order absorption</li>
+<li>There are no ODEs in this model; the system is advanced for each time step through closed-form equations for the amount in each compartment</li>
+<li>Covariates: weight on clearances and volumes, sex on volume</li>
+<li>Log-normally distributed random effects on <code>CL</code>, <code>V</code>, and <code>KA</code></li>
+<li>Reduced bioavailability fraction for oral doses</li>
+<li>Lag time for oral doses</li>
+<li>Combined additive and proportional error model
+<ul>
+<li>Note: we resimulate residual error variates using <code>simeps</code> until the simulated concentration is positive</li>
+</ul></li>
+</ul>
+<p><strong>Here’s the model specification</strong></p>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM TVCL = 1.23, TVV = 35.7, TVKA = 1.3
+F1 = 0.82, ALAG = 1.21
+WT = 70, SEX = 0
+
+$MAIN
+double CL = TVCL*pow(WT/70,0.75)*exp(ECL);
+double V  = TVV*(WT/70)*exp(EV);
+double KA = TVKA*exp(EKA);
+
+if(SEX==1) V = V*0.8;
+
+F_GUT = F1;
+ALAG_GUT = ALAG;
+
+$PKMODEL cmt=&quot;GUT CENT&quot;, depot=TRUE
+
+$OMEGA @labels ECL EV EKA
+0.015 0.2 0.5
+
+$SIGMA @labels PROP ADD
+0.03 230
+
+$TABLE
+capture IPRED = CENT/(V/1000);
+capture DV = IPRED*(1+PROP)+ADD;
+
+while(DV &lt; 0) {
+  simeps();
+  DV = IPRED*(1+PROP)+ADD;
+}
+
+$CAPTURE WT CL 
+&#39;</code></pre>
+<p><strong>Compile and load the model</strong></p>
+<p>We use <code>mcode_cache</code> here, which caches the model when you compile. If the cache is not invalidated, <code>mrgsolve</code> loads from the cache next time rather than re-compiling.</p>
+<pre class="r"><code>mod &lt;- mcode_cache(&quot;demo&quot;, code)</code></pre>
+</div>
+<div id="input-data-set" class="section level2">
+<h2>Input data set</h2>
+<ul>
+<li><code>N=2000</code> patients are simulated in this example</li>
+<li>We simulate patient-level weight and sex using the <a href="https://github.com/kylebmetrum/dmutate"><code>dmutate</code></a> package</li>
+<li>We create a flag in the data set for patients with weight greater than 90 kg</li>
+<li>Patients with weight less than 90 kg get a certain dose while patients with weight greater than 90 kg get a higher dose</li>
+<li>Dosing proceeds Q24H x 10 doses</li>
+</ul>
+<pre class="r"><code>set.seed(33020)
+idata &lt;- 
+  data_frame(ID=1:2000) %&gt;% 
+  mutate_random(WT[50,110] ~ rnorm(80,30)) %&gt;% 
+  mutate_random(SEX ~ rbinomial(0.7)) %&gt;%
+  mutate(dosegr = as.integer(WT &gt; 90))
+
+idata</code></pre>
+<pre><code>. # A tibble: 2,000 × 4
+.       ID        WT   SEX dosegr
+.    &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;
+. 1      1  52.55769     0      0
+. 2      2  83.70744     1      0
+. 3      3  51.89124     1      0
+. 4      4  94.74218     0      1
+. 5      5  97.75528     1      1
+. 6      6  57.07921     1      0
+. 7      7 101.32264     0      1
+. 8      8  73.03274     0      0
+. 9      9  56.29030     1      0
+. 10    10  69.70190     1      0
+. # ... with 1,990 more rows</code></pre>
+<p>The dosing elements are implemented through <code>event</code> objects.</p>
+<pre class="r"><code>ev1 &lt;- ev(amt=100, ii=24, addl=9)
+ev2 &lt;- ev(amt=150, ii=24, addl=9)</code></pre>
+<p>The <code>assign_ev</code> function looks at the <code>dosegr</code> column in <code>idata</code> and assigns a dosing event sequence (<code>e1</code> or <code>e2</code>) based on the value of <code>dosegr</code>.</p>
+<pre class="r"><code>data &lt;- assign_ev(list(ev1,ev2),idata,&quot;dosegr&quot;)
+
+head(data)</code></pre>
+<pre><code>.   time cmt amt ii addl evid ID
+. 1    0   1 100 24    9    1  1
+. 2    0   1 100 24    9    1  2
+. 3    0   1 100 24    9    1  3
+. 4    0   1 150 24    9    1  4
+. 5    0   1 150 24    9    1  5
+. 6    0   1 100 24    9    1  6</code></pre>
+<p><strong>NOTE</strong>: this is just one way to set up a <code>data_set</code> for <code>mrgsolve</code>. It might not be the best approach for your problem: maybe it’s too complicated, maybe not complicated enough. See other examples in the blog about creating input data sets or using event objects in your simulations.</p>
+</div>
+<div id="simulation" class="section level2">
+<h2>Simulation</h2>
+<ul>
+<li>We “carry” (copy) the dose group indicator into the simulated output (<code>carry_out</code>)</li>
+<li>Also, we only collect observation records in the output (<code>obsonly</code>)</li>
+<li><code>mrgsolve</code> respects the seed you set in <code>R</code> using <code>set.seed</code> so that results are reproducible</li>
+</ul>
+<pre class="r"><code>set.seed(11009)
+
+out &lt;- 
+  mod %&gt;% 
+  data_set(data) %&gt;%
+  idata_set(idata) %&gt;%
+  carry_out(dosegr) %&gt;%
+  mrgsim(delta=1, end=360, obsonly=TRUE)
+
+out</code></pre>
+<pre><code>. Model:  demo.cpp 
+. Dim:    722000 x 9 
+. Time:   0 to 360 
+. ID:     2000 
+.      ID time dosegr      GUT  CENT    WT     CL IPRED      DV
+. [1,]  1    0      0  0.00000  0.00 52.56 0.9589     0   19.92
+. [2,]  1    1      0  0.00000  0.00 52.56 0.9589     0   12.37
+. [3,]  1    2      0 29.31933 51.23 52.56 0.9589  3236 1954.41
+. [4,]  1    3      0  7.97557 68.80 52.56 0.9589  4345 5355.78
+. [5,]  1    4      0  2.16955 70.36 52.56 0.9589  4443 3438.75
+. [6,]  1    5      0  0.59017 67.74 52.56 0.9589  4278 3689.13
+. [7,]  1    6      0  0.16054 64.18 52.56 0.9589  4053 4843.27
+. [8,]  1    7      0  0.04367 60.52 52.56 0.9589  3822 5287.74</code></pre>
+</div>
+<div id="output-presentation" class="section level2">
+<h2>Output presentation</h2>
+<ul>
+<li>For some plots, we use a <code>plot</code> method for <code>mrgsims</code> objects (the object that is returned from the <code>mrgsim</code> function</li>
+<li>For the other plots, it’s really just turning the <code>mrgsims</code> object into a <code>data.frame</code> and have at it with <code>ggplot2</code></li>
+<li>Other than the quickie <code>lattice</code>-based plot method that I only use for quick looks at the output, <code>mrgsolve</code> (by design) lets you use packages like <code>dplyr</code> or <code>data.table</code> or <code>ggplot</code> or other great <code>R</code> packages that are already out there for summarizing and plotting data</li>
+<li>But notice that <code>mrgsolve</code> provides methods for sending the <code>mrgsims</code> object directly into a <code>dplyr</code> data summary pipeline</li>
+</ul>
+<p>This shows the plot method for <code>mrgsims</code> objects</p>
+<pre class="r"><code>plot(out, IPRED+DV~., subset=ID==10)</code></pre>
+<p><img src="/post/2017-02-25-complete-example_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The <code>mrgsims</code> object can be passed right into <code>dplyr::filter</code></p>
+<pre class="r"><code>tr &lt;- filter(out, time==240)</code></pre>
+<p>Simulated day 10 concentration versus patient weight by dose/weight group</p>
+<pre class="r"><code>ggplot(tr, aes(x=WT,y=DV)) + 
+  geom_point() +  facet_wrap(~dosegr) +
+  geom_smooth(method=&quot;loess&quot;)</code></pre>
+<p><img src="/post/2017-02-25-complete-example_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Density plots of day 10 concentrations in the two dose/weight groups</p>
+<pre class="r"><code>ggplot(tr,aes(x=DV,fill=factor(dosegr))) + 
+  geom_density(alpha=0.5) +
+  scale_fill_brewer(palette=&quot;Set1&quot;)</code></pre>
+<p><img src="/post/2017-02-25-complete-example_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>This example illustrated how to code a population PK model in <code>mrgsolve</code> format, create input data sets with varied dosing and covariate values, simulate, and plot some results. I also hope this example illustrates the design priorities for the <code>mrgsolve</code> workflow: we always try to leverage existing functionality available in <code>R</code> (such as <code>dmutate</code>, <code>dplyr</code> and <code>ggplot</code>) rather than re-creating our own inside the <code>mrgsolve</code> package. This might require you to write some more code, but ultimately it gives greater flexibility to get the simulation that you need for your project.</p>
+<p>We regularly do work with models that are more complicated and design simulations that have bigger demands than this example here. We’d be happy to discuss more-complicated applications that you might be needing for your project work. For now we hope this example will give you some ideas how you can add complexity to your simulation project today.</p>
+</div>

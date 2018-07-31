@@ -1,0 +1,90 @@
+---
+date: 2017-02-23T16:49:01-06:00
+title: Quick hit feature demos
+output: 
+  blogdown::html_page:
+    toc: true
+slug: quick
+---
+
+These are all miscellaneous features that may be difficult to find in other documentation.
+
+
+```{r,echo=FALSE}
+knitr::opts_chunk$set(message=FALSE,comment='.',cache=TRUE,autodeps=TRUE)
+```
+
+```{r,message=FALSE}
+library(mrgsolve)
+library(dplyr)
+```
+
+
+# `$` operator for model object gets the parameter value
+
+If our model parameters are
+```{r}
+mod <- mrgsolve:::house()
+param(mod)
+```
+
+we can pick a parameter value with
+```{r}
+mod$CL
+
+mod$WT
+```
+
+
+
+
+# Zero all random effect variances on the fly
+
+If your model has random effects, you can easily and temporarily zero them out. 
+```{r}
+mod <- mread("popex", modlib()) %>% update(end=96) %>% Req(DV,CL,V)
+
+omat(mod)
+```
+
+It is easy to simulate either with or without the random effects in the simulation: this change can be made on the fly.
+
+Use `zero_re` to make all random effect variances zero
+```{r}
+mod %>% zero_re %>% omat
+```
+
+By default, both `OMEGA` and `SIGMA` are zeroed.  Check the arguments for `zero_re` to see how to selectively zero `OMEGA` or `SIGMA`.
+
+Compare the population output 
+
+```{r}
+mod %>% ev(amt=100) %>% mrgsim(nid=20) %>% plot
+```
+
+with 
+
+```{r}
+mod %>% ev(amt=100) %>% zero_re %>% mrgsim(nid=20) %>% plot
+```
+
+
+
+
+# Plot formulae
+We commonly plot simulated output with a special plot method.  By default, you get all
+compartments and output variables in the plot.
+
+```{r}
+mod <- mrgsolve:::house() %>% events(ev(amt=100))
+
+mod %>% mrgsim %>% plot
+```
+
+
+The plot can be customized with a formula selecting variables to plot. Other arguments 
+to `lattice::xyplot` can be passed as well.
+```{r}
+mod %>% mrgsim %>% plot(CP+RESP ~ time, lty=2, col="firebrick")
+```
+

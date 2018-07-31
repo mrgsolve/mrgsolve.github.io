@@ -1,0 +1,132 @@
+---
+title: "Simulate from PKPD & QSP models in R"
+type: page
+---
+
+
+
+<!-- [![CRAN](http://www.r-pkg.org/badges/version/mrgsolve)](https://cran.r-project.org/package=mrgsolve) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![questions](https://img.shields.io/badge/ask_for-Help-brightgreen.svg)](https://github.com/metrumresearchgroup/mrgsolve/issues) [![Metrumrg](https://img.shields.io/badge/contact-MetrumRG-brightgreen.svg)](http://metrumrg.com) -->
+<p><code>mrgsolve</code> is an <code>R</code> package for simulation from hierarchical, ordinary differential equation (ODE) based models typically employed in drug development.</p>
+<div id="mrgsolve-is-free-open-source-software" class="section level2">
+<h2><code>mrgsolve</code> is free, open-source software</h2>
+<p><code>mrgsolve</code> is distributed as a package for <code>R</code> and <img src="/images/mrgsolve_sticker_812418_1.png" width="100px" align="right"> utilizes an ODE-solver from <code>ODEPACK</code> which is freely-available in the public domain. We develop <code>mrgsolve</code> on <a href="http://www.github.com/metrumresearchgroup/mrgsolve">github</a>, with input and contributions from the pharmacometrics modeling and simulation community. We welcome feature requests and bug reports on the GitHub site <a href="http://www.github.com/metrumresearchgroup/mrgsolve/issues">issue tracker</a>.</p>
+</div>
+<div id="documentation" class="section level2">
+<h2>Documentation</h2>
+<ul>
+<li><a href="http://mrgsolve.github.io/user_guide">User Guide</a>: In-depth description and discussion about how <code>mrgsolve</code> works, including code block reference</li>
+<li><a href="http://mrgsolve.github.io/docs">R documentation</a>: All <code>mrgsolve</code> documentation that you would find in the <code>R</code> help system</li>
+<li><a href="/2017/02/23/quick">Quick hit demos</a>: Features that you might have a hard time finding in other documentation</li>
+</ul>
+</div>
+<div id="links-and-resources" class="section level2">
+<h2>Links and Resources</h2>
+<ul>
+<li><a href="http://www.github.com/metrumresearchgroup/mrgsolve">GitHub Page</a>: Browse source code, find useful examples, get help installing, report issues</li>
+<li><code>mrgsolve</code> home on <a href="https://CRAN.R-project.org/package=mrgsolve">CRAN</a></li>
+<li><a href="/tax/">Site navagation</a>: A listing of all tagged content on this site, including blog posts and other help / demonstration content</li>
+<li><a href="http://metrumrg.com">Metrum Research Group</a>: Our main website</li>
+</ul>
+</div>
+<div id="an-example" class="section level2">
+<h2>An example</h2>
+<p>The following is a simple example to illustrate the basics of how <code>mrgsolve</code> works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
+<pre class="r"><code>library(mrgsolve)</code></pre>
+<p>First, a model object is created. As an introduction, we will use a pre-coded model from an internal library.</p>
+<pre class="r"><code>mod &lt;- mread(&quot;irm1&quot;, modlib())</code></pre>
+<p>An overview about this model</p>
+<pre class="r"><code>mod</code></pre>
+<pre><code>. 
+. 
+. -------- mrgsolve model object (unix) --------
+.   Project: /Users/kyleb/Rlibs/mrgsolve/models
+.   source:        irm1.cpp
+.   shared object: irm1-so-4fdea3bc3f0 
+. 
+.   compile date:  
+.   Time:          start: 0 end: 24 delta: 1
+.   &gt;              add: &lt;none&gt;
+.   &gt;              tscale: 1
+. 
+.   Compartments:  EV1 CENT PERIPH RESP EV2 [5]
+.   Parameters:    CL VC Q VP KA1 KA2
+.   &gt;              KIN KOUT IC50 IMAX n VMAX
+.   &gt;              KM [13]
+.   Omega:         0x0 
+.   Sigma:         0x0 
+. 
+.   Solver:        atol: 1e-08 rtol: 1e-08
+.   &gt;              maxsteps: 2000 hmin: 0 hmax: 0</code></pre>
+<p>Next, let’s create an intervention for the model. We do this with an event object.</p>
+<pre class="r"><code>e &lt;- ev(amt=100, ii=24, addl=3)</code></pre>
+<p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>)</p>
+<pre class="r"><code>out &lt;- mod %&gt;% ev(e) %&gt;% mrgsim(end=240,delta=0.1)
+out</code></pre>
+<pre><code>. Model:  irm1.cpp 
+. Dim:    2402 x 8 
+. Time:   0 to 240 
+. ID:     1 
+.      ID time    EV1   CENT  PERIPH  RESP EV2     CP
+. [1,]  1  0.0   0.00  0.000 0.00000 5.000   0 0.0000
+. [2,]  1  0.0 100.00  0.000 0.00000 5.000   0 0.0000
+. [3,]  1  0.1  90.48  9.444 0.04781 4.903   0 0.4722
+. [4,]  1  0.2  81.87 17.851 0.18294 4.688   0 0.8926
+. [5,]  1  0.3  74.08 25.323 0.39390 4.426   0 1.2662
+. [6,]  1  0.4  67.03 31.953 0.67040 4.151   0 1.5977
+. [7,]  1  0.5  60.65 37.824 1.00324 3.882   0 1.8912
+. [8,]  1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
+<p>And plot</p>
+<pre class="r"><code>plot(out)  </code></pre>
+<p><img src="figures/index-plot_1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The source code for this model:</p>
+<pre><code>  $PROB
+  # Model: `irm1`
+    - Indirect response model, type 1
+        - Inhibition of response input
+        - Two-compartment PK model
+        - Optional nonlinear clearance
+    - Source: `mrgsolve` internal library
+    - Date: `r Sys.Date()`
+    - Version: `r packageVersion(&quot;mrgsolve&quot;)`
+  
+  $PARAM @annotated
+  CL   :  1  : Clearance (volume/time)
+  VC   : 20  : Central volume (volume)
+  Q    :  2  : Inter-compartmental clearance (volume/time)
+  VP   : 10  : Peripheral volume of distribution (volume)
+  KA1  :  1  : Absorption rate constant 1 (1/time)
+  KA2  :  1  : Absorption rate constant 2 (1/time)
+  KIN  : 10  : Response in rate constant (1/time)
+  KOUT :  2  : Response out rate constant (1/time)
+  IC50 :  2  : Concentration for 50% of max inhibition (mass/volume)
+  IMAX :  1  : Maximum inhibition 
+  n    :  1  : Emax model sigmoidicity
+  VMAX :  0  : Maximum reaction velocity (mass/time)
+  KM   :  2  : Michaelis constant (mass/volume)
+  
+  $CMT  @annotated
+  EV1    : First extravascular compartment (mass)
+  CENT   : Central compartment (mass)
+  PERIPH : Peripheral compartment (mass) 
+  RESP   : Response compartment
+  EV2    : Second extravascular compartment (mass)
+  
+  $GLOBAL
+  #define CP (CENT/VC)
+  #define CT (PERIPH/VP)
+  #define CLNL (VMAX/(KM+CP))
+  #define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))
+  
+  $MAIN
+  RESP_0 = KIN/KOUT;
+  
+  $ODE
+  dxdt_EV1    = -KA1*EV1;
+  dxdt_EV2    = -KA2*EV2;
+  dxdt_CENT   =  KA1*EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;
+  dxdt_PERIPH =  Q*CP - Q*CT;
+  dxdt_RESP   =  KIN*(1-INH) - KOUT*RESP;
+  
+  $CAPTURE @annotated
+  CP : Plasma concentration (mass/volume)</code></pre>
+</div>

@@ -1,0 +1,160 @@
+---
+title: Creating complex dosing regimens with event objects
+author: ~
+date: '2017-08-27'
+slug: creating-complex-dosing-regimens-with-event-objects
+categories: []
+tags: []
+output: 
+  blogdown::html_page:
+    toc: true
+    number_sections: true
+---
+
+
+```{r,echo=FALSE}
+knitr::opts_chunk$set(comment='.', warning=FALSE, message=FALSE)
+```
+
+
+# Introduction
+With this blog post, we'd like to introduce some new functions
+in `mrgsolve` that work with event objects. The focus 
+for this functionality is creating complicated dosing
+regimens from simpler, elementary event objects.  And 
+in particular, we'll see in this blog post how to 
+easily create regular/irregular dosing patterns.
+ 
+Let's get started
+
+```{r,message=FALSE}
+library(dplyr)
+library(mrgsolve)
+mod <- mread("pk2cmt", modlib()) %>% update(delta = 0.1) %>% Req(CP)
+```
+
+# Event objects
+Recall that event objects are our way of creating simple
+dosing interventions.  They are created with the `ev` function
+and they look like a single dosing row from a data set.  
+
+For example, we can have 100 mg daily dosing over a week like this
+```{r}
+e1 <- ev(amt = 100, ii = 24, addl = 6)
+e1
+```
+
+```{r}
+mod %>% mrgsim(events = e1, end = 2*168) %>% plot
+```
+
+
+# Sequences of event objects
+
+Now, let's imagine a alternating dosing sequence of 100 mg daily for a 
+week, then 200 mg daily for a week etc.  We can schedule this 
+with a sequence of event objects.
+
+First, make the 200 mg event object
+```{r}
+e2 <- ev(amt = 200, ii = 24, addl = 6)
+```
+
+Then, schedule them in a sequence
+
+```{r}
+e3 <- seq(e1, e2, e1)
+e3
+```
+
+When we create a sequence of event objects, `mrgsolve` calculates
+when each event is finished and automatically times each event
+according to the end time from the preceeding event.  Notice
+that each event starts one dosing interval after the last
+dose of the previous event.
+
+And try that out
+```{r}
+mod %>% mrgsim(events = e3, end = 5*168) %>% plot
+```
+
+## Using `wait` in event sequence
+
+What if we want a 3-day holiday between each treatment period?  Simply
+schedule a waiting period in the sequence:
+
+```{r}
+e4 <- seq(e1, wait = 72, e2, wait = 72, e1)
+e4
+```
+Notice that the event objects (`e1` and `e2`) are 
+unnamed arguments.  But `wait` is a named argument
+with a single numeric value.  Introducing a `wait` period
+in the sequence pushes the start of the next period 
+in the sequence forward in time.
+
+```{r}
+mod %>% mrgsim(events = e4, end = 6*168) %>% plot
+```
+
+To code a cycle of 3 weeks on, one week off for two months
+
+```{r}
+e5 <- ev(amt = 200, ii = 24, addl = 20)
+
+e6 <- seq(e5, wait = 168, e5)
+
+mod %>% mrgsim(events = e6, end = 72*24) %>% plot
+```
+
+
+# Repeating a complicated regimen
+Coding the 3 weeks on / 1 week off regimen for 2 months 
+wasn't too bad, but it might get tedious if we need to do it for 
+a year.
+
+To make that simpler we can repeat the basic regimen 
+as many times as we'd like with `ev_rep`
+
+```{r}
+e7 <- ev_rep(e5, n = 12, wait = 168)
+
+mod %>% mrgsim(data = e7, end = 52*168) %>% plot(CP~time/7/24)
+```
+
+In `ev_rep`, there is a single `wait`ing period in between replicates
+of the 3 week on period.
+
+Alternatively, we could work with the 100/200/100 sequence
+like this
+```{r}
+e4
+e8 <- ev_rep(e4, n = 10, wait = 168)
+mod %>% mrgsim(data = e8, end = 52*168) %>% plot(CP~time/7/24)
+```
+
+
+# Expand an event into a population
+So far we have been dealing with a single ID in the event object
+or data set.  The `ev_rep` function can easily expand that event
+in to several IDs
+
+
+```{r}
+e9 <- seq(e1, wait = 72, e2)
+e9 <- ev_rep(e9, id = 1:5)
+e9
+```
+
+Now we have 5 patients each getting 100 mg daily for one week
+and then 200 mg daily for a week after a 3 day break. 
+
+```{r}
+mod <- mread("popex", modlib()) %>% update(delta=0.1)
+mod %>% mrgsim(data = e9, end = 600) %>% plot(DV~.)
+```
+# Environment
+```{r,echo=FALSE}
+devtools::session_info()
+```
+

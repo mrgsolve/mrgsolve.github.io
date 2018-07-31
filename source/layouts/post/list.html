@@ -1,0 +1,20 @@
+
+{{ partial "header.html" . }}
+{{ template "_internal/google_analytics.html" . }}
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    <div class="article-content">
+      {{ .Content }}
+    </div>
+  </article>
+
+  {{ partial "bloglisting.html" . }}
+  
+</main>
+
+{{ partial "footer.html" . }}
+
+

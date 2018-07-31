@@ -1,0 +1,14 @@
+setup2	library
+unnamed-chunk-1	modlib	mread
+unnamed-chunk-2	ev
+unnamed-chunk-3	e
+unnamed-chunk-4	as.data.frame	e
+unnamed-chunk-5	%>%	~	e	mod	mrgsim	plot
+unnamed-chunk-6	%>%	~	ev	mod	mrgsim	plot
+unnamed-chunk-7	ev
+unnamed-chunk-8	c	e1	e4
+unnamed-chunk-9	%then%	e2	e3
+unnamed-chunk-10	ev
+unnamed-chunk-11	as_data_set	e1	e2	e3
+unnamed-chunk-12	modlib	mread
+unnamed-chunk-13	%>%	~	data	data_set	mod	mrgsim	plot

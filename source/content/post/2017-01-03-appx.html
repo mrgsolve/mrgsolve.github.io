@@ -1,0 +1,119 @@
+---
+output: html_document
+title: "Work with R objects in your model"
+date: 2017-01-01T13:09:13-06:00
+tags: ["plugin", "mrgx", "Rcpp"]
+---
+
+
+
+<div id="about" class="section level3">
+<h3>About</h3>
+<ul>
+<li>This model doesn’t really accomplish anything useful. I coded this up to show how we can get <code>vector</code>, <code>matrix</code> data as well as <code>R</code> functions into your simulation.</li>
+<li>After we show the model code, we walk through the key lines of code and explain why / where this type of extension could be useful.</li>
+</ul>
+</div>
+<div id="documentation" class="section level3">
+<h3>Documentation</h3>
+<ul>
+<li>You can find documentation for functions in <code>mrgx</code> plugin here: <a href="http://mrgsolve.github.io/doxygen/" class="uri">http://mrgsolve.github.io/doxygen/</a></li>
+<li>Follow the <code>mrgx</code> “module”</li>
+</ul>
+</div>
+<div id="example" class="section level1">
+<h1>Example</h1>
+<pre class="r"><code>library(dplyr)
+library(mrgsolve)
+library(magrittr)
+library(ggplot2)</code></pre>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM xout = 13
+
+$PLUGIN Rcpp mrgx
+
+$GLOBAL 
+Rcpp::Function appx(&quot;approx&quot;); 
+Rcpp::NumericVector x;
+Rcpp::NumericVector y;
+
+$PREAMBLE
+x = mrgx::get&lt;Rcpp::NumericVector&gt;(&quot;x&quot;, self);
+y = mrgx::get&lt;Rcpp::NumericVector&gt;(&quot;y&quot;, self);
+
+$MAIN
+Rcpp::List out = appx(x,y,xout);
+double yout = Rcpp::as&lt;double&gt;(out[&quot;y&quot;]);
+
+$ENV
+set.seed(11122)
+n &lt;- 10
+x &lt;- sort(runif(n,10,20))
+y &lt;- sort(rnorm(n))
+
+$CAPTURE xout yout
+&#39;</code></pre>
+</div>
+<div id="not-sure-whats-going-on" class="section level1">
+<h1>Not sure what’s going on?</h1>
+<ul>
+<li>Scroll down to the bottom for some context and discussion.</li>
+</ul>
+</div>
+<div id="about-the-code" class="section level1">
+<h1>About the code</h1>
+<ul>
+<li>Use <code>$PLUGIN</code>
+<ul>
+<li><code>Rcpp</code></li>
+<li><code>mrgx</code></li>
+</ul></li>
+<li>We declare some variables in <code>$GLOBAL</code> so we can use them in any part of the model
+<ul>
+<li><code>appx</code> is the <code>R</code> function <code>approx</code></li>
+<li><code>x</code> will be the <code>x</code> argument to <code>stats::approx</code></li>
+<li><code>y</code> will be the <code>y</code> argument to <code>stats::approx</code></li>
+</ul></li>
+<li><code>xout</code> enters as a parameter (we can change it); that also gets passed to <code>stats::approx</code></li>
+<li><code>$PREAMBLE</code> gets called <strong>ONCE</strong> we set thing up there
+<ul>
+<li>We <code>mrgx::get</code> some <code>Rcpp::NumericVector</code>s (<code>x</code> and <code>y</code>) from the model <code>$ENV</code></li>
+<li>Note that the call is <code>mrgx::get&lt;Rcpp::NumericVector&gt;</code>; <code>mrgx::get</code> is a templated function, so we need to say what type we are working with.</li>
+</ul></li>
+<li>Now, in <code>$MAIN</code> we can call the <code>appx</code> function and pass in <code>x</code>, <code>y</code>, and <code>xout</code>.
+<ul>
+<li><code>appx</code> returns the result as a <code>Rcpp::List</code>. We’re interested in the <code>y</code> element in that list, so we need to get specific about what type (<code>double</code>) that needs to be.</li>
+</ul></li>
+</ul>
+</div>
+<div id="more-info" class="section level1">
+<h1>More info</h1>
+<ul>
+<li><a href="http://mrgsolve.github.io/user_guide/model-specification.html#block-plugin" class="uri">http://mrgsolve.github.io/user_guide/model-specification.html#block-plugin</a></li>
+</ul>
+<pre class="r"><code>mod &lt;- mcode(&quot;approx&quot;, code)</code></pre>
+<pre><code>. Compiling approx ...</code></pre>
+<pre><code>. done.</code></pre>
+<pre class="r"><code>e &lt;- env_get(mod)
+
+approx(e$x,e$y, xout=13)</code></pre>
+<pre><code>. $x
+. [1] 13
+. 
+. $y
+. [1] 0.2543653</code></pre>
+<pre class="r"><code>mrgsim(mod, end=-1) %&gt;% as.data.frame</code></pre>
+<pre><code>.   ID time xout      yout
+. 1  1    0   13 0.2543653</code></pre>
+</div>
+<div id="what-problem-does-this-solve" class="section level1">
+<h1>What problem does this solve?</h1>
+<p>So you might be asking, why do you need to do all of this? The general goal is to allow you to get a variety of data structures into your model code.</p>
+<p>So far, you’ve been able to get scalar values via the <code>$PARAM</code> list. This allows you to say what the <code>TVCL</code> is or the <code>KA</code> or the patient <code>WT</code> etc. When you specify parameters with those names, those symbols take (scalar) values and we can use them in the code and we can update those values in a couple of different ways. Note that you also can input matrices in <code>$OMEGA</code> and <code>$SIGMA</code>, but you don’t get direct access to those matrices … only the variates that were drawn using those matrices.</p>
+<p>We’ve hit the point where getting scalar data into the problem isn’t enough. Now, we are working on models that require <code>vector</code> data or specification of <code>matrix</code> data. Usually we are requiring those data structures in <code>numeric</code> format. We would also like to call <code>R</code> functions using that data to do calculations necessary for the model simulation to proceed.</p>
+<p>The models we are talking about are complex and still fairly unusual. I expect 95% of users to never need stuff like this. But I think it’s important for those who do need this extra functionality to be able to access it. Otherwise, the modeling hits a roadblock.</p>
+<p>The general mechanism for specifying non-scalar data to get into the problem is through <code>$ENV</code>. This block is just regular old <code>R</code> code that gets parsed and evaluated into a new <code>environment</code>. That environment stays with the model object and we access the objects in that environment or modify them (similar to the way we work with a <code>$PARAM</code> list).</p>
+<p>Because many different data types could possibly be in the mix now, we need to take an extra step or two to access those objects. This means an extra step to go into the <code>$ENV</code> environment, and <code>get</code> an object. This usually only needs to be done <strong>ONCE</strong> … at the start of the problem. We go get the required objects and have them ready to use as the simulation proceeds. This is essentially what the <code>$PREAMBLE</code> block is for: it is a C++ function (like <code>$MAIN</code>) that gets called once and lets you set up the C++ environment as you please … including extracting objects from your <code>$ENV</code> (or potentially from <code>.GlobalEnv</code>) or from other <code>R</code> packages.</p>
+<p>You will see illustrated below several functions in the <code>mrgx</code> plugin that help you do this. Remember also that since we are importing <code>R</code> objects that are <code>vectors</code>, <code>matrices</code>, and <code>functions</code>, we also need to invoke the <code>Rcpp</code> plugin.</p>
+<p>Note that we are getting and calling an <code>R</code> function in this problem. This is fine if no other alternative is available / possible. But be aware that there will be <strong>some</strong> performance ding for this. It would be much more efficient to code an <code>Rcpp</code> version of <code>approx</code>. We have that function and it does speed things up. Hopefully another vignette coming that illustrates how to set up that function.</p>
+</div>

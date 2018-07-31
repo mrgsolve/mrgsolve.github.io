@@ -1,0 +1,19 @@
+unnamed-chunk-2	library
+unnamed-chunk-3	
+unnamed-chunk-4	
+unnamed-chunk-5	%>%	code	init	mcode
+unnamed-chunk-6	
+unnamed-chunk-7	c	code	mcode	plot
+unnamed-chunk-8	init	mod
+unnamed-chunk-9	%>%	dplot	mod	mrgsim
+unnamed-chunk-10	%>%	dplot	init	mod	mrgsim
+unnamed-chunk-11	%>%	dplot	mod	mrgsim	param
+unnamed-chunk-12	
+unnamed-chunk-13	code	mcode
+unnamed-chunk-14	%>%	mod	mrgsim	plot
+unnamed-chunk-15	%>%	init	mod	mrgsim
+unnamed-chunk-16	%>%	init	mod	param
+unnamed-chunk-17	:::	init
+unnamed-chunk-18	%>%	expand.idata	head	idata_set	mod	mrgsim	seq
+unnamed-chunk-19	~	out	plot
+unnamed-chunk-20	sessionInfo

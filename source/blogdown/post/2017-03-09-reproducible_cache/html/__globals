@@ -1,0 +1,9 @@
+unnamed-chunk-1	library
+unnamed-chunk-2	
+unnamed-chunk-3	code	mcode
+unnamed-chunk-4	%>%	ev	mod	mrgsim	set.seed
+unnamed-chunk-5	%>%	ev	mod	mrgsim	set.seed
+unnamed-chunk-6	multi	single
+unnamed-chunk-7	==	CENT	filter	multi	single
+unnamed-chunk-8	<	filter	identical	multi	single	time
+unnamed-chunk-9	>	filter	multi	single	time

@@ -1,0 +1,11 @@
+unnamed-chunk-2	library
+unnamed-chunk-3	
+unnamed-chunk-4	code	mcode_cache
+unnamed-chunk-5	%>%	>	~	as.integer	data_frame	mutate	mutate_random	set.seed	WT
+unnamed-chunk-6	ev
+unnamed-chunk-7	assign_ev	ev1	ev2	head	idata	list
+unnamed-chunk-8	%>%	carry_out	data	data_set	dosegr	idata	idata_set	mod	mrgsim	set.seed
+unnamed-chunk-9	==	~	ID	out	plot
+unnamed-chunk-10	==	filter	out	time
+unnamed-chunk-11	~	aes	DV	facet_wrap	geom_point	geom_smooth	ggplot	tr	WT
+unnamed-chunk-12	aes	dosegr	DV	factor	geom_density	ggplot	scale_fill_brewer	tr

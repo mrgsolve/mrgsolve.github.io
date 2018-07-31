@@ -1,0 +1,195 @@
+
+
+
+
+<div id="output-html_document" class="section level2">
+<h2>‘— ##’ output: html_document</h2>
+</div>
+<div id="title" class="section level2">
+<h2>‘title: “” ##’ —</h2>
+</div>
+<div id="section" class="section level2">
+<h2>‘##’ <BR></h2>
+</div>
+<div id="work-with-r-objects-in-your-model" class="section level2">
+<h2>‘##’ # Work with <code>R</code> objects in your model</h2>
+</div>
+<div id="about" class="section level2">
+<h2>‘##’ ### About</h2>
+</div>
+<div id="this-model-doesnt-really-accomplish-anything-useful.-i-coded-this-up-to-show-how-we-can-get-vector-matrix-data-as-well-as-r-functions-into-your-simulation." class="section level2">
+<h2>‘- This model doesn’t really accomplish anything useful. I coded this up to show how ##’ we can get <code>vector</code>, <code>matrix</code> data as well as <code>R</code> functions into your simulation.</h2>
+</div>
+<div id="after-we-show-the-model-code-we-walk-through-the-key-lines-of-code-and-explain-why-where-this-type-of-extension-could-be-useful." class="section level2">
+<h2>‘- After we show the model code, we walk through the key lines of code and explain ##’ why / where this type of extension could be useful.</h2>
+</div>
+<div id="section-1" class="section level2">
+<h2>‘##’</h2>
+</div>
+<div id="documentation---you-can-find-documentation-for-functions-in-mrgx-plugin-here" class="section level2">
+<h2>‘### Documentation ##’ - You can find documentation for functions in <code>mrgx</code> plugin here:</h2>
+</div>
+<div id="httpmrgsolve.github.iodoxygen---follow-the-mrgx-module" class="section level2">
+<h2>‘<a href="http://mrgsolve.github.io/doxygen/" class="uri">http://mrgsolve.github.io/doxygen/</a> ##’ - Follow the <code>mrgx</code> “module”</h2>
+</div>
+<div id="section-2" class="section level2">
+<h2>’</h2>
+</div>
+<div id="example" class="section level2">
+<h2>’ # Example</h2>
+</div>
+<div id="messagefalse" class="section level1">
+<h1>+ message=FALSE</h1>
+<p>library(dplyr) library(mrgsolve) library(magrittr) library(ggplot2)</p>
+</div>
+<div id="echofalse" class="section level1">
+<h1>+ echo=FALSE</h1>
+<p>library(knitr) opts_chunk$set(fig.path=“img/covset-”,comment=‘.’)</p>
+</div>
+<div id="section-3" class="section level1">
+<h1>+</h1>
+<p>code &lt;- ’ $PARAM xout = 13</p>
+<p>$PLUGIN Rcpp mrgx</p>
+<p>$GLOBAL Rcpp::Function appx(“approx”); Rcpp::NumericVector x; Rcpp::NumericVector y;</p>
+<p>$PREAMBLE x = mrgx::get<Rcpp::NumericVector>(“x”, self); y = mrgx::get<Rcpp::NumericVector>(“y”, self);</p>
+<p>$MAIN Rcpp::List out = appx(x,y,xout); double yout = Rcpp::as<double>(out[“y”]);</p>
+<p>$ENV set.seed(11122) n &lt;- 10 x &lt;- sort(runif(n,10,20)) y &lt;- sort(rnorm(n))</p>
+<p>$CAPTURE xout yout ’</p>
+<div id="not-sure-whats-going-on" class="section level2">
+<h2>‘# Not sure what’s going on? ##’</h2>
+</div>
+<div id="scroll-down-to-the-bottom-for-some-context-and-discussion." class="section level2">
+<h2>‘- Scroll down to the bottom for some context and discussion. ##’</h2>
+</div>
+<div id="section-4" class="section level2">
+<h2>’</h2>
+</div>
+<div id="about-the-code" class="section level2">
+<h2>‘# About the code ##’</h2>
+</div>
+<div id="use-plugin---rcpp" class="section level2">
+<h2>‘- Use <code>$PLUGIN</code> ##’ - <code>Rcpp</code></h2>
+</div>
+<div id="mrgx---we-declare-some-variables-in-global-so-we-can-use-them-in-any-part-of-the-model" class="section level2">
+<h2>‘- <code>mrgx</code> ##’ - We declare some variables in <code>$GLOBAL</code> so we can use them in any part of the model</h2>
+</div>
+<div id="appx-is-the-r-function-approx---x-will-be-the-x-argument-to-statsapprox" class="section level2">
+<h2>‘- <code>appx</code> is the <code>R</code> function <code>approx</code> ##’ - <code>x</code> will be the <code>x</code> argument to <code>stats::approx</code></h2>
+</div>
+<div id="y-will-be-the-y-argument-to-statsapprox---xout-enters-as-a-parameter-we-can-change-it-that-also-gets-passed-to-statsapprox" class="section level2">
+<h2>‘- <code>y</code> will be the <code>y</code> argument to <code>stats::approx</code> ##’ - <code>xout</code> enters as a parameter (we can change it); that also gets passed to <code>stats::approx</code></h2>
+</div>
+<div id="preamble-gets-called-once-we-set-thing-up-there---we-mrgxget-some-rcppnumericvectors-x-and-y-from-the-model-env" class="section level2">
+<h2>‘- <code>$PREAMBLE</code> gets called <strong>ONCE</strong> we set thing up there ##’ - We <code>mrgx::get</code> some <code>Rcpp::NumericVector</code>s (<code>x</code> and <code>y</code>) from the model <code>$ENV</code></h2>
+</div>
+<div id="note-that-the-call-is-mrgxgetrcppnumericvector-mrgxget-is-a-templated-function-so-we-need-to-say-what-type-we-are-working-with." class="section level2">
+<h2>‘- Note that the call is <code>mrgx::get&lt;Rcpp::NumericVector&gt;</code>; <code>mrgx::get</code> is a templated function, so we need to ##’ say what type we are working with.</h2>
+</div>
+<div id="now-in-main-we-can-call-the-appx-function-and-pass-in-x-y-and-xout.---appx-returns-the-result-as-a-rcpplist.-were-interested-in-the-y-element-in-that-list" class="section level2">
+<h2>‘- Now, in <code>$MAIN</code> we can call the <code>appx</code> function and pass in <code>x</code>, <code>y</code>, and <code>xout</code>. ##’ - <code>appx</code> returns the result as a <code>Rcpp::List</code>. We’re interested in the <code>y</code> element in that list,</h2>
+</div>
+<div id="so-we-need-to-get-specific-about-what-type-double-that-needs-to-be." class="section level2">
+<h2>‘so we need to get specific about what type (<code>double</code>) that needs to be. ##’</h2>
+</div>
+<div id="more-info" class="section level2">
+<h2>‘# More info ##’</h2>
+</div>
+<div id="httpmrgsolve.github.iouser_guidemodel-specification.htmlblock-plugin" class="section level2">
+<h2>‘- <a href="http://mrgsolve.github.io/user_guide/model-specification.html#block-plugin" class="uri">http://mrgsolve.github.io/user_guide/model-specification.html#block-plugin</a> ##’</h2>
+</div>
+<div id="section-5" class="section level2">
+<h2>’</h2>
+</div>
+</div>
+<div id="section-6" class="section level1">
+<h1>+</h1>
+<p>mod &lt;- mcode(“approx”, code)</p>
+</div>
+<div id="section-7" class="section level1">
+<h1>+</h1>
+<p>e &lt;- env_get(mod)</p>
+</div>
+<div id="section-8" class="section level1">
+<h1>+</h1>
+<p>approx(e<span class="math inline">\(x,e\)</span>y, xout=13)</p>
+</div>
+<div id="section-9" class="section level1">
+<h1>+</h1>
+<p>mrgsim(mod, end=-1) %&gt;% as.data.frame</p>
+<div id="what-problem-does-this-solve" class="section level2">
+<h2>‘# What problem does this solve? ##’</h2>
+</div>
+<div id="so-you-might-be-asking-why-do-you-need-to-do-all-of-this-the-general-goal-is-to-allow-you-to-get-a-variety-of-data-structures-into-your-model-code." class="section level2">
+<h2>‘So you might be asking, why do you need to do all of this? The general goal is to ##’ allow you to get a variety of data structures into your model code.</h2>
+</div>
+<div id="so-far-youve-been-able-to-get-scalar-values-via-the-param-list.-this-allows-you" class="section level2">
+<h2>‘##’ So far, you’ve been able to get scalar values via the <code>$PARAM</code> list. This allows you</h2>
+</div>
+<div id="to-say-what-the-tvcl-is-or-the-ka-or-the-patient-wt-etc.-when-you-specify-parameters-with-those-names-those-symbols-take-scalar-values-and-we-can-use-them-in-the" class="section level2">
+<h2>‘to say what the <code>TVCL</code> is or the <code>KA</code> or the patient <code>WT</code> etc. When you specify ##’ parameters with those names, those symbols take (scalar) values and we can use them in the</h2>
+</div>
+<div id="code-and-we-can-update-those-values-in-a-couple-of-different-ways.-note-that-you-also-can-input-matrices-in-omega-and-sigma-but-you-dont-get-direct-access-to-those" class="section level2">
+<h2>‘code and we can update those values in a couple of different ways. Note that you also ##’ can input matrices in <code>$OMEGA</code> and <code>$SIGMA</code>, but you don’t get direct access to those</h2>
+</div>
+<div id="matrices-only-the-variates-that-were-drawn-using-those-matrices." class="section level2">
+<h2>‘matrices … only the variates that were drawn using those matrices. ##’</h2>
+</div>
+<div id="weve-hit-the-point-where-getting-scalar-data-into-the-problem-isnt-enough.-now-we-are-working-on-models-that-require-vector-data-or-specification-of" class="section level2">
+<h2>‘We’ve hit the point where getting scalar data into the problem isn’t enough. Now, ##’ we are working on models that require <code>vector</code> data or specification of</h2>
+</div>
+<div id="matrix-data.-usually-we-are-requiring-those-data-structures-in-numeric-format.-we-would-also-like-to-call-r-functions-using-that-data-to-do-calculations-necessary-for" class="section level2">
+<h2>‘<code>matrix</code> data. Usually we are requiring those data structures in <code>numeric</code> format. We ##’ would also like to call <code>R</code> functions using that data to do calculations necessary for</h2>
+</div>
+<div id="the-model-simulation-to-proceed." class="section level2">
+<h2>‘the model simulation to proceed.<br />
+##’</h2>
+</div>
+<div id="the-models-we-are-talking-about-are-complex-and-still-fairly-unusual.-i-expect-95-of-users-to-never-need-stuff-like-this.-but-i-think-its-important-for-those-who-do" class="section level2">
+<h2>‘The models we are talking about are complex and still fairly unusual. I expect 95% of ##’ users to never need stuff like this. But I think it’s important for those who do</h2>
+</div>
+<div id="need-this-extra-functionality-to-be-able-to-access-it.-otherwise-the-modeling-hits-a-roadblock." class="section level2">
+<h2>‘need this extra functionality to be able to access it. Otherwise, the modeling hits ##’ a roadblock.</h2>
+</div>
+<div id="the-general-mechanism-for-specifying-non-scalar-data-to-get-into-the-problem-is-through" class="section level2">
+<h2>‘##’ The general mechanism for specifying non-scalar data to get into the problem is through</h2>
+</div>
+<div id="env.-this-block-is-just-regular-old-r-code-that-gets-parsed-and-evaluated-into-a-new-environment.-that-environment-stays-with-the-model-object-and-we-access-the-objects" class="section level2">
+<h2>‘<code>$ENV</code>. This block is just regular old <code>R</code> code that gets parsed and evaluated into ##’ a new <code>environment</code>. That environment stays with the model object and we access the objects</h2>
+</div>
+<div id="in-that-environment-or-modify-them-similar-to-the-way-we-work-with-a-param-list." class="section level2">
+<h2>‘in that environment or modify them (similar to the way we work with a <code>$PARAM</code> list). ##’</h2>
+</div>
+<div id="because-many-different-data-types-could-possibly-be-in-the-mix-now-we-need-to-take-an-extra-step-or-two-to-access-those-objects.-this-means-an-extra-step" class="section level2">
+<h2>‘Because many different data types could possibly be in the mix now, we need to take ##’ an extra step or two to access those objects. This means an extra step</h2>
+</div>
+<div id="to-go-into-the-env-environment-and-get-an-object.-this-usually-only-needs-to-be-done-once-at-the-start-of-the-problem.-we-go-get-the-required-objects-and-have" class="section level2">
+<h2>‘to go into the <code>$ENV</code> environment, and <code>get</code> an object. This usually only needs to be ##’ done <strong>ONCE</strong> … at the start of the problem. We go get the required objects and have</h2>
+</div>
+<div id="them-ready-to-use-as-the-simulation-proceeds.-this-is-essentially-what-the-preamble-block-is-for-it-is-a-c-function-like-main-that-gets-called-once-and-lets-you" class="section level2">
+<h2>‘them ready to use as the simulation proceeds. This is essentially what the <code>$PREAMBLE</code> ##’ block is for: it is a C++ function (like <code>$MAIN</code>) that gets called once and lets you</h2>
+</div>
+<div id="set-up-the-c-environment-as-you-please-including-extracting-objects-from-your-env-or-potentially-from-.globalenv-or-from-other-r-packages." class="section level2">
+<h2>‘set up the C++ environment as you please … including extracting objects from ##’ your <code>$ENV</code> (or potentially from <code>.GlobalEnv</code>) or from other <code>R</code> packages.</h2>
+</div>
+<div id="you-will-see-illustrated-below-several-functions-in-the-mrgx-plugin-that-help" class="section level2">
+<h2>‘##’ You will see illustrated below several functions in the <code>mrgx</code> plugin that help</h2>
+</div>
+<div id="you-do-this.-remember-also-that-since-we-are-importing-r-objects-that-are-vectors-matrices-and-functions-we-also-need-to-invoke-the-rcpp" class="section level2">
+<h2>‘you do this. Remember also that since we are importing <code>R</code> objects ##’ that are <code>vectors</code>, <code>matrices</code>, and <code>functions</code>, we also need to invoke the <code>Rcpp</code></h2>
+</div>
+<div id="plugin." class="section level2">
+<h2>‘plugin. ##’</h2>
+</div>
+<div id="note-that-we-are-getting-and-calling-an-r-function-in-this-problem.-this-is-fine" class="section level2">
+<h2>‘##’ Note that we are getting and calling an <code>R</code> function in this problem. This is fine</h2>
+</div>
+<div id="if-no-other-alternative-is-available-possible.-but-be-aware-that-there-will-be-some-performance-ding-for-this.-it-would-be-much-more-efficient-to-code-an-rcpp-version" class="section level2">
+<h2>‘if no other alternative is available / possible. But be aware that there will be <strong>some</strong> ##’ performance ding for this. It would be much more efficient to code an <code>Rcpp</code> version</h2>
+</div>
+<div id="of-approx.-we-have-that-function-and-it-does-speed-things-up.-hopefully-another-vignette-coming-that-illustrates-how-to-set-up-that-function." class="section level2">
+<h2>‘of <code>approx</code>. We have that function and it does speed things up. Hopefully another ##’ vignette coming that illustrates how to set up that function.</h2>
+</div>
+<div id="section-10" class="section level2">
+<h2>’</h2>
+</div>
+</div>

@@ -1,0 +1,624 @@
+---
+title: Model Gallery
+date: 2017-02-23T08:00:00
+type: page
+output: 
+  blogdown::html_page: 
+    toc: TRUE
+    toc_depth: 1
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#load-packages-required-for-the-gallery">Load packages required for the gallery</a></li>
+<li><a href="#simple-pk-model">Simple PK model</a></li>
+<li><a href="#pk-model-with-different-bioavability-and-dosing-lag-time">PK model with different bioavability and dosing lag time</a></li>
+<li><a href="#pk-model-with-residual-error">PK model with residual error</a></li>
+<li><a href="#indirect-response-model-driven-by-continuous-pk">Indirect response model driven by continuous PK</a></li>
+<li><a href="#indirect-response-model-driven-by-metric-summarizing-exposure">Indirect response model driven by metric summarizing exposure</a></li>
+<li><a href="#effect-compartment-model">Effect compartment model</a></li>
+<li><a href="#population-pk-model-with-covariates-and-iov">Population PK model with covariates and <code>IOV</code></a></li>
+<li><a href="#pk-with-dialysis-sessions-3-times-per-week">PK with dialysis sessions 3 times per week</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#session-info">Session Info</a></li>
+</ul>
+</div>
+
+<pre class="r"><code>library(lattice)
+library(ggplot2)
+library(dplyr)</code></pre>
+<div id="load-packages-required-for-the-gallery" class="section level1">
+<h1>Load packages required for the gallery</h1>
+<pre class="r"><code>library(mrgsolve)
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+library(tidyr)</code></pre>
+</div>
+<div id="simple-pk-model" class="section level1">
+<h1>Simple PK model</h1>
+<p>About this model specification code</p>
+<ul>
+<li>We set a simulation grid of 0.1 units in <code>$SET</code></li>
+<li>Compartment number (2) and names (<code>GUT</code> and <code>CENT</code>) are established in <code>$CMT</code></li>
+<li>For dosing purposes, <code>GUT</code> is compartment 1 and <code>CENT</code> is compartment 2 due to the order of their declaration</li>
+<li>Compartment names and numbers can be checked with <code>init(mod)</code></li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM CL = 1.3, VC=28, KA=0.6
+
+$SET delta=0.1
+
+$CMT GUT CENT
+
+$ODE
+dxdt_GUT = -KA*GUT;
+dxdt_CENT = KA*GUT - (CL/VC)*CENT;
+
+$TABLE double CP = CENT/VC;
+
+$CAPTURE CP
+&#39;</code></pre>
+<p>Compile and load</p>
+<pre class="r"><code>mod &lt;- mread(&quot;gallery1&quot;, tempdir(),code)
+
+
+mod</code></pre>
+<pre><code>. 
+. 
+. -------- mrgsolve model object (unix) --------
+.   Project: /private/var/fol...dbsj0x4637ptj4hnd7kg900000gp/T/RtmpKM6RD6
+.   source:        gallery1.cpp
+.   shared object: gallery1-so-2991a740065 
+. 
+.   compile date:  
+.   Time:          start: 0 end: 24 delta: 0.1
+.   &gt;              add: &lt;none&gt;
+.   &gt;              tscale: 1
+. 
+.   Compartments:  GUT CENT [2]
+.   Parameters:    CL VC KA [3]
+.   Omega:         0x0 
+.   Sigma:         0x0 
+. 
+.   Solver:        atol: 1e-08 rtol: 1e-08
+.   &gt;              maxsteps: 2000 hmin: 0 hmax: 0</code></pre>
+<div id="run-with-initial-value" class="section level2">
+<h2>Run with initial value</h2>
+<pre class="r"><code>out &lt;- mod %&gt;% init(GUT=1000) %&gt;% mrgsim(end=72)
+
+plot(out)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>out</code></pre>
+<pre><code>. Model:  gallery1.cpp 
+. Dim:    721 x 5 
+. Time:   0 to 72 
+. ID:     1 
+.      ID time    GUT  CENT     CP
+. [1,]  1  0.0 1000.0   0.0  0.000
+. [2,]  1  0.1  941.8  58.1  2.075
+. [3,]  1  0.2  886.9 112.5  4.019
+. [4,]  1  0.3  835.3 163.6  5.841
+. [5,]  1  0.4  786.6 211.3  7.547
+. [6,]  1  0.5  740.8 256.0  9.145
+. [7,]  1  0.6  697.7 297.9 10.639
+. [8,]  1  0.7  657.0 337.1 12.038</code></pre>
+</div>
+<div id="run-with-events-object" class="section level2">
+<h2>Run with <code>events</code> object</h2>
+<pre class="r"><code>out &lt;- mod %&gt;% ev(amt=1000, ii=12, addl=15) %&gt;% mrgsim(end=336)
+
+plot(out)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The events object was just a simple data set that looks like this</p>
+<pre class="r"><code>dosing &lt;- events(out)
+dosing</code></pre>
+<pre><code>. Events:
+.   time cmt  amt ii addl evid
+. 1    0   1 1000 12   15    1</code></pre>
+</div>
+<div id="run-with-data-set" class="section level2">
+<h2>Run with data set</h2>
+<p>Just like the events object, but we can make it more complicated, specify more people, etc…</p>
+<pre class="r"><code>data &lt;- expand.ev(amt=c(300,1000,3000), ii=12, addl=6) %&gt;% mutate(dose=amt)
+data</code></pre>
+<pre><code>.   ID  amt ii addl evid cmt time dose
+. 1  1  300 12    6    1   1    0  300
+. 2  2 1000 12    6    1   1    0 1000
+. 3  3 3000 12    6    1   1    0 3000</code></pre>
+<pre class="r"><code>out &lt;- mod %&gt;% data_set(data) %&gt;% carry.out(dose) %&gt;% Req(CP) %&gt;% mrgsim(end=168)</code></pre>
+<pre class="r"><code>plot(out, CP~time|factor(dose),scales=&quot;same&quot;)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="pk-model-with-different-bioavability-and-dosing-lag-time" class="section level1">
+<h1>PK model with different bioavability and dosing lag time</h1>
+<p>About this model specification code</p>
+<ul>
+<li>Set <code>F_CENT</code> and <code>ALAG_CENT</code> in <code>$MAIN</code></li>
+<li>Since <code>F_CENT</code> is set to <code>F1</code> and <code>ALAG_CENT</code> is set to <code>ALG</code>; since <code>F1</code> and <code>ALG</code> are named in <code>$PARAM</code>, we can update them on the <code>R</code> side either through <code>param</code> or in an input data set that is also determined on the <code>R</code> side of things</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM CL = 1.3, VC=28, KA=0.6, ALG=0, F1=1,FORM=1
+
+$SET delta=0.1
+
+$CMT CENT
+
+$MAIN
+F_CENT = 1;
+
+// Formulation 2 has lower bioavailability
+if(FORM==2) F_CENT = F1;
+
+// Same lag time across formulations
+ALAG_CENT = ALG;
+
+
+$ODE dxdt_CENT = - (CL/VC)*CENT;
+
+$TABLE double CP = CENT/VC;
+
+$CAPTURE CP
+
+&#39;</code></pre>
+<p>Compile and load</p>
+<pre class="r"><code>mod &lt;- mread(&quot;gallery2&quot;, tempdir(), code)</code></pre>
+<p>Dose into the central compartment. Also, <code>ALG</code>, <code>F1</code>, and <code>FORM</code> are updated via the data set and therefore need to be columns in the data set and listed in <code>$PARAM</code></p>
+<pre class="r"><code>data &lt;- 
+  expand.ev(amt=1000, ALG=seq(0,12,4),FORM=c(1,2)) %&gt;% 
+  mutate(F1 = ifelse(FORM==1,1,0.5))
+
+data</code></pre>
+<pre><code>.   ID  amt ALG FORM evid cmt time  F1
+. 1  1 1000   0    1    1   1    0 1.0
+. 2  2 1000   4    1    1   1    0 1.0
+. 3  3 1000   8    1    1   1    0 1.0
+. 4  4 1000  12    1    1   1    0 1.0
+. 5  5 1000   0    2    1   1    0 0.5
+. 6  6 1000   4    2    1   1    0 0.5
+. 7  7 1000   8    2    1   1    0 0.5
+. 8  8 1000  12    2    1   1    0 0.5</code></pre>
+<pre class="r"><code>out &lt;- mod %&gt;% data_set(data) %&gt;% carry.out(FORM,ALG) %&gt;% mrgsim(end=72)
+
+plot(out, CP~time|factor(FORM),group=ALG, 
+     scales=&quot;same&quot;, auto.key=list(columns=4))</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="pk-model-with-residual-error" class="section level1">
+<h1>PK model with residual error</h1>
+<p>About this model specification code</p>
+<ul>
+<li><code>$SIGMA</code> sets the variance of <code>EPS(n)</code></li>
+<li>Setting <code>end</code> to a value less than 0 will signal <code>mrgsolve</code> to skip the simulation time grid</li>
+<li>We specify <code>add</code> to get a specific set of simulation times (not necessarily evenly spaced)</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM CL = 1.3, VC=28, KA=0.6
+
+$GLOBAL #define CP (CENT/VC)
+
+$SIGMA 0.025
+
+$SET end=-1, add=c(0,0.25,0.5,1,2,4,6,8,10,12,16,24,36,48)
+
+$CMT GUT CENT
+
+$ODE
+dxdt_GUT = -KA*GUT;
+dxdt_CENT = KA*GUT - (CL/VC)*CENT;
+
+$CAPTURE CP DV
+
+$TABLE double DV = CP*exp(EPS(1));
+&#39;
+
+mod &lt;- mread(&quot;ruv&quot;, tempdir(), code) </code></pre>
+<pre class="r"><code>set.seed(3203)
+out &lt;- 
+  mod %&gt;% 
+  init(GUT=1000) %&gt;% 
+  obsonly %&gt;% 
+  mrgsim(Req=&quot;CP,DV&quot;) %&gt;% as.data.frame
+
+ggplot(data=out, aes(x=time)) + 
+  geom_point(aes(y=DV),size=3) + 
+  geom_line(aes(y=CP), col=&quot;firebrick&quot;,lwd=1)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="indirect-response-model-driven-by-continuous-pk" class="section level1">
+<h1>Indirect response model driven by continuous PK</h1>
+<p>About this model specification code</p>
+<ul>
+<li><code>CP</code> is “defined” in <code>$GLOBAL</code></li>
+<li><code>INH</code> is declared as a double precision variable in <code>$ODE</code></li>
+<li><code>INH</code> will be available globally (<code>mrgsolve</code> will declare the variable in <code>$GLOBAL</code> for you)</li>
+<li><code>INH</code> can be changed at any time, but <code>CP</code> cannot</li>
+<li>Both <code>CP</code> and <code>INH</code> can be inserted into output in <code>$TABLE</code> or <code>$CAPTURE</code></li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM CL = 5.3, VC=28, KA=0.6, KIN=20, KOUT=0.01, IC50=10
+
+$SET delta=0.1
+
+$CMT GUT CENT RESPONSE
+
+$GLOBAL
+#define CP (CENT/VC)
+
+$MAIN
+RESPONSE_0 = KIN/KOUT;
+
+$ODE
+
+double INH = CP/(IC50+CP);
+
+dxdt_GUT = -KA*GUT;
+dxdt_CENT = KA*GUT - (CL/VC)*CENT;
+
+dxdt_RESPONSE = KIN*(1-INH) - KOUT*RESPONSE;
+
+
+$CAPTURE CP INH
+&#39;
+
+mod &lt;- mread(&quot;gallery3&quot;, tempdir(), code)
+
+out &lt;- mod %&gt;% 
+  ev(time=120,amt=1500,rate=5) %&gt;% 
+  Req(CP,RESPONSE) %&gt;% mrgsim(end=480*2)
+
+plot(out)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="indirect-response-model-driven-by-metric-summarizing-exposure" class="section level1">
+<h1>Indirect response model driven by metric summarizing exposure</h1>
+<p>About this model specification code</p>
+<ul>
+<li>Take out the PK model</li>
+<li><code>AUC</code> will drive the PD model</li>
+<li><code>AUC</code> is declared in <code>$PARAM</code>; we will manipulate that value (AUC&gt;0 for on treatment, AUC==0 for off treatment) through the input data set</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM AUC=0, KIN=100, KOUT=0.2, AUC50=10
+
+$SET delta=0.1
+
+$CMT RESPONSE
+
+$GLOBAL
+#define INH (AUC/(AUC50+AUC))
+
+$MAIN
+RESPONSE_0 = KIN/KOUT;
+
+$ODE
+
+dxdt_RESPONSE = KIN*(1-INH) - KOUT*RESPONSE;
+
+$CAPTURE AUC
+&#39;
+
+mod &lt;- mread(&quot;gallery5&quot;, tempdir(), code)</code></pre>
+<p>Make a template data set with <code>evid</code>=2 and <code>AUC</code> to drive the PD model</p>
+<pre class="r"><code>data &lt;- 
+  ev(ID=1,evid=2,AUC=15, ii=48,addl=0,amt=0) %then% 
+  ev(ID=1,evid=2,AUC=0,amt=0)
+
+data</code></pre>
+<pre><code>. Events:
+.   ID time cmt AUC ii addl amt evid
+. 1  1    0   1  15 48    0   0    2
+. 2  1   48   1   0  0    0   0    2</code></pre>
+<pre class="r"><code>out &lt;- mod %&gt;% data_set(data) %&gt;% obsonly %&gt;% mrgsim(end=120)
+
+plot(out)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="effect-compartment-model" class="section level1">
+<h1>Effect compartment model</h1>
+<p>About this model specification code</p>
+<ul>
+<li>This code replicates model PD21 in Gabrielsson and Weiner 2007.</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM  
+VC = 2.44, KA = 0.92, K10 = 0.44, K12 = 0.36, K21 = 0.24
+E0 = 157, EMAX = 29.95, EC50=4.956, KEO=1.305
+
+$SET delta=0.1, end=36
+
+$CMT GUT CENT PERIPH CE
+
+$ODE 
+double CP = CENT/VC;
+
+dxdt_GUT = -KA*GUT;
+dxdt_CENT = KA*GUT - K10*CENT - K12*CENT + K21*PERIPH;
+dxdt_PERIPH = K12*CENT - K21*PERIPH;
+dxdt_CE = KEO*(CP-CE);
+
+$TABLE
+capture EFFECT = E0 - EMAX*CE/(CE+EC50);
+CP = CENT/VC;
+
+$CAPTURE EFFECT CP
+&#39;
+
+mod &lt;- mread(&quot;effcmt&quot;, tempdir(), code)</code></pre>
+<p>Simulate a snigle 200 unit dose</p>
+<pre class="r"><code>out &lt;- mod %&gt;% ev(amt=200) %&gt;% obsonly %&gt;% mrgsim(Req=&quot;CP,CE,EFFECT&quot;)</code></pre>
+<pre class="r"><code>plot(out)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Simulate steady state PK/PD under Q12 hour dosing</p>
+<pre class="r"><code>out &lt;- 
+  mod %&gt;% 
+  ev(amt=200,ss=1,ii=12,addl=10)%&gt;%
+  mrgsim(Req=&quot;CP,CE,EFFECT&quot;, end=168)
+
+plot(out)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="population-pk-model-with-covariates-and-iov" class="section level1">
+<h1>Population PK model with covariates and <code>IOV</code></h1>
+<p>About this control stream</p>
+<ul>
+<li><code>IOV</code> is declared as double precision variable that is set to either <code>ETA(4)</code> or <code>ETA(5)</code></li>
+<li>We need to make sure that <span class="math inline">\(\omega^2_{4}\)</span> and <span class="math inline">\(\omega^2_{5}\)</span> are equal</li>
+<li>We assign different names to the first and second <code>$OMEGA</code> matrices so we can update them by name later</li>
+<li>We are tabling out some <code>ETAs</code> to look at them later as well; this is for demonstration purposes</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM TVCL = 1.3, TVVC=28, TVKA=0.6, WT=70, OCC=1
+
+$SET delta=0.1
+
+$CMT GUT CENT
+
+$MAIN
+
+double IOV = EOC1;
+if(OCC==2) IOV = EOC2;
+
+double CLi = exp(log(TVCL) + 0.75*log(WT/70) + ECL + IOV);
+double VCi = exp(log(TVVC) + EVC);
+double KAi = exp(log(TVKA) + EKA);
+
+$OMEGA 
+@name IIV @labels ECL EVC EKA
+0 0 0
+$OMEGA @name IOV @labels EOC1 EOC2
+0 0
+
+$SIGMA 0
+
+$ODE
+dxdt_GUT = -KAi*GUT;
+dxdt_CENT = KAi*GUT - (CLi/VCi)*CENT;
+
+$TABLE
+double CP = CENT/VCi;
+double ETA1 = ETA(1);
+double ETA2 = ETA(2);
+
+$CAPTURE IOV CP ETA1 ETA2
+&#39;
+
+mod &lt;- mread(&quot;gallery4&quot;, tempdir(), code)</code></pre>
+<p>Set up dosing events; occasion 2 is the second dose</p>
+<pre class="r"><code>dose &lt;- ev(amt=300,OCC=1) + ev(amt=300,time=48,OCC=2)
+dose</code></pre>
+<pre><code>. Events:
+.   time cmt amt OCC evid
+. 1    0   1 300   1    1
+. 2   48   1 300   2    1</code></pre>
+<p>ETAs are all zeros per the model specification code</p>
+<pre class="r"><code>out &lt;- mod %&gt;% ev(dose) %&gt;% mrgsim(end=120, nid=5)
+
+plot(out)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Update <code>$OMEGA</code></p>
+<pre class="r"><code>mod &lt;- mod %&gt;% omat(IIV=cmat(0.1, 0.45, 0.3, 0,0,0), IOV=dmat(0.5,0.5))</code></pre>
+<p>And check the result</p>
+<pre class="r"><code>revar(mod)</code></pre>
+<pre><code>. $omega
+. $IIV
+.             [,1]       [,2] [,3]
+. ECL:  0.10000000 0.07794229    0
+. EVC:  0.07794229 0.30000000    0
+. EKA:  0.00000000 0.00000000    0
+. 
+. $IOV
+.        [,1] [,2]
+. EOC1:   0.5  0.0
+. EOC2:   0.0  0.5
+. 
+. 
+. $sigma
+. $...
+.     [,1]
+. 1:     0</code></pre>
+<p>Simulate and plot</p>
+<pre class="r"><code>out &lt;- mod %&gt;% ev(dose) %&gt;% mrgsim(end=120,nid=5,seed=9765)</code></pre>
+<p>ETAs</p>
+<pre class="r"><code>plot(out,ETA1+ETA2+IOV~time|factor(ID),scales=&quot;same&quot;, layout=c(5,3))</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>PK</p>
+<pre class="r"><code>plot(out,CP~time|factor(ID),scales=&quot;same&quot;, layout=c(5,1))</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Just look at WT with no IIV/IOV</p>
+<pre class="r"><code>mod &lt;- mod %&gt;% drop.re</code></pre>
+<pre class="r"><code>data &lt;- expand.ev(amt=300,ii=12, addl=19,WT=seq(40,140,20))
+
+out &lt;- mod %&gt;% data_set(data) %&gt;% Req(CP) %&gt;% mrgsim(end=240, carry.out=&quot;WT&quot;)
+
+out %&gt;% 
+  as.tbl %&gt;%
+  ggplot(data=., aes(x=time, y=CP,col=WT,group=ID)) + 
+  geom_line(lwd=1)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Cmin versus weight</p>
+<pre class="r"><code>out %&gt;% subset(time==240) %&gt;%
+  ggplot(data=.,aes(x=WT,y=CP)) + 
+  geom_line(lwd=1) + geom_point(size=3) + xlab(&quot;Cmin&quot;)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="pk-with-dialysis-sessions-3-times-per-week" class="section level1">
+<h1>PK with dialysis sessions 3 times per week</h1>
+<div id="section" class="section level2">
+<h2>’</h2>
+<p>About this control stream</p>
+<ul>
+<li><code>GUT</code> and <code>CENT</code> are regular compartment; we have to provide a differential equation for each</li>
+<li><code>DIAL</code> is a compartment that only holds a value; <code>dxdt_DIAL</code> will automatically be set to <code>0</code></li>
+<li><code>CLadd</code> is the additional drug clearance while on dialysis</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM CL=0.7, VC=16, KA=1.8, CLadd = 2.1
+
+$CMT GUT CENT
+
+$VCMT DIAL
+
+$ODE
+dxdt_GUT = -KA*GUT;
+
+dxdt_CENT = KA*GUT -  (CL + CLadd*DIAL)*CENT/VC;
+
+$TABLE double CP = CENT/VC;
+
+$CAPTURE CP
+&#39;</code></pre>
+<pre class="r"><code>mod &lt;- mread(&quot;dialysis&quot;, tempdir(), code) %&gt;% update(end=336, delta=0.25)</code></pre>
+<p><strong>Data assembly for doses and dialysis sessions</strong></p>
+<p>Set up three weeks of dosing</p>
+<pre class="r"><code>doses &lt;- expand.ev(amt=300, ii=24, addl=13)</code></pre>
+<p>MWF dialysis sessions</p>
+<pre class="r"><code>mon &lt;- expand.ev(time=0,ii=7*24,addl=2,cmt=3,evid=8,amt=1)
+wed &lt;- mon %&gt;% mutate(time=2*24)
+fri &lt;- wed %&gt;% mutate(time=4*24)</code></pre>
+<p>Dialysis starts 8 hours after the AM dose</p>
+<pre class="r"><code>dial_start &lt;- bind_rows(mon,wed,fri) %&gt;% mutate(time=time+8)</code></pre>
+<p>Dialysis lasts 3 hours</p>
+<pre class="r"><code>dial_end &lt;- dial_start %&gt;% mutate(time = time+3, amt=0)</code></pre>
+<p>Doses and dialysis</p>
+<pre class="r"><code>events &lt;- 
+  bind_rows(dial_start,dial_end,doses) %&gt;% 
+  arrange(time) %&gt;% as.data.frame %&gt;% as.ev
+
+events</code></pre>
+<pre><code>. Events:
+.   ID time  ii addl cmt evid amt
+. 1  1    0  24   13   1    1 300
+. 2  1    8 168    2   3    8   1
+. 3  1   11 168    2   3    8   0
+. 4  1   56 168    2   3    8   1
+. 5  1   59 168    2   3    8   0
+. 6  1  104 168    2   3    8   1
+. 7  1  107 168    2   3    8   0</code></pre>
+<p><strong>Simulate</strong></p>
+<pre class="r"><code>out &lt;- mod %&gt;% ev(events) %&gt;%  obsonly %&gt;% mrgsim</code></pre>
+<pre class="r"><code>plot(out)</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>PK plot with dialysis sessions marked in red</p>
+<pre class="r"><code>out %&gt;% as.tbl %&gt;% filter(time &lt;=7*24) %&gt;%
+  ggplot(data=., aes(x=time, y=CP)) + geom_line(lwd=1) + 
+  geom_path(data=dial,col=&quot;firebrick&quot;, lwd=6, alpha=0.4)</code></pre>
+<pre><code>. Warning: Removed 1 rows containing missing values (geom_path).</code></pre>
+<p><img src="model-gallery_files/figure-html/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>J. Gabrielsson and D. Weiner. Pharmacokinetic and Pharmacodynamic Data Analysis: Concepts and Applications, Fourth Edition. Taylor &amp; Francis, 2007.</p>
+</div>
+<div id="session-info" class="section level1">
+<h1>Session Info</h1>
+<pre class="r"><code>devtools::session_info()</code></pre>
+<pre><code>.  setting  value                       
+.  version  R version 3.3.2 (2016-10-31)
+.  system   x86_64, darwin13.4.0        
+.  ui       X11                         
+.  language (EN)                        
+.  collate  en_US.UTF-8                 
+.  tz       America/Chicago             
+.  date     2017-02-23                  
+. 
+.  package       * version     date      
+.  assertthat      0.1         2013-12-06
+.  backports       1.0.5       2017-01-18
+.  blogdown        0.0.22      2017-02-22
+.  bookdown        0.3.9       2017-02-22
+.  codetools       0.2-15      2016-10-05
+.  colorspace      1.3-2       2016-12-14
+.  DBI             0.5-1       2016-09-10
+.  devtools        1.12.0.9000 2017-01-08
+.  digest          0.6.12      2017-01-27
+.  dplyr         * 0.5.0       2016-06-24
+.  evaluate        0.10        2016-10-11
+.  ggplot2       * 2.2.1       2016-12-30
+.  gtable          0.2.0       2016-02-26
+.  htmltools       0.3.5       2016-03-21
+.  knitr         * 1.15.1      2016-11-22
+.  labeling        0.3         2014-08-23
+.  lattice       * 0.20-34     2016-09-06
+.  lazyeval        0.2.0       2016-06-12
+.  magrittr      * 1.5         2014-11-22
+.  memoise         1.0.0       2016-01-29
+.  mrgsolve      * 0.7.10.9005 2017-02-23
+.  munsell         0.4.3       2016-02-13
+.  pkgbuild        0.0.0.9000  2017-01-07
+.  pkgload         0.0.0.9000  2017-01-07
+.  plyr            1.8.4       2016-06-08
+.  R6              2.2.0       2016-10-05
+.  Rcpp            0.12.9      2017-01-14
+.  RcppArmadillo   0.7.700.0.0 2017-02-08
+.  rmarkdown       1.3         2016-12-21
+.  rprojroot       1.2         2017-01-16
+.  scales          0.4.1       2016-11-09
+.  stringi         1.1.2       2016-10-01
+.  stringr         1.2.0       2017-02-18
+.  tibble          1.2         2016-08-26
+.  tidyr         * 0.6.1       2017-01-10
+.  withr           1.0.2       2016-06-20
+.  yaml            2.1.14      2016-11-12
+.  source                                       
+.  CRAN (R 3.3.2)                               
+.  cran (@1.0.5)                                
+.  Github (rstudio/blogdown@54cbcc6)            
+.  Github (rstudio/bookdown@a5ad84c)            
+.  CRAN (R 3.3.0)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  Github (hadley/devtools@1ce84b0)             
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.0)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.0)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.2.1)                               
+.  Github (metrumresearchgroup/mrgsolve@6d74d36)
+.  CRAN (R 3.3.2)                               
+.  Github (r-pkgs/pkgbuild@65eace0)             
+.  Github (r-pkgs/pkgload@def2b10)              
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.0)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  cran (@1.2.0)                                
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.2)                               
+.  CRAN (R 3.3.0)                               
+.  CRAN (R 3.3.0)</code></pre>
+</div>
