@@ -14,7 +14,7 @@ source("ref.R")
 differential equation (ODE) based models typically employed in drug development.
 
 ## `mrgsolve` is free, open-source software
-`mrgsolve` is distributed as a package for `R` and   <img src="/images/hexsticker.png" width="100px" align="right"> utilizes an ODE-solver from `ODEPACK` which is freely-available in the public domain.  We develop `mrgsolve` on [github](http://www.github.com/metrumresearchgroup/mrgsolve), with input and contributions from the pharmacometrics modeling and simulation community.  We welcome feature requests and 
+`mrgsolve` is distributed as a package for `R` and utilizes an ODE-solver from `ODEPACK` which is freely-available in the public domain.  We develop `mrgsolve` on [github](http://www.github.com/metrumresearchgroup/mrgsolve), with input and contributions from the pharmacometrics modeling and simulation community.  We welcome feature requests and 
 bug reports on the GitHub site [issue tracker](http://www.github.com/metrumresearchgroup/mrgsolve/issues). 
 
 ## Documentation
