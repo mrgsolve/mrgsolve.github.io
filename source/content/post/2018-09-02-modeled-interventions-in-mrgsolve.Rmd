@@ -6,8 +6,6 @@ slug: modeled-interventions-in-mrgsolve
 tags: ["events"]
 ---
 
-
-
 # Introduction
 
 This post is to introduce modeled interventions in mrgsolve. The main use
@@ -29,14 +27,41 @@ more or less stable with a reasonable interface.
 # Example: time-varying KA
 
 One common use case for modeled events are a time-varying 
-model parameter such as an absorption rate constant.  In 
-this example, we want KA to start at the time of the oral
+model parameter such as an absorption rate constant.  The model with 
+constant `KA` looks like this
+
+```{r}
+code <- '
+$PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
+
+$PKMODEL cmt = "GUT CENT", depot = TRUE
+
+$PREAMBLE capture KA = KA1;
+
+$MAIN
+KA = KA2;
+' 
+```
+
+
+```{r}
+library(mrgsolve)
+
+mcode("mevent0", code) %>% 
+  ev(amt = 100) %>% 
+  mrgsim(end = 24, delta = 0.1) %>%
+  plot(CENT+KA~time)
+```
+
+In this example, we want `KA` to start at the time of the oral
 dose and then increase at some time after the dose.  And we 
 want that to happen for every dose.  We implement that 
 by modeling that time after the dose when we want KA to 
 change and implement at that change point.
 
-The model might look like this
+
+
+The model with time-varying `KA` might look like this
 
 ```{r}
 code <- '
@@ -60,13 +85,13 @@ if(EVID==33) KA = KA3;
 
 Whenever we see a dose (`EVID==1`), we set `KA` to the initial (slower)
 `KA` value and register a model event that (in this case) happens 
-two hours later.  We use `EVID=33` for that event.  Then, when
+two hours later.  We use `EVID=33` for that event.  This is a arbitrary choice
+(it could be [almost] anything).  The idea here is that, when
 we see `EVID==33` come along, we change the `KA` to the faster value.
 
 The simulation looks like this
 
 ```{r}
-library(mrgsolve)
 mod <- mcode("mevent", code)
 
 mod %>% 
@@ -115,12 +140,13 @@ mod <- mcode("mevent2", code)
 
 mod %>% 
   ev(amt = 100) %>% 
-  mrgsim(end = 12, delta = 0.1) %>%
+  mrgsim(end = 8, delta = 0.1) %>%
   plot(CENT+KA~time)
 ```
 
-Now we have the two change points implemented. Multiple doses would 
-look like this:
+Now we have the two change points implemented. 
+
+Multiple doses would look like this
 
 ```{r}
 mod %>% 
@@ -128,7 +154,45 @@ mod %>%
   mrgsim(end = 120, delta = 0.1) %>%
   plot(CENT+KA~time)
 ```
-  
+
+And we can model this so that the change point is a function of a model 
+parameter
+
+```{r}
+code <- '
+$PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
+MTIME1 = 2
+
+
+$PKMODEL cmt = "GUT CENT", depot = TRUE
+
+$PREAMBLE capture KA = KA1;
+
+$MAIN
+
+if(EVID==1) {
+  KA = KA1;
+  self.mevent(TIME + MTIME1, 33);
+}
+
+if(EVID==33) KA = KA3;
+
+' 
+```
+
+```{r}
+mod <- mcode("mevent3", code)
+
+idata <- data.frame(MTIME1 = seq(0,2.5,0.5))
+
+mod %>% 
+  ev(amt = 100) %>% 
+  idata_set(idata) %>%
+  mrgsim(end = 8, delta = 0.1) %>%
+  plot(CENT+KA~time)
+```
+
+
 
 # Example: modeled dosing events
 
@@ -167,7 +231,7 @@ The arguments for `self.mtime()` in this case are:
 
 
 ```{r}
-mod <- mcode("mevent3", code)
+mod <- mcode("mevent4", code)
 
 mod %>%  mrgsim(end = 240, delta = 0.2) %>% plot(CENT~time)
 ```

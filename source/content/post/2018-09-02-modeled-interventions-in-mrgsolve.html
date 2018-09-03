@@ -18,8 +18,27 @@ tags: ["events"]
 </div>
 <div id="example-time-varying-ka" class="section level1">
 <h1>Example: time-varying KA</h1>
-<p>One common use case for modeled events are a time-varying model parameter such as an absorption rate constant. In this example, we want KA to start at the time of the oral dose and then increase at some time after the dose. And we want that to happen for every dose. We implement that by modeling that time after the dose when we want KA to change and implement at that change point.</p>
-<p>The model might look like this</p>
+<p>One common use case for modeled events are a time-varying model parameter such as an absorption rate constant. The model with constant <code>KA</code> looks like this</p>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
+
+$PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
+
+$PREAMBLE capture KA = KA1;
+
+$MAIN
+KA = KA2;
+&#39; </code></pre>
+<pre class="r"><code>library(mrgsolve)
+
+mcode(&quot;mevent0&quot;, code) %&gt;% 
+  ev(amt = 100) %&gt;% 
+  mrgsim(end = 24, delta = 0.1) %&gt;%
+  plot(CENT+KA~time)</code></pre>
+<pre><code>## Compiling mevent0 ... done.</code></pre>
+<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>In this example, we want <code>KA</code> to start at the time of the oral dose and then increase at some time after the dose. And we want that to happen for every dose. We implement that by modeling that time after the dose when we want KA to change and implement at that change point.</p>
+<p>The model with time-varying <code>KA</code> might look like this</p>
 <pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
@@ -37,16 +56,15 @@ if(EVID==1) {
 if(EVID==33) KA = KA3;
 
 &#39; </code></pre>
-<p>Whenever we see a dose (<code>EVID==1</code>), we set <code>KA</code> to the initial (slower) <code>KA</code> value and register a model event that (in this case) happens two hours later. We use <code>EVID=33</code> for that event. Then, when we see <code>EVID==33</code> come along, we change the <code>KA</code> to the faster value.</p>
+<p>Whenever we see a dose (<code>EVID==1</code>), we set <code>KA</code> to the initial (slower) <code>KA</code> value and register a model event that (in this case) happens two hours later. We use <code>EVID=33</code> for that event. This is a arbitrary choice (it could be [almost] anything). The idea here is that, when we see <code>EVID==33</code> come along, we change the <code>KA</code> to the faster value.</p>
 <p>The simulation looks like this</p>
-<pre class="r"><code>library(mrgsolve)
-mod &lt;- mcode(&quot;mevent&quot;, code)</code></pre>
+<pre class="r"><code>mod &lt;- mcode(&quot;mevent&quot;, code)</code></pre>
 <pre><code>## Compiling mevent ... done.</code></pre>
 <pre class="r"><code>mod %&gt;% 
   ev(amt = 100) %&gt;% 
   mrgsim(end = 24, delta = 0.1) %&gt;%
   plot(CENT+KA~time)</code></pre>
-<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>We can refine this even more with an additional intervention time for an intermediate value of <code>KA</code></p>
 <pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
@@ -77,15 +95,46 @@ if(EVID==34) KA = KA3;
 <pre><code>## Compiling mevent2 ... done.</code></pre>
 <pre class="r"><code>mod %&gt;% 
   ev(amt = 100) %&gt;% 
-  mrgsim(end = 12, delta = 0.1) %&gt;%
+  mrgsim(end = 8, delta = 0.1) %&gt;%
   plot(CENT+KA~time)</code></pre>
-<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>Now we have the two change points implemented. Multiple doses would look like this:</p>
+<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Now we have the two change points implemented.</p>
+<p>Multiple doses would look like this</p>
 <pre class="r"><code>mod %&gt;% 
   ev(amt = 100, ii = 24, addl = 2) %&gt;% 
   mrgsim(end = 120, delta = 0.1) %&gt;%
   plot(CENT+KA~time)</code></pre>
-<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>And we can model this so that the change point is a function of a model parameter</p>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
+MTIME1 = 2
+
+
+$PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
+
+$PREAMBLE capture KA = KA1;
+
+$MAIN
+
+if(EVID==1) {
+  KA = KA1;
+  self.mevent(TIME + MTIME1, 33);
+}
+
+if(EVID==33) KA = KA3;
+
+&#39; </code></pre>
+<pre class="r"><code>mod &lt;- mcode(&quot;mevent3&quot;, code)</code></pre>
+<pre><code>## Compiling mevent3 ... done.</code></pre>
+<pre class="r"><code>idata &lt;- data.frame(MTIME1 = seq(0,2.5,0.5))
+
+mod %&gt;% 
+  ev(amt = 100) %&gt;% 
+  idata_set(idata) %&gt;%
+  mrgsim(end = 8, delta = 0.1) %&gt;%
+  plot(CENT+KA~time)</code></pre>
+<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div id="example-modeled-dosing-events" class="section level1">
 <h1>Example: modeled dosing events</h1>
@@ -111,9 +160,9 @@ if(TIME/12 ==floor(TIME/12) &amp;&amp; TIME &lt; 120) {
 <li>dose amount</li>
 <li>rate (for infusions)</li>
 </ol>
-<pre class="r"><code>mod &lt;- mcode(&quot;mevent3&quot;, code)</code></pre>
-<pre><code>## Compiling mevent3 ... done.</code></pre>
+<pre class="r"><code>mod &lt;- mcode(&quot;mevent4&quot;, code)</code></pre>
+<pre><code>## Compiling mevent4 ... done.</code></pre>
 <pre class="r"><code>mod %&gt;%  mrgsim(end = 240, delta = 0.2) %&gt;% plot(CENT~time)</code></pre>
-<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>So here, we simulated without the data set and implemented the dosing from within the model. This isn’t the way you should be implementing dosing like this on a regular basis, but it shows how you can trigger doses from within the model based on what has gone on up to that point in the simulation.</p>
 </div>
