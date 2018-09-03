@@ -81,6 +81,12 @@ if(EVID==33) KA = KA3;
 ' 
 ```
 
+The arguments for `self.mevent()` in this case are:
+
+1. time
+1. evid
+
+
 Whenever we see a dose (`EVID==1`), we set `KA` to the initial (slower)
 `KA` value and register a model event that (in this case) happens 
 two hours later.  We use `EVID=33` for that event.  This is a arbitrary choice
@@ -126,11 +132,6 @@ if(EVID==34) KA = KA3;
 ' 
 ```
 
-
-The arguments for `self.event()` in this case are:
-
-1. time
-1. evid
 
 We use a separate `EVID` here to distinguish the first change 
 from the second change.

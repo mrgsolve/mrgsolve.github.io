@@ -56,6 +56,11 @@ if(EVID==1) {
 if(EVID==33) KA = KA3;
 
 &#39; </code></pre>
+<p>The arguments for <code>self.mevent()</code> in this case are:</p>
+<ol style="list-style-type: decimal">
+<li>time</li>
+<li>evid</li>
+</ol>
 <p>Whenever we see a dose (<code>EVID==1</code>), we set <code>KA</code> to the initial (slower) <code>KA</code> value and register a model event that (in this case) happens two hours later. We use <code>EVID=33</code> for that event. This is a arbitrary choice (it could be [almost] anything). The idea here is that, when we see <code>EVID==33</code> come along, we change the <code>KA</code> to the faster value. We don’t have plans to offer indicators like <code>MPAST</code> or <code>MTDIFF</code> as NONMEM does. But we can achieve similar behavior by tagging the event and then looking for that tag again down the road.</p>
 <p>The simulation looks like this</p>
 <pre class="r"><code>mod &lt;- mcode(&quot;mevent&quot;, code)</code></pre>
@@ -85,11 +90,6 @@ if(EVID==33) KA = KA2;
 if(EVID==34) KA = KA3;
 
 &#39; </code></pre>
-<p>The arguments for <code>self.event()</code> in this case are:</p>
-<ol style="list-style-type: decimal">
-<li>time</li>
-<li>evid</li>
-</ol>
 <p>We use a separate <code>EVID</code> here to distinguish the first change from the second change.</p>
 <pre class="r"><code>mod &lt;- mcode(&quot;mevent2&quot;, code)</code></pre>
 <pre><code>## Compiling mevent2 ... done.</code></pre>
