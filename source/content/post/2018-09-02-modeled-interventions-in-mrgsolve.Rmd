@@ -44,10 +44,12 @@ $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
 $PKMODEL cmt = "GUT CENT", depot = TRUE
 
+$PREAMBLE capture KA = KA1;
+
 $MAIN
 
 if(EVID==1) {
-  double KA = KA1;
+  KA = KA1;
   self.mevent(TIME + 2, 33);
 }
 
@@ -70,7 +72,7 @@ mod <- mcode("mevent", code)
 mod %>% 
   ev(amt = 100) %>% 
   mrgsim(end = 24, delta = 0.1) %>%
-  plot(CENT~time)
+  plot(CENT+KA~time)
 ```
 
 We can refine this even more with an additional intervention 
@@ -82,10 +84,12 @@ $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
 $PKMODEL cmt = "GUT CENT", depot = TRUE
 
+$PREAMBLE capture KA = KA1;
+
 $MAIN
 
 if(EVID==1) {
-  double KA = KA1;
+  KA = KA1;
   self.mevent(TIME + 1, 33);
   self.mevent(TIME + 2, 34);
 }
@@ -112,7 +116,7 @@ mod <- mcode("mevent2", code)
 mod %>% 
   ev(amt = 100) %>% 
   mrgsim(end = 12, delta = 0.1) %>%
-  plot(CENT~time)
+  plot(CENT+KA~time)
 ```
 
 Now we have the two change points implemented. Multiple doses would 
@@ -122,7 +126,7 @@ look like this:
 mod %>% 
   ev(amt = 100, ii = 24, addl = 2) %>% 
   mrgsim(end = 120, delta = 0.1) %>%
-  plot(CENT~time)
+  plot(CENT+KA~time)
 ```
   
 
