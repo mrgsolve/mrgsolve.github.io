@@ -6,10 +6,19 @@
     <description>Recent content in Posts on mrgsolve</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 27 Aug 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Modeled interventions in mrgsolve</title>
+      <link>/2018/09/02/modeled-interventions-in-mrgsolve/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/02/modeled-interventions-in-mrgsolve/</guid>
+      <description>Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are &amp;ldquo;modeled&amp;rdquo; because they originate from code in the $MAIN block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</description>
+    </item>
     
     <item>
       <title>Creating complex dosing regimens with event objects</title>
@@ -157,6 +166,15 @@ library(mrgsolve) library(dplyr) simeta example  In this example, we want to sim
       
       <guid>/2017/01/01/work-with-r-objects-in-your-model/</guid>
       <description>About  This model doesn’t really accomplish anything useful. I coded this up to show how we can get vector, matrix data as well as R functions into your simulation. After we show the model code, we walk through the key lines of code and explain why / where this type of extension could be useful.   Documentation  You can find documentation for functions in mrgx plugin here: http://mrgsolve.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/1/01/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/</guid>
+      <description>1 Introduction 2 Status 3 Example: time-varying KA   1 Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event.</description>
     </item>
     
     <item>

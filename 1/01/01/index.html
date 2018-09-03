@@ -1,0 +1,71 @@
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#status"><span class="toc-section-number">2</span> Status</a></li>
+<li><a href="#example-time-varying-ka"><span class="toc-section-number">3</span> Example: time-varying KA</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the <code>MTIME</code> functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are “modeled” because they originate from code in the <code>$MAIN</code> block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</p>
+</div>
+<div id="status" class="section level1">
+<h1><span class="header-section-number">2</span> Status</h1>
+<p>At the time of this post, this functionality is only in a development branch on the mrgsolve GitHub. But we’ve been working on and revising this concept for a while now, so hopefully it is more or less stable with a reasonable interface.</p>
+</div>
+<div id="example-time-varying-ka" class="section level1">
+<h1><span class="header-section-number">3</span> Example: time-varying KA</h1>
+<p>One common use case for modeled events are a time-varying model parameter such as an absorption rate constant. In this example, we want KA to start at the time of the oral dose and then increase at some time after the dose. And we want that to happen for every dose. We implement that by modeling that time after the dose when we want KA to change and implement at that change point.</p>
+<p>The model might look like this</p>
+<pre class="{r}"><code>code &lt;- &#39;
+$PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
+
+$PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
+
+$MAIN
+
+if(EVID==1) {
+  double KA = KA1;
+  self.mevent(TIME + 2, 33);
+}
+
+if(EVID==33) KA = KA3;
+
+&#39; </code></pre>
+<p>Whenever we see a dose (<code>EVID==1</code>), we set <code>KA</code> to the initial (slower) <code>KA</code> value and register a model event that (in this case) happens two hours later. We use <code>EVID=33</code> for that event. Then, when we see <code>EVID==33</code> come along, we change the <code>KA</code> to the faster value.</p>
+<p>The simulation looks like this</p>
+<pre class="{r}"><code>library(mrgsolve)
+mod &lt;- mcode(&quot;mevent&quot;, code)
+
+mod %&gt;% 
+  ev(amt = 100) %&gt;% 
+  mrgsim(end = 24, delta = 0.1) %&gt;%
+  plot(CENT~time)</code></pre>
+<p>We can refine this even more with an additional intervention time for an intermediate value of <code>KA</code></p>
+<pre class="{r}"><code>code &lt;- &#39;
+$PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
+
+$PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
+
+$MAIN
+
+if(EVID==1) {
+  double KA = KA1;
+  self.mevent(TIME + 1, 33);
+  self.mevent(TIME + 2, 34);
+}
+
+if(EVID==33) KA = KA2;
+if(EVID==34) KA = KA3;
+
+&#39; </code></pre>
+<p>We use a separate <code>EVID</code> here to distinguish the first change from the second change.</p>
+<pre class="{r}"><code>mod &lt;- mcode(&quot;mevent2&quot;, code)
+
+mod %&gt;% 
+  ev(amt = 100) %&gt;% 
+  mrgsim(end = 12, delta = 0.1) %&gt;%
+  plot(CENT~time)</code></pre>
+<p>Now we have the two change points implemented.</p>
+</div>
