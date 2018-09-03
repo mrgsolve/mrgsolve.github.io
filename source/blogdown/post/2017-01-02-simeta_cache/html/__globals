@@ -1,9 +1,0 @@
-unnamed-chunk-2	library	mrgsolve	dplyr
-unnamed-chunk-3	code
-unnamed-chunk-4	mod	mcode	code
-unnamed-chunk-5	system.time	out	mod	%>%	mrgsim	sum	summary	print
-unnamed-chunk-6	system.time	out	mod	%>%	mrgsim	list	sum	summary	print
-unnamed-chunk-7	code
-unnamed-chunk-8	mod	mcode	code
-unnamed-chunk-9	system.time	out	mod	%>%	ev	mrgsim	sum	summary	print
-unnamed-chunk-10	system.time	out	mod	%>%	ev	mrgsim	list	sum	summary	print
