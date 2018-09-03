@@ -59,8 +59,6 @@ want that to happen for every dose.  We implement that
 by modeling that time after the dose when we want KA to 
 change and implement at that change point.
 
-
-
 The model with time-varying `KA` might look like this
 
 ```{r}
@@ -87,7 +85,10 @@ Whenever we see a dose (`EVID==1`), we set `KA` to the initial (slower)
 `KA` value and register a model event that (in this case) happens 
 two hours later.  We use `EVID=33` for that event.  This is a arbitrary choice
 (it could be [almost] anything).  The idea here is that, when
-we see `EVID==33` come along, we change the `KA` to the faster value.
+we see `EVID==33` come along, we change the `KA` to the faster value. 
+We don't have plans to offer indicators like `MPAST` or `MTDIFF` as 
+NONMEM does.  But we can achieve similar behavior by tagging the event
+and then looking for that tag again down the road.  
 
 The simulation looks like this
 
