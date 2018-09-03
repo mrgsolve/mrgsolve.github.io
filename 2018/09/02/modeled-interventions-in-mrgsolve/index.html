@@ -74,7 +74,7 @@ ga('send', 'pageview');
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">Modeled interventions in mrgsolve</h1>
@@ -84,40 +84,19 @@ ga('send', 'pageview');
     
 
     <div class="article-content">
-      
-
-<h1 id="introduction">Introduction</h1>
-
-<p>This post is to introduce modeled interventions in mrgsolve. The main use
-case for this functionality is to force mrgsolve to advance the
-system to a specific time so that some aspect of the system
-can change at that time.  This is similar to the <code>MTIME</code> functionality
-that NONMEM provides.  Additionally, doses (bolus or infusions)
-can also be implemented as a modeled event.  These events are &ldquo;modeled&rdquo;
-because they originate from code in the <code>$MAIN</code> block, not the
-input data set, so that the events can be reactive to model parameters
-or the state of the model itself.</p>
-
-<h1 id="status">Status</h1>
-
-<p>At the time of this post, this functionality is only in a development
-branch on the mrgsolve GitHub.  But we&rsquo;ve been working on and
-revising this concept for a while now, so hopefully it is
-more or less stable with a reasonable interface.</p>
-
-<h1 id="example-time-varying-ka">Example: time-varying KA</h1>
-
-<p>One common use case for modeled events are a time-varying
-model parameter such as an absorption rate constant.  In
-this example, we want KA to start at the time of the oral
-dose and then increase at some time after the dose.  And we
-want that to happen for every dose.  We implement that
-by modeling that time after the dose when we want KA to
-change and implement at that change point.</p>
-
+      <div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the <code>MTIME</code> functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are “modeled” because they originate from code in the <code>$MAIN</code> block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</p>
+</div>
+<div id="status" class="section level1">
+<h1>Status</h1>
+<p>At the time of this post, this functionality is only in a development branch on the mrgsolve GitHub. But we’ve been working on and revising this concept for a while now, so hopefully it is more or less stable with a reasonable interface.</p>
+</div>
+<div id="example-time-varying-ka" class="section level1">
+<h1>Example: time-varying KA</h1>
+<p>One common use case for modeled events are a time-varying model parameter such as an absorption rate constant. In this example, we want KA to start at the time of the oral dose and then increase at some time after the dose. And we want that to happen for every dose. We implement that by modeling that time after the dose when we want KA to change and implement at that change point.</p>
 <p>The model might look like this</p>
-
-<pre><code class="language-r">code &lt;- '
+<pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
 $PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
@@ -131,29 +110,19 @@ if(EVID==1) {
 
 if(EVID==33) KA = KA3;
 
-' 
-</code></pre>
-
-<p>Whenever we see a dose (<code>EVID==1</code>), we set <code>KA</code> to the initial (slower)
-<code>KA</code> value and register a model event that (in this case) happens
-two hours later.  We use <code>EVID=33</code> for that event.  Then, when
-we see <code>EVID==33</code> come along, we change the <code>KA</code> to the faster value.</p>
-
+&#39; </code></pre>
+<p>Whenever we see a dose (<code>EVID==1</code>), we set <code>KA</code> to the initial (slower) <code>KA</code> value and register a model event that (in this case) happens two hours later. We use <code>EVID=33</code> for that event. Then, when we see <code>EVID==33</code> come along, we change the <code>KA</code> to the faster value.</p>
 <p>The simulation looks like this</p>
-
-<pre><code class="language-r">library(mrgsolve)
-mod &lt;- mcode(&quot;mevent&quot;, code)
-
-mod %&gt;% 
+<pre class="r"><code>library(mrgsolve)
+mod &lt;- mcode(&quot;mevent&quot;, code)</code></pre>
+<pre><code>## Compiling mevent ... done.</code></pre>
+<pre class="r"><code>mod %&gt;% 
   ev(amt = 100) %&gt;% 
   mrgsim(end = 24, delta = 0.1) %&gt;%
-  plot(CENT~time)
-</code></pre>
-
-<p>We can refine this even more with an additional intervention
-time for an intermediate value of <code>KA</code></p>
-
-<pre><code class="language-r">code &lt;- '
+  plot(CENT~time)</code></pre>
+<p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>We can refine this even more with an additional intervention time for an intermediate value of <code>KA</code></p>
+<pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
 $PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
@@ -169,48 +138,32 @@ if(EVID==1) {
 if(EVID==33) KA = KA2;
 if(EVID==34) KA = KA3;
 
-' 
-</code></pre>
-
+&#39; </code></pre>
 <p>The arguments for <code>self.mtime()</code> in this case are:</p>
-
-<ol>
+<ol style="list-style-type: decimal">
 <li>time</li>
 <li>evid</li>
 </ol>
-
-<p>We use a separate <code>EVID</code> here to distinguish the first change
-from the second change.</p>
-
-<pre><code class="language-r">mod &lt;- mcode(&quot;mevent2&quot;, code)
-
-mod %&gt;% 
+<p>We use a separate <code>EVID</code> here to distinguish the first change from the second change.</p>
+<pre class="r"><code>mod &lt;- mcode(&quot;mevent2&quot;, code)</code></pre>
+<pre><code>## Compiling mevent2 ... done.</code></pre>
+<pre class="r"><code>mod %&gt;% 
   ev(amt = 100) %&gt;% 
   mrgsim(end = 12, delta = 0.1) %&gt;%
-  plot(CENT~time)
-</code></pre>
-
-<p>Now we have the two change points implemented. Multiple doses would
-look like this:</p>
-
-<pre><code class="language-r">mod %&gt;% 
+  plot(CENT~time)</code></pre>
+<p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Now we have the two change points implemented. Multiple doses would look like this:</p>
+<pre class="r"><code>mod %&gt;% 
   ev(amt = 100, ii = 24, addl = 2) %&gt;% 
   mrgsim(end = 120, delta = 0.1) %&gt;%
-  plot(CENT~time)
-</code></pre>
-
-<h1 id="example-modeled-dosing-events">Example: modeled dosing events</h1>
-
-<p>In the previous example, we used the <code>mevent</code> call to
-to force the simulation to stop at the time we wanted the
-parameter to change. This was accomplished by an event object
-with <code>EVID=2</code>, which forces the simulation (and to the solver)
-to stop at the time of the event, reset, and then keep going
-(with the new model parameters).</p>
-
+  plot(CENT~time)</code></pre>
+<p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="example-modeled-dosing-events" class="section level1">
+<h1>Example: modeled dosing events</h1>
+<p>In the previous example, we used the <code>mevent</code> call to to force the simulation to stop at the time we wanted the parameter to change. This was accomplished by an event object with <code>EVID=2</code>, which forces the simulation (and to the solver) to stop at the time of the event, reset, and then keep going (with the new model parameters).</p>
 <p>We can also use this mechanism to implement actual doses like this</p>
-
-<pre><code class="language-r">code &lt;- '
+<pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA = 2
 
 $PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
@@ -221,23 +174,21 @@ if(TIME/12 ==floor(TIME/12) &amp;&amp; TIME &lt; 120) {
   self.mevent(TIME, 1, 1, 100, 0);
 }
 
-' 
-</code></pre>
-
+&#39; </code></pre>
 <p>The arguments for <code>self.mtime()</code> in this case are:</p>
-
-<ol>
+<ol style="list-style-type: decimal">
 <li>time</li>
 <li>evid</li>
 <li>compartment</li>
 <li>dose amount</li>
 <li>rate (for infusions)</li>
 </ol>
-
-<pre><code class="language-r">mod &lt;- mcode(&quot;mevent3&quot;, code)
-
-mod %&gt;%  mrgsim(end = 240, delta = 0.2) %&gt;% plot(CENT~time)
-</code></pre>
+<pre class="r"><code>mod &lt;- mcode(&quot;mevent3&quot;, code)</code></pre>
+<pre><code>## Compiling mevent3 ... done.</code></pre>
+<pre class="r"><code>mod %&gt;%  mrgsim(end = 240, delta = 0.2) %&gt;% plot(CENT~time)</code></pre>
+<p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>So here, we simulated without the data set and implemented the dosing from within the model. This isn’t the way you should be implementing dosing like this on a regular basis, but it shows how you can trigger doses from within the model based on what has gone on up to that point in the simulation.</p>
+</div>
 
     </div>
   </article>
