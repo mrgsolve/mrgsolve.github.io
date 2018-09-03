@@ -150,22 +150,22 @@ $CAPTURE EBASE
   sum &lt;- summary(out)
 })</code></pre>
 <pre><code>.    user  system elapsed 
-.   0.021   0.001   0.021</code></pre>
+.   0.021   0.000   0.021</code></pre>
 <pre class="r"><code>print(sum)</code></pre>
-<pre><code>.        ID              time      RESPONSE            EBASE        
-.  Min.   :  1.00   Min.   :0   Min.   :   4.991   Min.   :-2.9976  
-.  1st Qu.: 25.75   1st Qu.:0   1st Qu.:  62.706   1st Qu.:-0.4667  
-.  Median : 50.50   Median :0   Median : 111.885   Median : 0.1123  
-.  Mean   : 50.50   Mean   :0   Mean   : 177.325   Mean   : 0.1082  
-.  3rd Qu.: 75.25   3rd Qu.:0   3rd Qu.: 208.184   3rd Qu.: 0.7332  
-.  Max.   :100.00   Max.   :0   Max.   :1445.492   Max.   : 2.6710  
+<pre><code>.        ID              time      RESPONSE            EBASE         
+.  Min.   :  1.00   Min.   :0   Min.   :   9.054   Min.   :-2.40199  
+.  1st Qu.: 25.75   1st Qu.:0   1st Qu.:  53.194   1st Qu.:-0.63186  
+.  Median : 50.50   Median :0   Median :  99.001   Median :-0.01004  
+.  Mean   : 50.50   Mean   :0   Mean   : 173.426   Mean   : 0.03736  
+.  3rd Qu.: 75.25   3rd Qu.:0   3rd Qu.: 220.065   3rd Qu.: 0.78874  
+.  Max.   :100.00   Max.   :0   Max.   :1112.148   Max.   : 2.40888  
 .       BASE         
-.  Min.   :   4.991  
-.  1st Qu.:  62.706  
-.  Median : 111.885  
-.  Mean   : 177.325  
-.  3rd Qu.: 208.184  
-.  Max.   :1445.492</code></pre>
+.  Min.   :   9.054  
+.  1st Qu.:  53.194  
+.  Median :  99.001  
+.  Mean   : 173.426  
+.  3rd Qu.: 220.065  
+.  Max.   :1112.148</code></pre>
 <p>When we simulate with <code>FLAG=0</code>, the <code>simeta</code> code <strong>isn’t</strong> called and we <code>BASE</code> values all over the place.</p>
 </div>
 <div id="simulate-with-simeta" class="section level3">
@@ -178,19 +178,19 @@ $CAPTURE EBASE
 .   0.005   0.000   0.005</code></pre>
 <pre class="r"><code>print(sum)</code></pre>
 <pre><code>.        ID              time      RESPONSE          EBASE         
-.  Min.   :  1.00   Min.   :0   Min.   : 80.20   Min.   :-0.22068  
-.  1st Qu.: 25.75   1st Qu.:0   1st Qu.: 90.62   1st Qu.:-0.09849  
-.  Median : 50.50   Median :0   Median : 98.43   Median :-0.01578  
-.  Mean   : 50.50   Mean   :0   Mean   : 98.70   Mean   :-0.01854  
-.  3rd Qu.: 75.25   3rd Qu.:0   3rd Qu.:105.40   3rd Qu.: 0.05258  
-.  Max.   :100.00   Max.   :0   Max.   :118.99   Max.   : 0.17384  
+.  Min.   :  1.00   Min.   :0   Min.   : 80.52   Min.   :-0.21672  
+.  1st Qu.: 25.75   1st Qu.:0   1st Qu.: 89.99   1st Qu.:-0.10547  
+.  Median : 50.50   Median :0   Median : 97.98   Median :-0.02044  
+.  Mean   : 50.50   Mean   :0   Mean   : 99.63   Mean   :-0.01002  
+.  3rd Qu.: 75.25   3rd Qu.:0   3rd Qu.:110.17   3rd Qu.: 0.09685  
+.  Max.   :100.00   Max.   :0   Max.   :119.76   Max.   : 0.18031  
 .       BASE       
-.  Min.   : 80.20  
-.  1st Qu.: 90.62  
-.  Median : 98.43  
-.  Mean   : 98.70  
-.  3rd Qu.:105.40  
-.  Max.   :118.99</code></pre>
+.  Min.   : 80.52  
+.  1st Qu.: 89.99  
+.  Median : 97.98  
+.  Mean   : 99.63  
+.  3rd Qu.:110.17  
+.  Max.   :119.76</code></pre>
 <p>When we simulate with <code>FLAG=1</code>, the <code>simeta</code> code <strong>is</strong> called and we <code>BASE</code> values within the specified bounds.</p>
 </div>
 </div>
@@ -229,15 +229,15 @@ while(CP &lt; 0 &amp;&amp; FLAG &gt; 0) {
   sum &lt;- summary(out)
 })</code></pre>
 <pre><code>.    user  system elapsed 
-.   0.006   0.000   0.006</code></pre>
+.   0.006   0.000   0.007</code></pre>
 <pre class="r"><code>print(sum)</code></pre>
-<pre><code>.        ID         time            CENT              CP          
-.  Min.   :1   Min.   : 0.00   Min.   :  0.00   Min.   :-17.4390  
-.  1st Qu.:1   1st Qu.:11.25   1st Qu.: 15.93   1st Qu.: -3.7548  
-.  Median :1   Median :23.50   Median : 29.38   Median : -0.9993  
-.  Mean   :1   Mean   :23.52   Mean   : 37.47   Mean   :  0.2505  
-.  3rd Qu.:1   3rd Qu.:35.75   3rd Qu.: 54.21   3rd Qu.:  2.6742  
-.  Max.   :1   Max.   :48.00   Max.   :100.00   Max.   : 19.2377</code></pre>
+<pre><code>.        ID         time            CENT              CP         
+.  Min.   :1   Min.   : 0.00   Min.   :  0.00   Min.   :-11.112  
+.  1st Qu.:1   1st Qu.:11.25   1st Qu.: 15.93   1st Qu.: -1.098  
+.  Median :1   Median :23.50   Median : 29.38   Median :  1.610  
+.  Mean   :1   Mean   :23.52   Mean   : 37.47   Mean   :  2.068  
+.  3rd Qu.:1   3rd Qu.:35.75   3rd Qu.: 54.21   3rd Qu.:  5.867  
+.  Max.   :1   Max.   :48.00   Max.   :100.00   Max.   : 18.989</code></pre>
 <p><strong>Negative</strong> concentrations are simulated when we <strong>don’t</strong> call the <code>simeps</code> loop.</p>
 </div>
 <div id="simulate-with-simeps" class="section level3">
@@ -247,15 +247,15 @@ while(CP &lt; 0 &amp;&amp; FLAG &gt; 0) {
   sum &lt;- summary(out)
 })</code></pre>
 <pre><code>.    user  system elapsed 
-.   0.026   0.000   0.026</code></pre>
+.   0.028   0.000   0.029</code></pre>
 <pre class="r"><code>print(sum)</code></pre>
 <pre><code>.        ID         time            CENT              CP         
-.  Min.   :1   Min.   : 0.00   Min.   :  0.00   Min.   : 0.2941  
-.  1st Qu.:1   1st Qu.:11.25   1st Qu.: 15.93   1st Qu.: 2.2573  
-.  Median :1   Median :23.50   Median : 29.38   Median : 6.5053  
-.  Mean   :1   Mean   :23.52   Mean   : 37.47   Mean   : 6.9189  
-.  3rd Qu.:1   3rd Qu.:35.75   3rd Qu.: 54.21   3rd Qu.:10.2914  
-.  Max.   :1   Max.   :48.00   Max.   :100.00   Max.   :18.1358</code></pre>
+.  Min.   :1   Min.   : 0.00   Min.   :  0.00   Min.   : 0.2437  
+.  1st Qu.:1   1st Qu.:11.25   1st Qu.: 15.93   1st Qu.: 2.4205  
+.  Median :1   Median :23.50   Median : 29.38   Median : 6.6459  
+.  Mean   :1   Mean   :23.52   Mean   : 37.47   Mean   : 6.9767  
+.  3rd Qu.:1   3rd Qu.:35.75   3rd Qu.: 54.21   3rd Qu.:11.1508  
+.  Max.   :1   Max.   :48.00   Max.   :100.00   Max.   :24.5468</code></pre>
 <p>Better … all concentrations are positive.</p>
 </div>
 </div>

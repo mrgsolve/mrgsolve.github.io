@@ -101,10 +101,12 @@ $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
 $PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
 
+$PREAMBLE capture KA = KA1;
+
 $MAIN
 
 if(EVID==1) {
-  double KA = KA1;
+  KA = KA1;
   self.mevent(TIME + 2, 33);
 }
 
@@ -119,7 +121,7 @@ mod &lt;- mcode(&quot;mevent&quot;, code)</code></pre>
 <pre class="r"><code>mod %&gt;% 
   ev(amt = 100) %&gt;% 
   mrgsim(end = 24, delta = 0.1) %&gt;%
-  plot(CENT~time)</code></pre>
+  plot(CENT+KA~time)</code></pre>
 <p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>We can refine this even more with an additional intervention time for an intermediate value of <code>KA</code></p>
 <pre class="r"><code>code &lt;- &#39;
@@ -127,10 +129,12 @@ $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
 $PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
 
+$PREAMBLE capture KA = KA1;
+
 $MAIN
 
 if(EVID==1) {
-  double KA = KA1;
+  KA = KA1;
   self.mevent(TIME + 1, 33);
   self.mevent(TIME + 2, 34);
 }
@@ -150,13 +154,13 @@ if(EVID==34) KA = KA3;
 <pre class="r"><code>mod %&gt;% 
   ev(amt = 100) %&gt;% 
   mrgsim(end = 12, delta = 0.1) %&gt;%
-  plot(CENT~time)</code></pre>
+  plot(CENT+KA~time)</code></pre>
 <p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Now we have the two change points implemented. Multiple doses would look like this:</p>
 <pre class="r"><code>mod %&gt;% 
   ev(amt = 100, ii = 24, addl = 2) %&gt;% 
   mrgsim(end = 120, delta = 0.1) %&gt;%
-  plot(CENT~time)</code></pre>
+  plot(CENT+KA~time)</code></pre>
 <p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="example-modeled-dosing-events" class="section level1">
