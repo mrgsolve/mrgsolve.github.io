@@ -111,4 +111,5 @@ if(TIME/12 ==floor(TIME/12) &amp;&amp; TIME &lt; 120) {
 <pre><code>## Compiling mevent3 ... done.</code></pre>
 <pre class="r"><code>mod %&gt;%  mrgsim(end = 240, delta = 0.2) %&gt;% plot(CENT~time)</code></pre>
 <p><img src="/post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>So here, we simulated without the data set and implemented the dosing from within the model. This isn’t the way you should be implementing dosing like this on a regular basis, but it shows how you can trigger doses from within the model based on what has gone on up to that point in the simulation.</p>
 </div>
