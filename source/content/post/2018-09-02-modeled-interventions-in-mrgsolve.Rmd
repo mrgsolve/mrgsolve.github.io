@@ -127,7 +127,7 @@ if(EVID==34) KA = KA3;
 ```
 
 
-The arguments for `self.mtime()` in this case are:
+The arguments for `self.event()` in this case are:
 
 1. time
 1. evid
@@ -222,7 +222,7 @@ if(TIME/12 ==floor(TIME/12) && TIME < 120) {
 ```
 
 
-The arguments for `self.mtime()` in this case are:
+The arguments for `self.mevent()` in this case are:
 
 1. time
 1. evid
