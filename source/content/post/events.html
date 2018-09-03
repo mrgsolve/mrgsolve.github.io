@@ -24,11 +24,11 @@ library(dplyr)</code></pre>
 <p>This will implement 100 unit doses every 24 hours for a total of 7 doses. <code>e</code> has class <code>ev</code>, but really it is just a data frame</p>
 <pre class="r"><code>e</code></pre>
 <pre><code>. Events:
-.   time cmt amt ii addl evid
-. 1    0   1 100 24    6    1</code></pre>
+.   time cmt amt evid ii addl
+. 1    0   1 100    1 24    6</code></pre>
 <pre class="r"><code>as.data.frame(e)</code></pre>
-<pre><code>.   time cmt amt ii addl evid
-. 1    0   1 100 24    6    1</code></pre>
+<pre><code>.   time cmt amt evid ii addl
+. 1    0   1 100    1 24    6</code></pre>
 <p>We can implement this series of doses by passing <code>e</code> in as the <code>events</code> argument to <code>mrgsim</code></p>
 <pre class="r"><code>mod %&gt;% mrgsim(events=e) %&gt;% plot(EV1+CP~time)</code></pre>
 <p><img src="/post/events_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -66,9 +66,9 @@ e4 &lt;- ev(amt=250, ii=24, addl=4, time=24)</code></pre>
 <p><code>mrgsolve</code> also defines a <code>%then$</code> operator that lets you execute one event and <code>%then%</code> a second event</p>
 <pre class="r"><code>e3 %then% e2</code></pre>
 <pre><code>. Events:
-.   time cmt amt ii addl evid
-. 1    0   1 500 24    0    1
-. 2   24   1 250 24    4    1</code></pre>
+.   time cmt amt evid ii addl
+. 1    0   1 500    1 24    0
+. 2   24   1 250    1 24    4</code></pre>
 <p>Notice that <code>e3</code> has both <code>ii</code> and <code>addl</code> defined. This is required for <code>mrgsolve</code> to know when to start <code>e2</code>.</p>
 </div>
 <div id="combine-event-objects-to-create-a-data-set" class="section level1">

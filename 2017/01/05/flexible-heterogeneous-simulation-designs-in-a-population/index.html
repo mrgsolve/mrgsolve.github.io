@@ -93,7 +93,7 @@ library(dplyr)</code></pre>
 <pre class="r"><code>des &lt;- data_frame(ID=1:4, end=seq(24,96,24))
 
 des</code></pre>
-<pre><code>. # A tibble: 4 × 2
+<pre><code>. # A tibble: 4 x 2
 .      ID   end
 .   &lt;int&gt; &lt;dbl&gt;
 . 1     1    24
@@ -123,7 +123,7 @@ des</code></pre>
 
 idata &lt;- select(des,ID)
 idata</code></pre>
-<pre><code>. # A tibble: 4 × 1
+<pre><code>. # A tibble: 4 x 1
 .      ID
 .   &lt;int&gt;
 . 1     1
@@ -196,9 +196,9 @@ t1</code></pre>
 <p><strong>Note</strong>: When we simulate with <code>end &lt; 0</code>, <code>mrgsolve</code> knows to ignore <code>start/end/delta</code> and only use the times in <code>add</code> for observations.</p>
 <pre class="r"><code>des &lt;- data_frame(ID=1:2, end=-1, add=list(t1,t2))
 des</code></pre>
-<pre><code>. # A tibble: 2 × 3
-.      ID   end        add
-.   &lt;int&gt; &lt;dbl&gt;     &lt;list&gt;
+<pre><code>. # A tibble: 2 x 3
+.      ID   end add       
+.   &lt;int&gt; &lt;dbl&gt; &lt;list&gt;    
 . 1     1    -1 &lt;dbl [13]&gt;
 . 2     2    -1 &lt;dbl [13]&gt;</code></pre>
 <pre class="r"><code>mod %&gt;% 

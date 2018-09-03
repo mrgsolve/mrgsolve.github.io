@@ -157,7 +157,7 @@ sim &lt;-
   mrgsim(end=-1, add=sampl)
 
 sim</code></pre>
-<pre><code>. Model:  map.cpp 
+<pre><code>. Model:  map 
 . Dim:    4 x 8 
 . Time:   0 to 24 
 . ID:     1 
@@ -275,33 +275,33 @@ pmod &lt;- mod %&gt;% update(end=24, delta=0.1) </code></pre>
 <p>Predicted line based on final estimates</p>
 <pre class="r"><code>pred &lt;- mapbayes(fit$par,y,pdata,pmod,pred=TRUE) %&gt;% filter(time &gt; 0)
 head(pred)</code></pre>
-<pre><code>. # A tibble: 6 × 5
-.      ID  time       DV   ET1   ET2
-.   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-. 1     1   0.1 43.82331     0     0
-. 2     1   0.2 43.18567     0     0
-. 3     1   0.3 42.55731     0     0
-. 4     1   0.4 41.93809     0     0
-. 5     1   0.5 41.32789     0     0
-. 6     1   0.6 40.72656     0     0</code></pre>
+<pre><code>. # A tibble: 6 x 5
+.      ID  time    DV   ET1   ET2
+.   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+. 1     1   0.1  43.8     0     0
+. 2     1   0.2  43.2     0     0
+. 3     1   0.3  42.6     0     0
+. 4     1   0.4  41.9     0     0
+. 5     1   0.5  41.3     0     0
+. 6     1   0.6  40.7     0     0</code></pre>
 <p>Predicted line based on initial estimates</p>
 <pre class="r"><code>initial &lt;- mapbayes(init,y,pdata,pmod,pred=TRUE) %&gt;% filter(time &gt; 0)
 head(initial)</code></pre>
-<pre><code>. # A tibble: 6 × 5
-.      ID  time       DV   ET1   ET2
-.   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-. 1     1   0.1 26.13954     0     0
-. 2     1   0.2 26.03811     0     0
-. 3     1   0.3 25.93707     0     0
-. 4     1   0.4 25.83642     0     0
-. 5     1   0.5 25.73616     0     0
-. 6     1   0.6 25.63629     0     0</code></pre>
+<pre><code>. # A tibble: 6 x 5
+.      ID  time    DV   ET1   ET2
+.   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+. 1     1   0.1  26.1     0     0
+. 2     1   0.2  26.0     0     0
+. 3     1   0.3  25.9     0     0
+. 4     1   0.4  25.8     0     0
+. 5     1   0.5  25.7     0     0
+. 6     1   0.6  25.6     0     0</code></pre>
 <p>Plot</p>
 <pre class="r"><code>ggplot() + 
   geom_line(data=pred, aes(time,DV),col=&quot;firebrick&quot;, lwd=1) + 
   geom_line(data=initial,aes(time,DV), lty=2, col=&quot;darkgreen&quot;, lwd=1) + 
   geom_point(data=data %&gt;% filter(evid==0), aes(time,DV), col=&quot;darkslateblue&quot;,size=3)</code></pre>
-<p><img src="map_bayes_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="../../topic/map_bayes_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 
     </div>

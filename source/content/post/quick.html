@@ -25,22 +25,20 @@ library(dplyr)</code></pre>
 <pre class="r"><code>mod &lt;- mrgsolve:::house()
 param(mod)</code></pre>
 <pre><code>. 
-.  Model parameters (N=13):
+.  Model parameters (N=14):
 .  name value . name  value
-.  CL   1     | SEXCL 0.7  
+.  CL   1     | SEX   0    
+.  D1   2     | SEXCL 0.7  
 .  F1   1     | SEXVC 0.85 
 .  IC50 10    | VC    20   
 .  KA   1.2   | WT    70   
 .  KIN  100   | WTCL  0.75 
-.  KOUT 2     | WTVC  1    
-.  SEX  0     | .     .</code></pre>
+.  KOUT 2     | WTVC  1</code></pre>
 <p>we can pick a parameter value with</p>
 <pre class="r"><code>mod$CL</code></pre>
-<pre><code>. CL 
-.  1</code></pre>
+<pre><code>. [1] 1</code></pre>
 <pre class="r"><code>mod$WT</code></pre>
-<pre><code>. WT 
-. 70</code></pre>
+<pre><code>. [1] 70</code></pre>
 </div>
 <div id="zero-all-random-effect-variances-on-the-fly" class="section level1">
 <h1>Zero all random effect variances on the fly</h1>
@@ -72,7 +70,7 @@ omat(mod)</code></pre>
 <div id="plot-formulae" class="section level1">
 <h1>Plot formulae</h1>
 <p>We commonly plot simulated output with a special plot method. By default, you get all compartments and output variables in the plot.</p>
-<pre class="r"><code>mod &lt;- mrgsolve:::house() %&gt;% events(ev(amt=100))
+<pre class="r"><code>mod &lt;- mrgsolve:::house() %&gt;% ev(amt=100)
 
 mod %&gt;% mrgsim %&gt;% plot</code></pre>
 <p><img src="/post/quick_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>

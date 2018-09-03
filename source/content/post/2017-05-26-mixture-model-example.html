@@ -61,7 +61,6 @@ mod &lt;- mcode_cache(&quot;B&quot;, code)</code></pre>
 out &lt;- mrgsim(mod, nid=10000, end=-1)
 
 head(out)</code></pre>
-<pre><code>. Model:  B</code></pre>
 <pre><code>.   ID time POP
 . 1  1    0   2
 . 2  2    0   1
@@ -100,7 +99,6 @@ mod &lt;- mcode_cache(&quot;C&quot;, code)</code></pre>
 <pre class="r"><code>set.seed(444)
 out &lt;- mrgsim(mod,nid=10000, end=72, events=e,obsonly=TRUE)</code></pre>
 <pre class="r"><code>head(out)</code></pre>
-<pre><code>. Model:  C</code></pre>
 <pre><code>.   ID time        GUT     CENT POP CL       CLi
 . 1  1    0  0.0000000  0.00000   1  1 0.7642753
 . 2  1    1 30.1194212 68.50511   1  1 0.7642753
@@ -114,11 +112,11 @@ out &lt;- mrgsim(mod,nid=10000, end=72, events=e,obsonly=TRUE)</code></pre>
   filter(time==0) %&gt;%
   group_by(POP) %&gt;% 
   summarise(N=n(), Median = median(CLi))</code></pre>
-<pre><code>. # A tibble: 2 × 3
-.     POP     N    Median
-.   &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;
-. 1     1  8023 1.0026133
-. 2     2  1977 0.4985587</code></pre>
+<pre><code>. # A tibble: 2 x 3
+.     POP     N Median
+.   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+. 1     1  8023  1.00 
+. 2     2  1977  0.499</code></pre>
 </div>
 </div>
 <div id="three-or-more-populations" class="section level1">
@@ -152,7 +150,6 @@ $CAPTURE POP mixv
 set.seed(333)
 out &lt;- mrgsim(mod, nid=10000, end=-1)</code></pre>
 <pre class="r"><code>head(out)</code></pre>
-<pre><code>. Model:  D</code></pre>
 <pre><code>.   ID time POP       mixv
 . 1  1    0   2 0.46700066
 . 2  2    0   1 0.08459815
@@ -162,11 +159,11 @@ out &lt;- mrgsim(mod, nid=10000, end=-1)</code></pre>
 . 6  6    0   2 0.72355739</code></pre>
 <p>And check that the population is properly configured</p>
 <pre class="r"><code>out %&gt;% as.tbl %&gt;% count(POP) %&gt;% mutate(p = n/nrow(out))</code></pre>
-<pre><code>. # A tibble: 3 × 3
+<pre><code>. # A tibble: 3 x 3
 .     POP     n      p
 .   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
-. 1     1  3225 0.3225
-. 2     2  6053 0.6053
+. 1     1  3225 0.322 
+. 2     2  6053 0.605 
 . 3     3   722 0.0722</code></pre>
 <p>And we get back the 33% in population 1, 60% in population 2, and the remaining 7% in population 3.</p>
 <p>As a final note: remember to call <code>set.seed()</code> prior to simulating anything random with <code>mrgsovle</code> in order for the results to be reproducible.</p>

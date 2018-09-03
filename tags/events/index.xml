@@ -6,18 +6,27 @@
     <description>Recent content in Events on mrgsolve</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Feb 2017 08:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/events/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Model Gallery</title>
-      <link>/2017/02/23/model-gallery/</link>
-      <pubDate>Thu, 23 Feb 2017 08:00:00 +0000</pubDate>
+      <title>Modeled interventions in mrgsolve</title>
+      <link>/2018/09/02/modeled-interventions-in-mrgsolve/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2017/02/23/model-gallery/</guid>
-      <description>Load packages required for the gallery Simple PK model PK model with different bioavability and dosing lag time PK model with residual error Indirect response model driven by continuous PK Indirect response model driven by metric summarizing exposure Effect compartment model Population PK model with covariates and IOV PK with dialysis sessions 3 times per week References Session Info   library(lattice) library(ggplot2) library(dplyr) Load packages required for the gallery library(mrgsolve) library(dplyr) library(ggplot2) library(magrittr) library(tidyr)  Simple PK model About this model specification code</description>
+      <guid>/2018/09/02/modeled-interventions-in-mrgsolve/</guid>
+      <description>Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are “modeled” because they originate from code in the $MAIN block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</description>
+    </item>
+    
+    <item>
+      <title>Modeled interventions in mrgsolve</title>
+      <link>/2018/09/02/modeled-interventions-in-mrgsolve/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/02/modeled-interventions-in-mrgsolve/</guid>
+      <description>Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are &amp;ldquo;modeled&amp;rdquo; because they originate from code in the $MAIN block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</description>
     </item>
     
     <item>

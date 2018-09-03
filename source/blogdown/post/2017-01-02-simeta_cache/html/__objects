@@ -1,7 +1,7 @@
 unnamed-chunk-2	
 unnamed-chunk-3	code
-unnamed-chunk-4	mod	.Random.seed
-unnamed-chunk-5	out	sum
+unnamed-chunk-4	mod
+unnamed-chunk-5	out	sum	.Random.seed
 unnamed-chunk-6	out	sum
 unnamed-chunk-7	code
 unnamed-chunk-8	mod

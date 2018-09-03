@@ -88,12 +88,6 @@ out <- mod %>% ev(amt=1000, ii=12, addl=15) %>% mrgsim(end=336)
 plot(out)
 ```
 
-The events object was just a simple data set that looks like this
-```{r}
-dosing <- events(out)
-dosing
-```
-
 
 ## Run with data set
 
@@ -475,7 +469,8 @@ revar(mod)
 
 Simulate and plot
 ```{r}
-out <- mod %>% ev(dose) %>% mrgsim(end=120,nid=5,seed=9765)
+set.seed(9765)
+out <- mod %>% ev(dose) %>% mrgsim(end=120,nid=5)
 ```
 
 

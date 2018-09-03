@@ -19,7 +19,7 @@
       <guid>/topic/quick/</guid>
       <description>$ operator for model object gets the parameter value Zero all random effect variances on the fly Plot formulae   These are all miscellaneous features that may be difficult to find in other documentation.
 library(mrgsolve) library(dplyr) $ operator for model object gets the parameter value If our model parameters are
-mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=13): . name value . name value . CL 1 | SEXCL 0.</description>
+mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=14): . name value . name value . CL 1 | SEX 0 .</description>
     </item>
     
     <item>

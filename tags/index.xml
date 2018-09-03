@@ -32,7 +32,7 @@
     <item>
       <title>Events</title>
       <link>/tags/events/</link>
-      <pubDate>Thu, 23 Feb 2017 08:00:00 +0000</pubDate>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/events/</guid>
       <description></description>
@@ -57,29 +57,11 @@
     </item>
     
     <item>
-      <title>Model Library</title>
-      <link>/tags/model-library/</link>
-      <pubDate>Thu, 23 Feb 2017 10:13:36 +0000</pubDate>
-      
-      <guid>/tags/model-library/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Mrgx</title>
       <link>/tags/mrgx/</link>
       <pubDate>Sun, 01 Jan 2017 13:09:13 -0600</pubDate>
       
       <guid>/tags/mrgx/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Pd Model</title>
-      <link>/tags/pd-model/</link>
-      <pubDate>Thu, 23 Feb 2017 10:13:36 +0000</pubDate>
-      
-      <guid>/tags/pd-model/</guid>
       <description></description>
     </item>
     

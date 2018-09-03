@@ -75,7 +75,7 @@ We commonly plot simulated output with a special plot method.  By default, you g
 compartments and output variables in the plot.
 
 ```{r}
-mod <- mrgsolve:::house() %>% events(ev(amt=100))
+mod <- mrgsolve:::house() %>% ev(amt=100)
 
 mod %>% mrgsim %>% plot
 ```

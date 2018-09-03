@@ -19,7 +19,7 @@
       <guid>/2017/01/05/flexible-heterogeneous-simulation-designs-in-a-population/</guid>
       <description>Design lists help you assign different designs to different groups in a population or specific designs to specific individuals.
 library(mrgsolve) library(dplyr) Assign designs to individuals To illustrate, let’s make a population of 4 individuals, all with different simulation end times.
-des &amp;lt;- data_frame(ID=1:4, end=seq(24,96,24)) des . # A tibble: 4 × 2 . ID end . &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; . 1 1 24 . 2 2 48 . 3 3 72 .</description>
+des &amp;lt;- data_frame(ID=1:4, end=seq(24,96,24)) des . # A tibble: 4 x 2 . ID end . &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; . 1 1 24 . 2 2 48 . 3 3 72 .</description>
     </item>
     
     <item>

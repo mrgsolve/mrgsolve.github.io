@@ -3,6 +3,7 @@
 <li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
 <li><a href="#status"><span class="toc-section-number">2</span> Status</a></li>
 <li><a href="#example-time-varying-ka"><span class="toc-section-number">3</span> Example: time-varying KA</a></li>
+<li><a href="#example-modeled-dosing-events"><span class="toc-section-number">4</span> Example: modeled dosing events</a></li>
 </ul>
 </div>
 
@@ -60,6 +61,11 @@ if(EVID==33) KA = KA2;
 if(EVID==34) KA = KA3;
 
 &#39; </code></pre>
+<p>The arguments for <code>self.mtime()</code> in this case are:</p>
+<ol style="list-style-type: decimal">
+<li>time</li>
+<li>evid</li>
+</ol>
 <p>We use a separate <code>EVID</code> here to distinguish the first change from the second change.</p>
 <pre class="{r}"><code>mod &lt;- mcode(&quot;mevent2&quot;, code)
 
@@ -67,5 +73,37 @@ mod %&gt;%
   ev(amt = 100) %&gt;% 
   mrgsim(end = 12, delta = 0.1) %&gt;%
   plot(CENT~time)</code></pre>
-<p>Now we have the two change points implemented.</p>
+<p>Now we have the two change points implemented. Multiple doses would look like this:</p>
+<pre class="{r}"><code>mod %&gt;% 
+  ev(amt = 100, ii = 24, addl = 2) %&gt;% 
+  mrgsim(end = 120, delta = 0.1) %&gt;%
+  plot(CENT~time)</code></pre>
+</div>
+<div id="example-modeled-dosing-events" class="section level1">
+<h1><span class="header-section-number">4</span> Example: modeled dosing events</h1>
+<p>In the previous example, we used the <code>mevent</code> call to to force the simulation to stop at the time we wanted the parameter to change. This was accomplished by an event object with <code>EVID=2</code>, which forces the simulation (and to the solver) to stop at the time of the event, reset, and then keep going (with the new model parameters).</p>
+<p>We can also use this mechanism to implement actual doses like this</p>
+<pre class="{r}"><code>code &lt;- &#39;
+$PARAM CL = 1, V = 20, KA = 2
+
+$PKMODEL cmt = &quot;GUT CENT&quot;, depot = TRUE
+
+$MAIN
+
+if(TIME/12 ==floor(TIME/12) &amp;&amp; TIME &lt; 120) {
+  self.mevent(TIME, 1, 1, 100, 0);
+}
+
+&#39; </code></pre>
+<p>The arguments for <code>self.mtime()</code> in this case are:</p>
+<ol style="list-style-type: decimal">
+<li>time</li>
+<li>evid</li>
+<li>compartment</li>
+<li>dose amount</li>
+<li>rate (for infusions)</li>
+</ol>
+<pre class="{r}"><code>mod &lt;- mcode(&quot;mevent3&quot;, code)
+
+mod %&gt;%  mrgsim(end = 240, delta = 0.2) %&gt;% plot(CENT~time)</code></pre>
 </div>

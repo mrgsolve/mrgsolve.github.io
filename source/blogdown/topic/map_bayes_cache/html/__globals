@@ -1,18 +1,18 @@
-unnamed-chunk-3	mcode
-unnamed-chunk-4	cmat	matrix	solve
-unnamed-chunk-5	ev
-unnamed-chunk-6	c
-unnamed-chunk-7	%>%	amt	carry.out	cmt	dose	ev	evid	mod	mrgsim	omat	omega	sampl	set.seed	sigma	smat
-unnamed-chunk-8	%<>%	as.data.frame	sim
-unnamed-chunk-9	%>%	==	DV	evid	filter	select	sim	unlist	unname
-unnamed-chunk-10	%>%	ET1	ET2	select	sim
-unnamed-chunk-11	!	%<>%	%>%	^	$	as.list	as.numeric	as.tbl	data_set	diag	drop.re	if	init	log	matrix	mrgsim	names	names<-	obsonly	omega.inv	param	return	sigma	sum	t	unlist
-unnamed-chunk-12	c
-unnamed-chunk-13	data	init	mapbayes	mod	newuoa	y
-unnamed-chunk-14	$	fit
-unnamed-chunk-15	%>%	ET1	ET2	select	sim	slice
-unnamed-chunk-16	%>%	==	data	evid	filter	mod	update
-unnamed-chunk-17	%>%	>	$	filter	fit	head	mapbayes	pdata	pmod	time	y
-unnamed-chunk-18	%>%	>	filter	head	init	mapbayes	pdata	pmod	time	y
-unnamed-chunk-19	%>%	==	aes	data	DV	evid	filter	geom_line	geom_point	ggplot	initial	pred	time
-unnamed-chunk-2	library
+unnamed-chunk-2	library	ggplot2	mrgsolve	minqa	dplyr	magrittr
+unnamed-chunk-3	code	mod	mcode
+unnamed-chunk-4	omega	cmat	omega.inv	solve	sigma	matrix
+unnamed-chunk-5	dose	ev
+unnamed-chunk-6	sampl	c
+unnamed-chunk-7	set.seed	sim	mod	%>%	ev	dose	omat	omega	smat	sigma	carry.out	amt	evid	cmt	mrgsim	sampl
+unnamed-chunk-8	sim	%<>%	as.data.frame
+unnamed-chunk-9	y	sim	%>%	filter	evid	select	DV	unlist	unname
+unnamed-chunk-10	data	sim	%>%	select	ET1	ET2
+unnamed-chunk-11	mapbayes	sig2	as.numeric	sigma	eta	%<>%	as.list	names	init	eta_m	%>%	unlist	matrix	m	param	pred	obsonly	out	drop.re	data_set	d	mrgsim	return	as.tbl	sig2j	DV	sqwres	log	y	nOn	diag	%*%	omega.inv	t	sum
+unnamed-chunk-12	init	c
+unnamed-chunk-13	fit	newuoa	init	mapbayes	y	mod	data
+unnamed-chunk-14	fit	par
+unnamed-chunk-15	slice	sim	%>%	select	ET1	ET2
+unnamed-chunk-16	pdata	data	%>%	filter	evid	pmod	mod	update
+unnamed-chunk-17	pred	mapbayes	fit	par	y	pdata	pmod	%>%	filter	time	head
+unnamed-chunk-18	initial	mapbayes	init	y	pdata	pmod	%>%	filter	time	head
+unnamed-chunk-19	ggplot	geom_line	pred	aes	time	DV	initial	geom_point	data	%>%	filter	evid

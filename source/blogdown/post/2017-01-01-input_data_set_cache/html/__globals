@@ -1,20 +1,20 @@
-unnamed-chunk-2	library
-unnamed-chunk-3	c	expand.ev
-unnamed-chunk-4	:::	%>%	~	CP	data	mrgsim	plot	Req
-unnamed-chunk-5	ev
+unnamed-chunk-2	library	mrgsolve	dplyr
+unnamed-chunk-3	data	expand.ev	c
+unnamed-chunk-4	mod	house	%>%	Req	CP	mrgsim	data	plot	time	factor	ID
+unnamed-chunk-5	e1	ev	e2	e3
 unnamed-chunk-6	e1
 unnamed-chunk-7	e2
 unnamed-chunk-8	e3
-unnamed-chunk-9	as_data_set	e1	e2	e3
-unnamed-chunk-10	ev
+unnamed-chunk-9	data	as_data_set	e1	e2	e3
+unnamed-chunk-10	load	ev	n	e1	e2	e3
 unnamed-chunk-11	e1	e3
-unnamed-chunk-12	as_data_set	e1	e2	e3
-unnamed-chunk-13	%>%	data	data_set	dmat	mod	mrgsim	omat	plot	set.seed
-unnamed-chunk-14	as.data.frame	as.ev	e3
-unnamed-chunk-15	c	data_frame	sample	set.seed
-unnamed-chunk-16	assign_ev	ev	idata	list
-unnamed-chunk-17	%>%	ev	ev_days	mod	mrgsim	plot
-unnamed-chunk-18	ev	ev_days
-unnamed-chunk-19	%>%	data	mod	mrgsim	plot
-unnamed-chunk-20	as.ev	c	e1	e2	ev_days
-unnamed-chunk-21	%>%	==	amt	c	CP	data_set	expand.ev	GUT	mod	mrgsim	Req
+unnamed-chunk-12	data	as_data_set	e1	e2	e3
+unnamed-chunk-13	set.seed	mod	%>%	omat	dmat	data_set	data	mrgsim	plot
+unnamed-chunk-14	as.data.frame	e3	as.ev
+unnamed-chunk-15	set.seed	idata	data_frame	sample	c
+unnamed-chunk-16	e1	ev	e2	e3	assign_ev	list	idata
+unnamed-chunk-17	data	ev_days	ev	mod	%>%	mrgsim	plot
+unnamed-chunk-18	e1	ev	e2	data	ev_days
+unnamed-chunk-19	mod	%>%	mrgsim	data	plot
+unnamed-chunk-20	a	ev_days	e1	b	e2	c	as.ev
+unnamed-chunk-21	data	expand.ev	c	mod	%>%	data_set	amt	Req	GUT	CP	mrgsim

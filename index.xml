@@ -17,6 +17,15 @@
       <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/09/02/modeled-interventions-in-mrgsolve/</guid>
+      <description>Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are “modeled” because they originate from code in the $MAIN block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</description>
+    </item>
+    
+    <item>
+      <title>Modeled interventions in mrgsolve</title>
+      <link>/2018/09/02/modeled-interventions-in-mrgsolve/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/02/modeled-interventions-in-mrgsolve/</guid>
       <description>Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are &amp;ldquo;modeled&amp;rdquo; because they originate from code in the $MAIN block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</description>
     </item>
     
@@ -54,7 +63,7 @@ Two Populations Let’s imagine there were two populations in the mixture model,
       <pubDate>Thu, 09 Mar 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/03/09/reproducible-results-with-set.seed/</guid>
-      <description>library(mrgsolve) library(dplyr) Demo model code &amp;lt;- &amp;#39; $PKMODEL cmt=&amp;quot;CENT&amp;quot; $PARAM CL = 1, V = 20 $OMEGA 1 1 $TABLE capture ETA1 = ETA(1); capture ETA2 = ETA(2); &amp;#39; mod &amp;lt;- mcode(&amp;quot;test&amp;quot;, code)  Single dose set.seed(9911) single &amp;lt;- mod %&amp;gt;% ev(amt=100) %&amp;gt;% mrgsim(nid=100, end=24)  Multi dose set.seed(9911) multi &amp;lt;- mod %&amp;gt;% ev(amt=100, ii=24, addl=9) %&amp;gt;% mrgsim(nid=100, end=240)  Compare single . Model: test.cpp . Dim: 2600 x 5 .</description>
+      <description>library(mrgsolve) library(dplyr) Demo model code &amp;lt;- &amp;#39; $PKMODEL cmt=&amp;quot;CENT&amp;quot; $PARAM CL = 1, V = 20 $OMEGA 1 1 $TABLE capture ETA1 = ETA(1); capture ETA2 = ETA(2); &amp;#39; mod &amp;lt;- mcode(&amp;quot;test&amp;quot;, code)  Single dose set.seed(9911) single &amp;lt;- mod %&amp;gt;% ev(amt=100) %&amp;gt;% mrgsim(nid=100, end=24)  Multi dose set.seed(9911) multi &amp;lt;- mod %&amp;gt;% ev(amt=100, ii=24, addl=9) %&amp;gt;% mrgsim(nid=100, end=240)  Compare single . Model: test . Dim: 2600 x 5 .</description>
     </item>
     
     <item>
@@ -102,7 +111,7 @@ This is an invented example to illustrate features and workflow for mrgsolve. If
       <guid>/2017/02/23/quick/</guid>
       <description>$ operator for model object gets the parameter value Zero all random effect variances on the fly Plot formulae   These are all miscellaneous features that may be difficult to find in other documentation.
 library(mrgsolve) library(dplyr) $ operator for model object gets the parameter value If our model parameters are
-mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=13): . name value . name value . CL 1 | SEXCL 0.</description>
+mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=14): . name value . name value . CL 1 | SEX 0 .</description>
     </item>
     
     <item>
@@ -113,17 +122,7 @@ mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=13): . name 
       <guid>/topic/quick/</guid>
       <description>$ operator for model object gets the parameter value Zero all random effect variances on the fly Plot formulae   These are all miscellaneous features that may be difficult to find in other documentation.
 library(mrgsolve) library(dplyr) $ operator for model object gets the parameter value If our model parameters are
-mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=13): . name value . name value . CL 1 | SEXCL 0.</description>
-    </item>
-    
-    <item>
-      <title>Access Models in the Internal Library</title>
-      <link>/2017/02/23/access-models-in-the-internal-library/</link>
-      <pubDate>Thu, 23 Feb 2017 10:13:36 +0000</pubDate>
-      
-      <guid>/2017/02/23/access-models-in-the-internal-library/</guid>
-      <description>library(mrgsolve) library(dplyr) PK model Here, we name the name of the model we want from the library (pk2cmt) and we point mread to the project directory where the internal model library is stored. This internal library is located wherever mrgsolve is installed. The install location for mrgsolve is not obvious, so we provide a function (modlib) that returns the currect path to the model library.
-mod &amp;lt;- mread(&amp;quot;pk2cmt&amp;quot;, modlib()) mod %&amp;gt;% ev(amt=100,rate=3,addl=4,ii=48,cmt=2) %&amp;gt;% mrgsim(end=320) %&amp;gt;% plot(CP~.</description>
+mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=14): . name value . name value . CL 1 | SEX 0 .</description>
     </item>
     
     <item>
@@ -145,15 +144,6 @@ mod &amp;lt;- mread(&amp;quot;pk2cmt&amp;quot;, modlib()) mod %&amp;gt;% ev(amt=
       <description>library(ggplot2) library(mrgsolve) library(minqa) library(dplyr) library(magrittr) About This tutorial illustrates how to do MAP Bayes estimation with mrgsolve.
 The setup was adapted from an existing project, where only a single individual was considered. With some additional R coding, it could be expanded to consider multiple individuals in a single run.
  One compartment model, keep it simple for now  The model specification code below is for a one-compartment model, where mrgsolve will calculate the amount in CENT from closed-form equations</description>
-    </item>
-    
-    <item>
-      <title>Model Gallery</title>
-      <link>/2017/02/23/model-gallery/</link>
-      <pubDate>Thu, 23 Feb 2017 08:00:00 +0000</pubDate>
-      
-      <guid>/2017/02/23/model-gallery/</guid>
-      <description>Load packages required for the gallery Simple PK model PK model with different bioavability and dosing lag time PK model with residual error Indirect response model driven by continuous PK Indirect response model driven by metric summarizing exposure Effect compartment model Population PK model with covariates and IOV PK with dialysis sessions 3 times per week References Session Info   library(lattice) library(ggplot2) library(dplyr) Load packages required for the gallery library(mrgsolve) library(dplyr) library(ggplot2) library(magrittr) library(tidyr)  Simple PK model About this model specification code</description>
     </item>
     
     <item>
@@ -207,7 +197,7 @@ e &amp;lt;- ev(amt=100, ii=24, addl=6) This will implement 100 unit doses every 
       <guid>/2017/01/05/flexible-heterogeneous-simulation-designs-in-a-population/</guid>
       <description>Design lists help you assign different designs to different groups in a population or specific designs to specific individuals.
 library(mrgsolve) library(dplyr) Assign designs to individuals To illustrate, let’s make a population of 4 individuals, all with different simulation end times.
-des &amp;lt;- data_frame(ID=1:4, end=seq(24,96,24)) des . # A tibble: 4 × 2 . ID end . &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; . 1 1 24 . 2 2 48 . 3 3 72 .</description>
+des &amp;lt;- data_frame(ID=1:4, end=seq(24,96,24)) des . # A tibble: 4 x 2 . ID end . &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; . 1 1 24 . 2 2 48 . 3 3 72 .</description>
     </item>
     
     <item>
@@ -236,15 +226,6 @@ library(mrgsolve) library(dplyr) simeta example  In this example, we want to sim
       
       <guid>/2017/01/01/work-with-r-objects-in-your-model/</guid>
       <description>About  This model doesn’t really accomplish anything useful. I coded this up to show how we can get vector, matrix data as well as R functions into your simulation. After we show the model code, we walk through the key lines of code and explain why / where this type of extension could be useful.   Documentation  You can find documentation for functions in mrgx plugin here: http://mrgsolve.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/1/01/01/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/1/01/01/</guid>
-      <description>1 Introduction 2 Status 3 Example: time-varying KA   1 Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event.</description>
     </item>
     
     <item>

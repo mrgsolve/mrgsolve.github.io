@@ -144,7 +144,7 @@ in to several IDs
 
 ```{r}
 e9 <- seq(e1, wait = 72, e2)
-e9 <- ev_rep(e9, id = 1:5)
+e9 <- ev_rep(e9, ID = 1:5)
 e9
 ```
 
