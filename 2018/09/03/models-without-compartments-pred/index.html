@@ -74,7 +74,7 @@ ga('send', 'pageview');
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">3 min read</span>
     
 
     <h1 class="article-title">Models without compartments ($PRED)</h1>
@@ -115,14 +115,14 @@ data &lt;- data_frame(ID = 1, B = exp(rnorm(100, 0,2)))
 
 head(data)</code></pre>
 <pre><code>## # A tibble: 6 x 2
-##      ID      B
-##   &lt;dbl&gt;  &lt;dbl&gt;
-## 1     1  0.934
-## 2     1  1.71 
-## 3     1  0.392
-## 4     1 38.4  
-## 5     1  8.13 
-## 6     1  0.196</code></pre>
+##      ID        B
+##   &lt;dbl&gt;    &lt;dbl&gt;
+## 1     1  3.30   
+## 2     1  2.21   
+## 3     1  0.0210 
+## 4     1  0.266  
+## 5     1 10.2    
+## 6     1  0.00708</code></pre>
 <pre class="r"><code>out &lt;- mrgsim_d(mod,data,carry.out=&quot;B&quot;)
 
 plot(out, Y~B)</code></pre>
@@ -147,6 +147,64 @@ head(df)</code></pre>
   mrgsim(carry.out=&quot;B&quot;) %&gt;%
   plot(Y ~ B)</code></pre>
 <p><img src="../../../../post/2018-09-03-models-without-compartments-pred_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="pkpd-model" class="section level1">
+<h1>PK/PD Model</h1>
+<p>Here is an implementation of a PK/PD model using <code>$PRED</code></p>
+<p>In this modeL</p>
+<ul>
+<li>Calculate <code>CL</code> as a function of <code>WT</code> and a random effect</li>
+<li>Derive <code>AUC</code> from <code>CL</code> and <code>DOSE</code></li>
+<li>The response (<code>Y</code>) is a calculated from <code>AUC</code> and the Emax model parameters</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM TVCL = 1, WT = 70, AUC50 = 20, DOSE = 100, E0 = 35, EMAX = 2.4
+
+$OMEGA 0.5
+
+$SIGMA 10
+
+$PRED
+double CL = TVCL*pow(WT/70,0.75)*exp(ETA(1));
+capture AUC = DOSE/CL;
+capture Y = E0*(1+EMAX*AUC/(AUC50+AUC))+EPS(1);
+&#39;</code></pre>
+<pre class="r"><code>mod &lt;- mcode(&quot;pkpd&quot;, code)</code></pre>
+<pre><code>## Compiling pkpd ... done.</code></pre>
+<p>To simulate, look at 50 subjects at each of 5 doses</p>
+<pre class="r"><code>data &lt;- 
+  expand.idata(DOSE = c(30,50,80,110,200),ID = 1:50) %&gt;% 
+  mutate(WT = exp(rnorm(n(),log(80),1)))
+
+head(data)</code></pre>
+<pre><code>##   ID DOSE        WT
+## 1  1   30  59.13254
+## 2  2   50 317.32739
+## 3  3   80 242.15746
+## 4  4  110 170.78136
+## 5  5  200 248.18054
+## 6  6   30  51.22012</code></pre>
+<pre class="r"><code>out &lt;- mrgsim_d(mod,data,carry.out=&quot;WT,DOSE&quot;) %&gt;% as_data_frame()
+
+head(out)</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##      ID  time    WT  DOSE   AUC     Y
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1     0  59.1    30 132.  107. 
+## 2     2     0 317.     50  28.9  83.3
+## 3     3     0 242.     80  35.0  91.5
+## 4     4     0 171.    110  30.5  85.7
+## 5     5     0 248.    200 216.  110. 
+## 6     6     0  51.2    30 145.  110.</code></pre>
+<p>Plot the response (<code>Y</code>) versus <code>AUC</code>, colored by dose</p>
+<pre class="r"><code>library(ggplot2)
+
+ggplot(out, aes(AUC,Y,col =factor(DOSE))) + 
+  geom_point() + 
+  scale_x_continuous(trans = &quot;log&quot;, breaks = 10^seq(-4,4)) + 
+  geom_smooth(aes(AUC,Y),se = FALSE,col=&quot;darkgrey&quot;) + theme_bw() </code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="../../../../post/2018-09-03-models-without-compartments-pred_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 
     </div>

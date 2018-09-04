@@ -79,3 +79,60 @@ mod %>%
 ```
 
 
+# PK/PD Model
+
+Here is an implementation of a PK/PD model using `$PRED`
+
+In this modeL
+
+- Calculate `CL` as a function of `WT` and a random effect
+- Derive `AUC` from `CL` and `DOSE` 
+- The response (`Y`) is a calculated from `AUC` and the Emax 
+  model parameters
+
+```{r}
+code <- '
+$PARAM TVCL = 1, WT = 70, AUC50 = 20, DOSE = 100, E0 = 35, EMAX = 2.4
+
+$OMEGA 0.5
+
+$SIGMA 10
+
+$PRED
+double CL = TVCL*pow(WT/70,0.75)*exp(ETA(1));
+capture AUC = DOSE/CL;
+capture Y = E0*(1+EMAX*AUC/(AUC50+AUC))+EPS(1);
+'
+```
+
+
+```{r}
+mod <- mcode("pkpd", code)
+```
+
+To simulate, look at 50 subjects at each of 5 doses
+```{r}
+data <- 
+  expand.idata(DOSE = c(30,50,80,110,200),ID = 1:50) %>% 
+  mutate(WT = exp(rnorm(n(),log(80),1)))
+
+head(data)
+```
+
+```{r}
+out <- mrgsim_d(mod,data,carry.out="WT,DOSE") %>% as_data_frame()
+
+head(out)
+```
+
+
+Plot the response (`Y`) versus `AUC`, colored by dose
+```{r}
+library(ggplot2)
+
+ggplot(out, aes(AUC,Y,col =factor(DOSE))) + 
+  geom_point() + 
+  scale_x_continuous(trans = "log", breaks = 10^seq(-4,4)) + 
+  geom_smooth(aes(AUC,Y),se = FALSE,col="darkgrey") + theme_bw() 
+```
+
