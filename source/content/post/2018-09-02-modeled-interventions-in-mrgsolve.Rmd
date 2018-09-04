@@ -9,10 +9,10 @@ tags: ["events", "in-development"]
 # Introduction
 
 This post is to introduce modeled interventions in mrgsolve. The main use
-case for this functionality is to force mrgsolve to advance the 
+case is to force mrgsolve to advance the 
 system to a specific time so that some aspect of the system 
 can change at that time.  This is similar to the `MTIME` functionality
-that NONMEM provides.  Additionally, doses (bolus or infusions)
+that NONMEM provides.  Doses (bolus or infusions)
 can also be implemented as a modeled event.  These events are "modeled"
 because they originate from code in the `$MAIN` block, not the 
 input data set, so that the events can be reactive to model parameters
@@ -29,7 +29,7 @@ or syntax may change before this gets rolled out to CRAN.
 
 One common use case for modeled events are a time-varying 
 model parameter such as an absorption rate constant.  The model with 
-constant `KA` looks like this
+__constant__ `KA` looks like this
 
 ```{r}
 code <- '
@@ -54,11 +54,12 @@ mcode("mevent0", code) %>%
   plot(CENT+KA~time)
 ```
 
-In this example, we want `KA` to start at the time of the oral
+For the model with __time-varying__ parameter, we want `KA` to start with a lower
+value at the time of the oral
 dose and then increase at some time after the dose.  And we 
-want that to happen for every dose.  We implement that 
-by modeling that time after the dose when we want KA to 
-change and implement at that change point.
+want that to happen for every dose.  We model the time after the 
+dose when we want KA to change and force the simulation to stop at that
+time so we can make the required changes.
 
 The model with time-varying `KA` might look like this
 
@@ -89,10 +90,11 @@ The arguments for `self.mevent()` in this case are:
 
 
 Whenever we see a dose (`EVID==1`), we set `KA` to the initial (slower)
-`KA` value and register a model event that (in this case) happens 
-two hours later.  We use `EVID=33` for that event.  This is a arbitrary choice
-(it could be [almost] anything).  The idea here is that, when
-we see `EVID==33` come along, we change the `KA` to the faster value. 
+`KA` value and register a model event that in this case happens 
+two hours later.  We use `EVID=33` for that change point event.  This is a 
+arbitrary choice for `EVID` (it could be [almost] anything).  The idea here 
+is that, when we see `EVID==33` come along, we change the `KA` to the faster value. 
+
 We don't have plans to offer indicators like `MPAST` or `MTDIFF` as 
 NONMEM does.  But we can achieve similar behavior by tagging the event
 and then looking for that tag again down the road.  
@@ -108,8 +110,8 @@ mod %>%
   plot(CENT+KA~time)
 ```
 
-We can refine this even more with an additional intervention 
-time for an intermediate value of `KA`
+We can refine this even more with an additional intervention time for an 
+intermediate value so that `KA` changes twice as the dose is absorbed
 
 ```{r}
 code <- '
@@ -134,8 +136,8 @@ if(EVID==34) KA = KA3;
 ```
 
 
-We use a separate `EVID` here to distinguish the first change 
-from the second change.
+We use a separate `EVID` (34) here to distinguish the second change 
+from the first change (with `EVID 33`).
 
 
 ```{r}
@@ -200,13 +202,14 @@ mod %>%
 # Example: modeled dosing events
 
 In the previous example, we used the `mevent` call to 
-to force the simulation to stop at the time we wanted the 
+to force the simulation to stop at the time we wanted a model 
 parameter to change. This was accomplished by an event object
-with `EVID=2`, which forces the simulation (and to the solver)
-to stop at the time of the event, reset, and then keep going 
-(with the new model parameters).
+with `EVID=2`, which forces the solver to stop, reset, and then keep going 
+with the new model parameters.
 
-We can also use this mechanism to implement actual doses like this
+We can also use this event mechanism to implement actual doses.  Now
+at the change point, we add some mass to one of the compartments.  An example
+model for q12 hour dosing might look like:
 
 ```{r}
 code <- '

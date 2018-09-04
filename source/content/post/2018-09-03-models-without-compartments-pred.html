@@ -40,14 +40,14 @@ data &lt;- data_frame(ID = 1, B = exp(rnorm(100, 0,2)))
 
 head(data)</code></pre>
 <pre><code>## # A tibble: 6 x 2
-##      ID      B
-##   &lt;dbl&gt;  &lt;dbl&gt;
-## 1     1 3.59  
-## 2     1 1.85  
-## 3     1 0.0895
-## 4     1 1.30  
-## 5     1 1.27  
-## 6     1 0.105</code></pre>
+##      ID     B
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1     1 7.63 
+## 2     1 0.203
+## 3     1 0.719
+## 4     1 1.94 
+## 5     1 1.76 
+## 6     1 0.524</code></pre>
 <pre class="r"><code>out &lt;- mrgsim_d(mod,data,carry.out=&quot;B&quot;)
 
 plot(out, Y~B)</code></pre>

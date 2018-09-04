@@ -86,7 +86,7 @@ ga('send', 'pageview');
     <div class="article-content">
       <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the <code>MTIME</code> functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are “modeled” because they originate from code in the <code>$MAIN</code> block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</p>
+<p>This post is to introduce modeled interventions in mrgsolve. The main use case is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the <code>MTIME</code> functionality that NONMEM provides. Doses (bolus or infusions) can also be implemented as a modeled event. These events are “modeled” because they originate from code in the <code>$MAIN</code> block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</p>
 </div>
 <div id="status" class="section level1">
 <h1>Status</h1>
@@ -94,7 +94,7 @@ ga('send', 'pageview');
 </div>
 <div id="example-time-varying-ka" class="section level1">
 <h1>Example: time-varying KA</h1>
-<p>One common use case for modeled events are a time-varying model parameter such as an absorption rate constant. The model with constant <code>KA</code> looks like this</p>
+<p>One common use case for modeled events are a time-varying model parameter such as an absorption rate constant. The model with <strong>constant</strong> <code>KA</code> looks like this</p>
 <pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
@@ -113,7 +113,7 @@ mcode(&quot;mevent0&quot;, code) %&gt;%
   plot(CENT+KA~time)</code></pre>
 <pre><code>## Compiling mevent0 ... done.</code></pre>
 <p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>In this example, we want <code>KA</code> to start at the time of the oral dose and then increase at some time after the dose. And we want that to happen for every dose. We implement that by modeling that time after the dose when we want KA to change and implement at that change point.</p>
+<p>For the model with <strong>time-varying</strong> parameter, we want <code>KA</code> to start with a lower value at the time of the oral dose and then increase at some time after the dose. And we want that to happen for every dose. We model the time after the dose when we want KA to change and force the simulation to stop at that time so we can make the required changes.</p>
 <p>The model with time-varying <code>KA</code> might look like this</p>
 <pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
@@ -137,7 +137,8 @@ if(EVID==33) KA = KA3;
 <li>time</li>
 <li>evid</li>
 </ol>
-<p>Whenever we see a dose (<code>EVID==1</code>), we set <code>KA</code> to the initial (slower) <code>KA</code> value and register a model event that (in this case) happens two hours later. We use <code>EVID=33</code> for that event. This is a arbitrary choice (it could be [almost] anything). The idea here is that, when we see <code>EVID==33</code> come along, we change the <code>KA</code> to the faster value. We don’t have plans to offer indicators like <code>MPAST</code> or <code>MTDIFF</code> as NONMEM does. But we can achieve similar behavior by tagging the event and then looking for that tag again down the road.</p>
+<p>Whenever we see a dose (<code>EVID==1</code>), we set <code>KA</code> to the initial (slower) <code>KA</code> value and register a model event that in this case happens two hours later. We use <code>EVID=33</code> for that change point event. This is a arbitrary choice for <code>EVID</code> (it could be [almost] anything). The idea here is that, when we see <code>EVID==33</code> come along, we change the <code>KA</code> to the faster value.</p>
+<p>We don’t have plans to offer indicators like <code>MPAST</code> or <code>MTDIFF</code> as NONMEM does. But we can achieve similar behavior by tagging the event and then looking for that tag again down the road.</p>
 <p>The simulation looks like this</p>
 <pre class="r"><code>mod &lt;- mcode(&quot;mevent&quot;, code)</code></pre>
 <pre><code>## Compiling mevent ... done.</code></pre>
@@ -146,7 +147,7 @@ if(EVID==33) KA = KA3;
   mrgsim(end = 24, delta = 0.1) %&gt;%
   plot(CENT+KA~time)</code></pre>
 <p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>We can refine this even more with an additional intervention time for an intermediate value of <code>KA</code></p>
+<p>We can refine this even more with an additional intervention time for an intermediate value so that <code>KA</code> changes twice as the dose is absorbed</p>
 <pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA1 = 0.1, KA2 = 0.5, KA3 = 5
 
@@ -166,7 +167,7 @@ if(EVID==33) KA = KA2;
 if(EVID==34) KA = KA3;
 
 &#39; </code></pre>
-<p>We use a separate <code>EVID</code> here to distinguish the first change from the second change.</p>
+<p>We use a separate <code>EVID</code> (34) here to distinguish the second change from the first change (with <code>EVID 33</code>).</p>
 <pre class="r"><code>mod &lt;- mcode(&quot;mevent2&quot;, code)</code></pre>
 <pre><code>## Compiling mevent2 ... done.</code></pre>
 <pre class="r"><code>mod %&gt;% 
@@ -214,8 +215,8 @@ mod %&gt;%
 </div>
 <div id="example-modeled-dosing-events" class="section level1">
 <h1>Example: modeled dosing events</h1>
-<p>In the previous example, we used the <code>mevent</code> call to to force the simulation to stop at the time we wanted the parameter to change. This was accomplished by an event object with <code>EVID=2</code>, which forces the simulation (and to the solver) to stop at the time of the event, reset, and then keep going (with the new model parameters).</p>
-<p>We can also use this mechanism to implement actual doses like this</p>
+<p>In the previous example, we used the <code>mevent</code> call to to force the simulation to stop at the time we wanted a model parameter to change. This was accomplished by an event object with <code>EVID=2</code>, which forces the solver to stop, reset, and then keep going with the new model parameters.</p>
+<p>We can also use this event mechanism to implement actual doses. Now at the change point, we add some mass to one of the compartments. An example model for q12 hour dosing might look like:</p>
 <pre class="r"><code>code &lt;- &#39;
 $PARAM CL = 1, V = 20, KA = 2
 
