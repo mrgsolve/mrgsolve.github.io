@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pred on mrgsolve</title>
+    <link>/tags/pred/</link>
+    <description>Recent content in Pred on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/pred/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Models without compartments ($PRED)</title>
+      <link>/2018/09/03/models-without-compartments-pred/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/03/models-without-compartments-pred/</guid>
+      <description>Introduction This post introduces a new formal code block for writing models where there are no compartments. The block is named after the analgous NONMEM block called $PRED. This functionality has always been possible with mrgsolve, but only now is there a code block dedicated to these models. Also, a relaxed set of data set constraints have been put in place when these types of models are invoked.
+ Status The functionality in this vignette can only be access from the GitHub version.</description>
+    </item>
+    
+  </channel>
+</rss>

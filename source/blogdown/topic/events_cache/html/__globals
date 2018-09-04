@@ -1,0 +1,14 @@
+setup2	library	mrgsolve	dplyr
+unnamed-chunk-1	mod	mread	modlib
+unnamed-chunk-2	e	ev
+unnamed-chunk-3	e
+unnamed-chunk-4	as.data.frame	e
+unnamed-chunk-5	mod	%>%	mrgsim	e	plot	EV1	CP	time
+unnamed-chunk-6	mod	%>%	ev	mrgsim	plot	CP	time
+unnamed-chunk-7	e1	ev	e2	e3	e4
+unnamed-chunk-8	c	e1	e4
+unnamed-chunk-9	e3	%then%	e2
+unnamed-chunk-10	e1	ev	e2	e3
+unnamed-chunk-11	data	as_data_set	e1	e2	e3
+unnamed-chunk-12	mod	mread	modlib
+unnamed-chunk-13	mod	%>%	data_set	data	mrgsim	plot	GUT	DV	.

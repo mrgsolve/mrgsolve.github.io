@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>In Development on mrgsolve</title>
+    <link>/tags/in-development/</link>
+    <description>Recent content in In Development on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/in-development/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Models without compartments ($PRED)</title>
+      <link>/2018/09/03/models-without-compartments-pred/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/03/models-without-compartments-pred/</guid>
+      <description>Introduction This post introduces a new formal code block for writing models where there are no compartments. The block is named after the analgous NONMEM block called $PRED. This functionality has always been possible with mrgsolve, but only now is there a code block dedicated to these models. Also, a relaxed set of data set constraints have been put in place when these types of models are invoked.
+ Status The functionality in this vignette can only be access from the GitHub version.</description>
+    </item>
+    
+    <item>
+      <title>Modeled interventions in mrgsolve</title>
+      <link>/2018/09/02/modeled-interventions-in-mrgsolve/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/02/modeled-interventions-in-mrgsolve/</guid>
+      <description>Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are “modeled” because they originate from code in the $MAIN block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</description>
+    </item>
+    
+  </channel>
+</rss>

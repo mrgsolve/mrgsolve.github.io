@@ -1,0 +1,75 @@
+---
+title: Models without compartments ($PRED)
+author: ~
+date: '2018-09-03'
+slug: models-without-compartments-pred
+categories: []
+tags: ["PRED", "in-development"]
+---
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This post introduces a new formal code block for writing models where there are no compartments. The block is named after the analgous NONMEM block called <code>$PRED</code>. This functionality has always been possible with mrgsolve, but only now is there a code block dedicated to these models. Also, a relaxed set of data set constraints have been put in place when these types of models are invoked.</p>
+</div>
+<div id="status" class="section level1">
+<h1>Status</h1>
+<p>The functionality in this vignette can only be access from the GitHub version. We will update this vignette once these features are rolled into a release on CRAN.</p>
+</div>
+<div id="example-model" class="section level1">
+<h1>Example model</h1>
+<p>As a most-basic model, we look at the <code>pred1</code> model in <code>modlib()</code></p>
+<pre class="r"><code>library(mrgsolve)
+mod &lt;- mread(&quot;pred1&quot;, modlib())</code></pre>
+<pre><code>## Compiling pred1 ... done.</code></pre>
+<p>The model code is</p>
+<pre class="c"><code>$PROB
+An example model expressed in closed form
+$PARAM B = -1, beta0 = 100, beta1 = 0.1
+$OMEGA 2 0.3
+$PRED
+double beta0i = beta0 + ETA(1);
+double beta1i = beta1*exp(ETA(2));
+capture Y = beta0i + beta1i*B;</code></pre>
+<p>This is a random-intercept, random slope linear model. Like other models in mrgsolve, you can write parameters (<code>$PARAM</code>), and random effects (<code>$OMEGA</code>). But the model is actually written in <code>$PRED</code>.</p>
+<p>When mrgsolve finds <code>$PRED</code>, it will generate an error if it also finds <code>$MAIN</code>, <code>$TABLE</code>, or <code>$ODE</code>. However, the code that gets entered into <code>$PRED</code> would function exactly as if you put it in <code>$TABLE</code>.</p>
+<p>In the example model, the response is a function of the parameter <code>B</code>, so we’ll generate an input data set with some values of <code>B</code></p>
+<pre class="r"><code>library(dplyr)
+data &lt;- data_frame(ID = 1, B = exp(rnorm(100, 0,2)))
+
+head(data)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##      ID      B
+##   &lt;dbl&gt;  &lt;dbl&gt;
+## 1     1  0.934
+## 2     1  1.71 
+## 3     1  0.392
+## 4     1 38.4  
+## 5     1  8.13 
+## 6     1  0.196</code></pre>
+<pre class="r"><code>out &lt;- mrgsim_d(mod,data,carry.out=&quot;B&quot;)
+
+plot(out, Y~B)</code></pre>
+<p><img src="/post/2018-09-03-models-without-compartments-pred_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Like other models, we can simulate from a population</p>
+<pre class="r"><code>library(purrr)
+set.seed(223)
+df &lt;- map_df(1:30, function(i) data_frame(ID = i, B = seq(0,30,1)))
+
+head(df)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##      ID     B
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     1     0
+## 2     1     1
+## 3     1     2
+## 4     1     3
+## 5     1     4
+## 6     1     5</code></pre>
+<pre class="r"><code>mod %&gt;% 
+  data_set(df) %&gt;% 
+  mrgsim(carry.out=&quot;B&quot;) %&gt;%
+  plot(Y ~ B)</code></pre>
+<p><img src="/post/2018-09-03-models-without-compartments-pred_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>

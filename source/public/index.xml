@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mrgsolve</title>
+    <link>/</link>
+    <description>Recent content on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Models without compartments ($PRED)</title>
+      <link>/2018/09/03/models-without-compartments-pred/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/03/models-without-compartments-pred/</guid>
+      <description>Introduction This post introduces a new formal code block for writing models where there are no compartments. The block is named after the analgous NONMEM block called $PRED. This functionality has always been possible with mrgsolve, but only now is there a code block dedicated to these models. Also, a relaxed set of data set constraints have been put in place when these types of models are invoked.
+ Status The functionality in this vignette can only be access from the GitHub version.</description>
+    </item>
+    
+    <item>
+      <title>Modeled interventions in mrgsolve</title>
+      <link>/2018/09/02/modeled-interventions-in-mrgsolve/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/02/modeled-interventions-in-mrgsolve/</guid>
+      <description>Introduction This post is to introduce modeled interventions in mrgsolve. The main use case for this functionality is to force mrgsolve to advance the system to a specific time so that some aspect of the system can change at that time. This is similar to the MTIME functionality that NONMEM provides. Additionally, doses (bolus or infusions) can also be implemented as a modeled event. These events are “modeled” because they originate from code in the $MAIN block, not the input data set, so that the events can be reactive to model parameters or the state of the model itself.</description>
+    </item>
+    
+    <item>
+      <title>Creating complex dosing regimens with event objects</title>
+      <link>/2017/08/27/creating-complex-dosing-regimens-with-event-objects/</link>
+      <pubDate>Sun, 27 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/27/creating-complex-dosing-regimens-with-event-objects/</guid>
+      <description>1 Introduction 2 Event objects 3 Sequences of event objects 3.1 Using wait in event sequence  4 Repeating a complicated regimen 5 Expand an event into a population   1 Introduction With this blog post, we’d like to introduce some new functions in mrgsolve that work with event objects. The focus for this functionality is creating complicated dosing regimens from simpler, elementary event objects. And in particular, we’ll see in this blog post how to easily create regular/irregular dosing patterns.</description>
+    </item>
+    
+    <item>
+      <title>Mixture model example</title>
+      <link>/2017/05/26/mixture-model-example/</link>
+      <pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/05/26/mixture-model-example/</guid>
+      <description>In NONMEM, $MIXTURE will allow you to estimate mixture models, where individuals are classified in to two or more populations with a certain probability. It is straightforward to simulate from models like these in your mrgsolve model code.
+Two Populations Let’s imagine there were two populations in the mixture model, with the second having smaller clearance than the first. In this example, we will develop some code for a simple model and then extend it to implement the mixture model component.</description>
+    </item>
+    
+    <item>
+      <title>Model visualization tutorial materials</title>
+      <link>/2017/03/18/model-visualization-tutorial-materials/</link>
+      <pubDate>Sat, 18 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/03/18/model-visualization-tutorial-materials/</guid>
+      <description>You can find the materials here: http://www.github.com/metrumresearchgroup/model-vis-tutorial</description>
+    </item>
+    
+    <item>
+      <title>Reproducible results with set.seed()</title>
+      <link>/2017/03/09/reproducible-results-with-set.seed/</link>
+      <pubDate>Thu, 09 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/03/09/reproducible-results-with-set.seed/</guid>
+      <description>library(mrgsolve) library(dplyr) Demo model code &amp;lt;- &amp;#39; $PKMODEL cmt=&amp;quot;CENT&amp;quot; $PARAM CL = 1, V = 20 $OMEGA 1 1 $TABLE capture ETA1 = ETA(1); capture ETA2 = ETA(2); &amp;#39; mod &amp;lt;- mcode(&amp;quot;test&amp;quot;, code)  Single dose set.seed(9911) single &amp;lt;- mod %&amp;gt;% ev(amt=100) %&amp;gt;% mrgsim(nid=100, end=24)  Multi dose set.seed(9911) multi &amp;lt;- mod %&amp;gt;% ev(amt=100, ii=24, addl=9) %&amp;gt;% mrgsim(nid=100, end=240)  Compare single . Model: test . Dim: 2600 x 5 .</description>
+    </item>
+    
+    <item>
+      <title>Setting initial conditions</title>
+      <link>/2017/02/25/setting-initial-conditions/</link>
+      <pubDate>Sat, 25 Feb 2017 23:00:00 +0000</pubDate>
+      
+      <guid>/2017/02/25/setting-initial-conditions/</guid>
+      <description>1 Short answer 1.1 Set initials in $MAIN 1.2 Set initials in the init list 1.3 Don’t use initial conditions as a dosing mechanism  2 Long answer 2.1 Make a model only to examine init behavior 2.2 Example PK/PD model with initial condition 2.3 Calling init will let you check to see what is going on  3 Extra bonus: set initial conditions via idata 4 Session Info   library(mrgsolve) 1 Short answer There are two commonly-used ways to set initial conditions: in $MAIN and in the initial condition list.</description>
+    </item>
+    
+    <item>
+      <title>A Complete Example</title>
+      <link>/2017/02/25/a-complete-example/</link>
+      <pubDate>Sat, 25 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/02/25/a-complete-example/</guid>
+      <description>Introduction Population PK model Input data set Simulation Output presentation Summary   Introduction We had a user who was learning mrgsolve ask for a “complete example”. I wasn’t sure what exactly that meant, but I created this example and I’m sharing it today on the blog.
+This is an invented example to illustrate features and workflow for mrgsolve. If you attend one of our training workshops, we work examples using published models to answer real questions you’ll encounter in drug development.</description>
+    </item>
+    
+    <item>
+      <title>Content tags</title>
+      <link>/tax/</link>
+      <pubDate>Fri, 24 Feb 2017 09:42:22 -0600</pubDate>
+      
+      <guid>/tax/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tax</title>
+      <link>/tax/</link>
+      <pubDate>Fri, 24 Feb 2017 08:00:00 +0000</pubDate>
+      
+      <guid>/tax/</guid>
+      <description>{{partial &amp;ldquo;tax.html&amp;rdquo; .}}</description>
+    </item>
+    
+    <item>
+      <title>Quick hit feature demos</title>
+      <link>/2017/02/23/quick/</link>
+      <pubDate>Thu, 23 Feb 2017 16:49:01 -0600</pubDate>
+      
+      <guid>/2017/02/23/quick/</guid>
+      <description>$ operator for model object gets the parameter value Zero all random effect variances on the fly Plot formulae   These are all miscellaneous features that may be difficult to find in other documentation.
+library(mrgsolve) library(dplyr) $ operator for model object gets the parameter value If our model parameters are
+mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=14): . name value . name value . CL 1 | SEX 0 .</description>
+    </item>
+    
+    <item>
+      <title>Quick hit feature demos</title>
+      <link>/topic/quick/</link>
+      <pubDate>Thu, 23 Feb 2017 16:49:01 -0600</pubDate>
+      
+      <guid>/topic/quick/</guid>
+      <description>$ operator for model object gets the parameter value Zero all random effect variances on the fly Plot formulae   These are all miscellaneous features that may be difficult to find in other documentation.
+library(mrgsolve) library(dplyr) $ operator for model object gets the parameter value If our model parameters are
+mod &amp;lt;- mrgsolve:::house() param(mod) . . Model parameters (N=14): . name value . name value . CL 1 | SEX 0 .</description>
+    </item>
+    
+    <item>
+      <title>Access Models in the Internal Library</title>
+      <link>/topic/modmrg/</link>
+      <pubDate>Thu, 23 Feb 2017 10:13:36 +0000</pubDate>
+      
+      <guid>/topic/modmrg/</guid>
+      <description>library(mrgsolve) library(dplyr) PK model Here, we name the name of the model we want from the library (pk2cmt) and we point mread to the project directory where the internal model library is stored. This internal library is located wherever mrgsolve is installed. The install location for mrgsolve is not obvious, so we provide a function (modlib) that returns the currect path to the model library.
+mod &amp;lt;- mread(&amp;quot;pk2cmt&amp;quot;, modlib()) mod %&amp;gt;% ev(amt=100,rate=3,addl=4,ii=48,cmt=2) %&amp;gt;% mrgsim(end=320) %&amp;gt;% plot(CP~.</description>
+    </item>
+    
+    <item>
+      <title>Generate MAP Bayes Parameter Estimates</title>
+      <link>/2017/02/23/generate-map-bayes-parameter-estimates/</link>
+      <pubDate>Thu, 23 Feb 2017 10:13:36 +0000</pubDate>
+      
+      <guid>/2017/02/23/generate-map-bayes-parameter-estimates/</guid>
+      <description>library(ggplot2) library(mrgsolve) library(minqa) library(dplyr) library(magrittr) About This tutorial illustrates how to do MAP Bayes estimation with mrgsolve.
+The setup was adapted from an existing project, where only a single individual was considered. With some additional R coding, it could be expanded to consider multiple individuals in a single run.
+ One compartment model, keep it simple for now  The model specification code below is for a one-compartment model, where mrgsolve will calculate the amount in CENT from closed-form equations</description>
+    </item>
+    
+    <item>
+      <title>Model Gallery</title>
+      <link>/topic/model-gallery/</link>
+      <pubDate>Thu, 23 Feb 2017 08:00:00 +0000</pubDate>
+      
+      <guid>/topic/model-gallery/</guid>
+      <description>Load packages required for the gallery Simple PK model PK model with different bioavability and dosing lag time PK model with residual error Indirect response model driven by continuous PK Indirect response model driven by metric summarizing exposure Effect compartment model Population PK model with covariates and IOV PK with dialysis sessions 3 times per week References Session Info   library(lattice) library(ggplot2) library(dplyr) Load packages required for the gallery library(mrgsolve) library(dplyr) library(ggplot2) library(magrittr) library(tidyr)  Simple PK model About this model specification code</description>
+    </item>
+    
+    <item>
+      <title>Extended examples</title>
+      <link>/topic/</link>
+      <pubDate>Sat, 04 Feb 2017 08:00:00 +0000</pubDate>
+      
+      <guid>/topic/</guid>
+      <description>A complete listing of tagged content can be found here.
+ Brief feature demonstrations Generate MAP Bayes estimates Internal model library Model gallery Working with event objects  </description>
+    </item>
+    
+    <item>
+      <title>Work with event objects</title>
+      <link>/2017/01/31/work-with-event-objects/</link>
+      <pubDate>Tue, 31 Jan 2017 08:00:00 +0000</pubDate>
+      
+      <guid>/2017/01/31/work-with-event-objects/</guid>
+      <description>library(mrgsolve) library(dplyr) Introduction Event objects are simple ways to implement PK dosing events into your model simulation.
+ Setup Let’s illustrate event objects with a one-compartment, PK model. We read this model from the mrgsolve internal model library.
+mod &amp;lt;- mread(&amp;quot;pk1cmt&amp;quot;, modlib(), end=216, delta=0.1)  Events Events are constructed with the ev function
+e &amp;lt;- ev(amt=100, ii=24, addl=6) This will implement 100 unit doses every 24 hours for a total of 7 doses.</description>
+    </item>
+    
+    <item>
+      <title>Work with event objects</title>
+      <link>/topic/events/</link>
+      <pubDate>Tue, 31 Jan 2017 08:00:00 +0000</pubDate>
+      
+      <guid>/topic/events/</guid>
+      <description>library(mrgsolve) library(dplyr) Introduction Event objects are simple ways to implement PK dosing events into your model simulation.
+ Setup Let’s illustrate event objects with a one-compartment, PK model. We read this model from the mrgsolve internal model library.
+mod &amp;lt;- mread(&amp;quot;pk1cmt&amp;quot;, modlib(), end=216, delta=0.1)  Events Events are constructed with the ev function
+e &amp;lt;- ev(amt=100, ii=24, addl=6) This will implement 100 unit doses every 24 hours for a total of 7 doses.</description>
+    </item>
+    
+    <item>
+      <title>Flexible, heterogeneous simulation designs in a population</title>
+      <link>/2017/01/05/flexible-heterogeneous-simulation-designs-in-a-population/</link>
+      <pubDate>Thu, 05 Jan 2017 13:09:02 +0000</pubDate>
+      
+      <guid>/2017/01/05/flexible-heterogeneous-simulation-designs-in-a-population/</guid>
+      <description>Design lists help you assign different designs to different groups in a population or specific designs to specific individuals.
+library(mrgsolve) library(dplyr) Assign designs to individuals To illustrate, let’s make a population of 4 individuals, all with different simulation end times.
+des &amp;lt;- data_frame(ID=1:4, end=seq(24,96,24)) des . # A tibble: 4 x 2 . ID end . &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; . 1 1 24 . 2 2 48 . 3 3 72 .</description>
+    </item>
+    
+    <item>
+      <title>Generating input data sets for mrgsolve</title>
+      <link>/2017/01/01/generating-input-data-sets-for-mrgsolve/</link>
+      <pubDate>Sun, 01 Jan 2017 13:09:13 -0600</pubDate>
+      
+      <guid>/2017/01/01/generating-input-data-sets-for-mrgsolve/</guid>
+      <description>library(mrgsolve) library(dplyr) Input data sets An important mechanism for creating robust, complex simulations is the input data set. Input data sets specify the population of individuals to simulate, including the number of individuals, each individual’s dosing interventions, each individual’s covariate values etc. The input data set is just a plain old R data.frame, but with some expectations about which columns are present and expectations for how to handle columns for certain names.</description>
+    </item>
+    
+    <item>
+      <title>Resimulate random effect variates on demand</title>
+      <link>/2017/01/01/resimulate-random-effect-variates-on-demand/</link>
+      <pubDate>Sun, 01 Jan 2017 13:09:13 -0600</pubDate>
+      
+      <guid>/2017/01/01/resimulate-random-effect-variates-on-demand/</guid>
+      <description>simeta example Simulate without simeta Simulate with simeta  simeps example Simulate without simeps Simulate with simeps    
+library(mrgsolve) library(dplyr) simeta example  In this example, we want to simulate a patient-specific baseline response that is between 80 and 120. In the code, we start a loop that calls simeta with no arguments until the baseline is between the specified bounds For this example, we only calculate BASE when NEWIND &amp;lt;=1 … or whenever we are working on the first record of an individual.</description>
+    </item>
+    
+    <item>
+      <title>Work with R objects in your model</title>
+      <link>/2017/01/01/work-with-r-objects-in-your-model/</link>
+      <pubDate>Sun, 01 Jan 2017 13:09:13 -0600</pubDate>
+      
+      <guid>/2017/01/01/work-with-r-objects-in-your-model/</guid>
+      <description>About  This model doesn’t really accomplish anything useful. I coded this up to show how we can get vector, matrix data as well as R functions into your simulation. After we show the model code, we walk through the key lines of code and explain why / where this type of extension could be useful.   Documentation  You can find documentation for functions in mrgx plugin here: http://mrgsolve.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/1/01/01.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01.html</guid>
+      <description>Extended examples A complete listing of tagged content can be found here.
+ Brief feature demonstrations Generate MAP Bayes estimates Internal model library Model gallery Working with event objects   </description>
+    </item>
+    
+    <item>
+      <title>Generate MAP Bayes Parameter Estimates</title>
+      <link>/topic/map_bayes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/topic/map_bayes/</guid>
+      <description>library(ggplot2) library(mrgsolve) library(minqa) library(dplyr) library(magrittr) About This tutorial illustrates how to do MAP Bayes estimation with mrgsolve.
+The setup was adapted from an existing project, where only a single individual was considered. With some additional R coding, it could be expanded to consider multiple individuals in a single run.
+ One compartment model, keep it simple for now  The model specification code below is for a one-compartment model, where mrgsolve will calculate the amount in CENT from closed-form equations</description>
+    </item>
+    
+    <item>
+      <title>Simulate from PKPD &amp; QSP models in R</title>
+      <link>/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/</guid>
+      <description>mrgsolve is an R package for simulation from hierarchical, ordinary differential equation (ODE) based models typically employed in drug development.
+mrgsolve is free, open-source software mrgsolve is distributed as a package for R and utilizes an ODE-solver from ODEPACK which is freely-available in the public domain. We develop mrgsolve on github, with input and contributions from the pharmacometrics modeling and simulation community. We welcome feature requests and bug reports on the GitHub site issue tracker.</description>
+    </item>
+    
+  </channel>
+</rss>

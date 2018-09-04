@@ -1,0 +1,7 @@
+unnamed-chunk-2	library	mrgsolve
+unnamed-chunk-3	mod	mread	modlib
+unnamed-chunk-4	mod
+unnamed-chunk-5	e	ev
+unnamed-chunk-6	out	mod	%>%	ev	e	mrgsim
+plot_1	plot	out
+unnamed-chunk-7	cat	code	mod
