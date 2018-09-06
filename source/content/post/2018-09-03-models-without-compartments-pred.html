@@ -40,14 +40,14 @@ data &lt;- data_frame(ID = 1, B = exp(rnorm(100, 0,2)))
 
 head(data)</code></pre>
 <pre><code>## # A tibble: 6 x 2
-##      ID     B
-##   &lt;dbl&gt; &lt;dbl&gt;
-## 1     1 7.63 
-## 2     1 0.203
-## 3     1 0.719
-## 4     1 1.94 
-## 5     1 1.76 
-## 6     1 0.524</code></pre>
+##      ID      B
+##   &lt;dbl&gt;  &lt;dbl&gt;
+## 1     1 28.6  
+## 2     1  0.680
+## 3     1  2.49 
+## 4     1  1.14 
+## 5     1  8.41 
+## 6     1  0.941</code></pre>
 <pre class="r"><code>out &lt;- mrgsim_d(mod,data,carry.out=&quot;B&quot;)
 
 plot(out, Y~B)</code></pre>
@@ -85,9 +85,9 @@ head(df)</code></pre>
 <pre class="r"><code>code &lt;- &#39;
 $PARAM TVCL = 1, WT = 70, AUC50 = 20, DOSE = 100, E0 = 35, EMAX = 2.4
 
-$OMEGA 0.5
+$OMEGA 1
 
-$SIGMA 10
+$SIGMA 100
 
 $PRED
 double CL = TVCL*pow(WT/70,0.75)*exp(ETA(1));
@@ -115,19 +115,21 @@ head(out)</code></pre>
 <pre><code>## # A tibble: 6 x 6
 ##      ID  time    WT  DOSE   AUC     Y
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     1     0  59.1    30 132.  107. 
-## 2     2     0 317.     50  28.9  83.3
-## 3     3     0 242.     80  35.0  91.5
-## 4     4     0 171.    110  30.5  85.7
-## 5     5     0 248.    200 216.  110. 
-## 6     6     0  51.2    30 145.  110.</code></pre>
+## 1     1     0  59.1    30 232.  111. 
+## 2     2     0 317.     50  36.8  85.3
+## 3     3     0 242.     80  36.5  98.9
+## 4     4     0 171.    110  23.7  80.3
+## 5     5     0 248.    200 331.  109. 
+## 6     6     0  51.2    30 252.  116.</code></pre>
 <p>Plot the response (<code>Y</code>) versus <code>AUC</code>, colored by dose</p>
 <pre class="r"><code>library(ggplot2)
 
 ggplot(out, aes(AUC,Y,col =factor(DOSE))) + 
   geom_point() + 
   scale_x_continuous(trans = &quot;log&quot;, breaks = 10^seq(-4,4)) + 
-  geom_smooth(aes(AUC,Y),se = FALSE,col=&quot;darkgrey&quot;) + theme_bw() </code></pre>
+  geom_smooth(aes(AUC,Y),se = FALSE,col=&quot;darkgrey&quot;) + theme_bw() + 
+  scale_color_brewer(palette = &quot;Set2&quot;, name = &quot;&quot;) + 
+  theme(legend.position = &quot;top&quot;)</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/post/2018-09-03-models-without-compartments-pred_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>

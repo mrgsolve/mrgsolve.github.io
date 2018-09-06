@@ -94,9 +94,9 @@ In this modeL
 code <- '
 $PARAM TVCL = 1, WT = 70, AUC50 = 20, DOSE = 100, E0 = 35, EMAX = 2.4
 
-$OMEGA 0.5
+$OMEGA 1
 
-$SIGMA 10
+$SIGMA 100
 
 $PRED
 double CL = TVCL*pow(WT/70,0.75)*exp(ETA(1));
@@ -133,6 +133,8 @@ library(ggplot2)
 ggplot(out, aes(AUC,Y,col =factor(DOSE))) + 
   geom_point() + 
   scale_x_continuous(trans = "log", breaks = 10^seq(-4,4)) + 
-  geom_smooth(aes(AUC,Y),se = FALSE,col="darkgrey") + theme_bw() 
+  geom_smooth(aes(AUC,Y),se = FALSE,col="darkgrey") + theme_bw() + 
+  scale_color_brewer(palette = "Set2", name = "") + 
+  theme(legend.position = "top")
 ```
 
