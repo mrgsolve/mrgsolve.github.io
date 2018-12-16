@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rcpp on mrgsolve</title>
+    <link>/tags/rcpp/</link>
+    <description>Recent content in Rcpp on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 26 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/rcpp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Mixture model example</title>
+      <link>/2017/05/26/mixture-model-example/</link>
+      <pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/05/26/mixture-model-example/</guid>
+      <description>In NONMEM, $MIXTURE will allow you to estimate mixture models, where individuals are classified in to two or more populations with a certain probability. It is straightforward to simulate from models like these in your mrgsolve model code.
+Two Populations Let’s imagine there were two populations in the mixture model, with the second having smaller clearance than the first. In this example, we will develop some code for a simple model and then extend it to implement the mixture model component.</description>
+    </item>
+    
+    <item>
+      <title>Work with R objects in your model</title>
+      <link>/2017/01/01/work-with-r-objects-in-your-model/</link>
+      <pubDate>Sun, 01 Jan 2017 13:09:13 -0600</pubDate>
+      
+      <guid>/2017/01/01/work-with-r-objects-in-your-model/</guid>
+      <description>About  This model doesn’t really accomplish anything useful. I coded this up to show how we can get vector, matrix data as well as R functions into your simulation. After we show the model code, we walk through the key lines of code and explain why / where this type of extension could be useful.   Documentation  You can find documentation for functions in mrgx plugin here: http://mrgsolve.</description>
+    </item>
+    
+  </channel>
+</rss>

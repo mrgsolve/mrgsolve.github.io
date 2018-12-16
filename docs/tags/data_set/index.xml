@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data_set on mrgsolve</title>
+    <link>/tags/data_set/</link>
+    <description>Recent content in Data_set on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Jan 2017 13:09:13 -0600</lastBuildDate>
+    
+	<atom:link href="/tags/data_set/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Generating input data sets for mrgsolve</title>
+      <link>/2017/01/01/generating-input-data-sets-for-mrgsolve/</link>
+      <pubDate>Sun, 01 Jan 2017 13:09:13 -0600</pubDate>
+      
+      <guid>/2017/01/01/generating-input-data-sets-for-mrgsolve/</guid>
+      <description>library(mrgsolve) library(dplyr) Input data sets An important mechanism for creating robust, complex simulations is the input data set. Input data sets specify the population of individuals to simulate, including the number of individuals, each individual’s dosing interventions, each individual’s covariate values etc. The input data set is just a plain old R data.frame, but with some expectations about which columns are present and expectations for how to handle columns for certain names.</description>
+    </item>
+    
+  </channel>
+</rss>

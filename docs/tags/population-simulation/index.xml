@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Population Simulation on mrgsolve</title>
+    <link>/tags/population-simulation/</link>
+    <description>Recent content in Population Simulation on mrgsolve</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Jan 2017 13:09:02 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/population-simulation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Flexible, heterogeneous simulation designs in a population</title>
+      <link>/2017/01/05/flexible-heterogeneous-simulation-designs-in-a-population/</link>
+      <pubDate>Thu, 05 Jan 2017 13:09:02 +0000</pubDate>
+      
+      <guid>/2017/01/05/flexible-heterogeneous-simulation-designs-in-a-population/</guid>
+      <description>Design lists help you assign different designs to different groups in a population or specific designs to specific individuals.
+library(mrgsolve) library(dplyr) Assign designs to individuals To illustrate, let’s make a population of 4 individuals, all with different simulation end times.
+des &amp;lt;- data_frame(ID=1:4, end=seq(24,96,24)) des . # A tibble: 4 x 2 . ID end . &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; . 1 1 24 . 2 2 48 . 3 3 72 .</description>
+    </item>
+    
+    <item>
+      <title>Generating input data sets for mrgsolve</title>
+      <link>/2017/01/01/generating-input-data-sets-for-mrgsolve/</link>
+      <pubDate>Sun, 01 Jan 2017 13:09:13 -0600</pubDate>
+      
+      <guid>/2017/01/01/generating-input-data-sets-for-mrgsolve/</guid>
+      <description>library(mrgsolve) library(dplyr) Input data sets An important mechanism for creating robust, complex simulations is the input data set. Input data sets specify the population of individuals to simulate, including the number of individuals, each individual’s dosing interventions, each individual’s covariate values etc. The input data set is just a plain old R data.frame, but with some expectations about which columns are present and expectations for how to handle columns for certain names.</description>
+    </item>
+    
+    <item>
+      <title>Resimulate random effect variates on demand</title>
+      <link>/2017/01/01/resimulate-random-effect-variates-on-demand/</link>
+      <pubDate>Sun, 01 Jan 2017 13:09:13 -0600</pubDate>
+      
+      <guid>/2017/01/01/resimulate-random-effect-variates-on-demand/</guid>
+      <description>simeta example Simulate without simeta Simulate with simeta  simeps example Simulate without simeps Simulate with simeps    
+library(mrgsolve) library(dplyr) simeta example  In this example, we want to simulate a patient-specific baseline response that is between 80 and 120. In the code, we start a loop that calls simeta with no arguments until the baseline is between the specified bounds For this example, we only calculate BASE when NEWIND &amp;lt;=1 … or whenever we are working on the first record of an individual.</description>
+    </item>
+    
+  </channel>
+</rss>

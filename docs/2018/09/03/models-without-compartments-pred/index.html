@@ -1,0 +1,258 @@
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92528248-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.21" />
+
+
+<title>Models without compartments ($PRED) - mrgsolve</title>
+<meta property="og:title" content="Models without compartments ($PRED) - mrgsolve">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/mrgsolve_transparent.png"
+         width=""
+         height=""
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../">Home</a></li>
+    
+    <li><a href="../../../../post/">Blog</a></li>
+    
+    <li><a href="https://github.com/metrumresearchgroup/mrgsolve">GitHub</a></li>
+    
+    <li><a href="../../../../index.html#documentation">Documentation</a></li>
+    
+    <li><a href="http://metrumrg.com">MetrumRG</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">4 min read</span>
+    
+
+    <h1 class="article-title">Models without compartments ($PRED)</h1>
+
+    
+    <span class="article-date">2018/09/03</span>
+    
+
+    <div class="article-content">
+      <div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This post introduces a new formal code block for writing models where there are no compartments. The block is named after the analgous NONMEM block called <code>$PRED</code>. This functionality has always been possible with mrgsolve, but only now is there a code block dedicated to these models. Also, a relaxed set of data set constraints have been put in place when these types of models are invoked.</p>
+</div>
+<div id="status" class="section level1">
+<h1>Status</h1>
+<p>The functionality in this vignette can only be access from the GitHub version. We will update this vignette once these features are rolled into a release on CRAN.</p>
+</div>
+<div id="example-model" class="section level1">
+<h1>Example model</h1>
+<p>As a most-basic model, we look at the <code>pred1</code> model in <code>modlib()</code></p>
+<pre class="r"><code>library(mrgsolve)
+mod &lt;- mread(&quot;pred1&quot;, modlib())</code></pre>
+<pre><code>## Building pred1 ... done.</code></pre>
+<p>The model code is</p>
+<pre class="c"><code>$PROB
+An example model expressed in closed form
+$PARAM B = -1, beta0 = 100, beta1 = 0.1
+$OMEGA 2 0.3
+$PRED
+double beta0i = beta0 + ETA(1);
+double beta1i = beta1*exp(ETA(2));
+capture Y = beta0i + beta1i*B;</code></pre>
+<p>This is a random-intercept, random slope linear model. Like other models in mrgsolve, you can write parameters (<code>$PARAM</code>), and random effects (<code>$OMEGA</code>). But the model is actually written in <code>$PRED</code>.</p>
+<p>When mrgsolve finds <code>$PRED</code>, it will generate an error if it also finds <code>$MAIN</code>, <code>$TABLE</code>, or <code>$ODE</code>. However, the code that gets entered into <code>$PRED</code> would function exactly as if you put it in <code>$TABLE</code>.</p>
+<p>In the example model, the response is a function of the parameter <code>B</code>, so we’ll generate an input data set with some values of <code>B</code></p>
+<pre class="r"><code>library(dplyr)
+data &lt;- data_frame(ID = 1, B = exp(rnorm(100, 0,2)))
+
+head(data)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##      ID      B
+##   &lt;dbl&gt;  &lt;dbl&gt;
+## 1     1 1.41  
+## 2     1 7.48  
+## 3     1 0.533 
+## 4     1 0.0998
+## 5     1 0.0999
+## 6     1 0.0809</code></pre>
+<pre class="r"><code>out &lt;- mrgsim_d(mod,data,carry.out=&quot;B&quot;)
+
+plot(out, Y~B)</code></pre>
+<p><img src="../../../../post/2018-09-03-models-without-compartments-pred_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Like other models, we can simulate from a population</p>
+<pre class="r"><code>library(purrr)
+set.seed(223)
+df &lt;- map_df(1:30, function(i) data_frame(ID = i, B = seq(0,30,1)))
+
+head(df)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##      ID     B
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     1     0
+## 2     1     1
+## 3     1     2
+## 4     1     3
+## 5     1     4
+## 6     1     5</code></pre>
+<pre class="r"><code>mod %&gt;% 
+  data_set(df) %&gt;% 
+  mrgsim(carry.out=&quot;B&quot;) %&gt;%
+  plot(Y ~ B)</code></pre>
+<p><img src="../../../../post/2018-09-03-models-without-compartments-pred_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="pkpd-model" class="section level1">
+<h1>PK/PD Model</h1>
+<p>Here is an implementation of a PK/PD model using <code>$PRED</code></p>
+<p>In this modeL</p>
+<ul>
+<li>Calculate <code>CL</code> as a function of <code>WT</code> and a random effect</li>
+<li>Derive <code>AUC</code> from <code>CL</code> and <code>DOSE</code></li>
+<li>The response (<code>Y</code>) is a calculated from <code>AUC</code> and the Emax model parameters</li>
+</ul>
+<pre class="r"><code>code &lt;- &#39;
+$PARAM TVCL = 1, WT = 70, AUC50 = 20, DOSE = 100, E0 = 35, EMAX = 2.4
+
+$OMEGA 1
+
+$SIGMA 100
+
+$PRED
+double CL = TVCL*pow(WT/70,0.75)*exp(ETA(1));
+capture AUC = DOSE/CL;
+capture Y = E0*(1+EMAX*AUC/(AUC50+AUC))+EPS(1);
+&#39;</code></pre>
+<pre class="r"><code>mod &lt;- mcode(&quot;pkpd&quot;, code)</code></pre>
+<pre><code>## Building pkpd ... done.</code></pre>
+<p>To simulate, look at 50 subjects at each of 5 doses</p>
+<pre class="r"><code>data &lt;- 
+  expand.idata(DOSE = c(30,50,80,110,200),ID = 1:50) %&gt;% 
+  mutate(WT = exp(rnorm(n(),log(80),1)))
+
+head(data)</code></pre>
+<pre><code>##   ID DOSE        WT
+## 1  1   30  59.13254
+## 2  2   50 317.32739
+## 3  3   80 242.15746
+## 4  4  110 170.78136
+## 5  5  200 248.18054
+## 6  6   30  51.22012</code></pre>
+<pre class="r"><code>out &lt;- mrgsim_d(mod,data,carry.out=&quot;WT,DOSE&quot;) %&gt;% as_data_frame()
+
+head(out)</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##      ID  time    WT  DOSE   AUC     Y
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1     0  59.1    30 232.  111. 
+## 2     2     0 317.     50  36.8  85.3
+## 3     3     0 242.     80  36.5  98.9
+## 4     4     0 171.    110  23.7  80.3
+## 5     5     0 248.    200 331.  109. 
+## 6     6     0  51.2    30 252.  116.</code></pre>
+<p>Plot the response (<code>Y</code>) versus <code>AUC</code>, colored by dose</p>
+<pre class="r"><code>library(ggplot2)
+
+ggplot(out, aes(AUC,Y,col =factor(DOSE))) + 
+  geom_point() + 
+  scale_x_continuous(trans = &quot;log&quot;, breaks = 10^seq(-4,4)) + 
+  geom_smooth(aes(AUC,Y),se = FALSE,col=&quot;darkgrey&quot;) + theme_bw() + 
+  scale_color_brewer(palette = &quot;Set2&quot;, name = &quot;&quot;) + 
+  theme(legend.position = &quot;top&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="../../../../post/2018-09-03-models-without-compartments-pred_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92528248-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+
