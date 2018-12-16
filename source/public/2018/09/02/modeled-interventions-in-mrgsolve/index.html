@@ -111,7 +111,7 @@ mcode(&quot;mevent0&quot;, code) %&gt;%
   ev(amt = 100) %&gt;% 
   mrgsim(end = 24, delta = 0.1) %&gt;%
   plot(CENT+KA~time)</code></pre>
-<pre><code>## Compiling mevent0 ... done.</code></pre>
+<pre><code>## Building mevent0 ... done.</code></pre>
 <p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>For the model with <strong>time-varying</strong> parameter, we want <code>KA</code> to start with a lower value at the time of the oral dose and then increase at some time after the dose. And we want that to happen for every dose. We model the time after the dose when we want KA to change and force the simulation to stop at that time so we can make the required changes.</p>
 <p>The model with time-varying <code>KA</code> might look like this</p>
@@ -141,7 +141,7 @@ if(EVID==33) KA = KA3;
 <p>We don’t have plans to offer indicators like <code>MPAST</code> or <code>MTDIFF</code> as NONMEM does. But we can achieve similar behavior by tagging the event and then looking for that tag again down the road.</p>
 <p>The simulation looks like this</p>
 <pre class="r"><code>mod &lt;- mcode(&quot;mevent&quot;, code)</code></pre>
-<pre><code>## Compiling mevent ... done.</code></pre>
+<pre><code>## Building mevent ... done.</code></pre>
 <pre class="r"><code>mod %&gt;% 
   ev(amt = 100) %&gt;% 
   mrgsim(end = 24, delta = 0.1) %&gt;%
@@ -169,7 +169,7 @@ if(EVID==34) KA = KA3;
 &#39; </code></pre>
 <p>We use a separate <code>EVID</code> (34) here to distinguish the second change from the first change (with <code>EVID 33</code>).</p>
 <pre class="r"><code>mod &lt;- mcode(&quot;mevent2&quot;, code)</code></pre>
-<pre><code>## Compiling mevent2 ... done.</code></pre>
+<pre><code>## Building mevent2 ... done.</code></pre>
 <pre class="r"><code>mod %&gt;% 
   ev(amt = 100) %&gt;% 
   mrgsim(end = 8, delta = 0.1) %&gt;%
@@ -203,7 +203,7 @@ if(EVID==33) KA = KA3;
 
 &#39; </code></pre>
 <pre class="r"><code>mod &lt;- mcode(&quot;mevent3&quot;, code)</code></pre>
-<pre><code>## Compiling mevent3 ... done.</code></pre>
+<pre><code>## Building mevent3 ... done.</code></pre>
 <pre class="r"><code>idata &lt;- data.frame(MTIME1 = seq(0,2.5,0.5))
 
 mod %&gt;% 
@@ -238,7 +238,7 @@ if(TIME/12 ==floor(TIME/12) &amp;&amp; TIME &lt; 120) {
 <li>rate (for infusions)</li>
 </ol>
 <pre class="r"><code>mod &lt;- mcode(&quot;mevent4&quot;, code)</code></pre>
-<pre><code>## Compiling mevent4 ... done.</code></pre>
+<pre><code>## Building mevent4 ... done.</code></pre>
 <pre class="r"><code>mod %&gt;%  mrgsim(end = 240, delta = 0.2) %&gt;% plot(CENT~time)</code></pre>
 <p><img src="../../../../post/2018-09-02-modeled-interventions-in-mrgsolve_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>So here, we simulated without the data set and implemented the dosing from within the model. This isn’t the way you should be implementing dosing like this on a regular basis, but it shows how you can trigger doses from within the model based on what has gone on up to that point in the simulation.</p>
