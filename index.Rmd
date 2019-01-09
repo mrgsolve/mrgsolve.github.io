@@ -1,10 +1,14 @@
 ---
-title: "Simulate from PKPD & QSP models in R"
+pagetitle: "Simulate from PKPD & QSP models in R"
 output: 
   html_document:
     toc: FALSE
     number_sections: FALSE
 ---
+
+<br><br>
+
+# <font class=mrgg>Simulate from PKPD & QSP models in R</font> <img src="images/mrgsolve_hex.png" align="right"></img>
 
 ```{r,echo=FALSE,message=FALSE}
 knitr::opts_chunk$set(cache=TRUE,autodep=TRUE,message=FALSE,fig.align="center")
@@ -16,12 +20,16 @@ source("ref.R")
 `mrgsolve` is an `R` package for simulation from hierarchical, ordinary 
 differential equation (ODE) based models typically employed in drug development.
 
+<br>
+
 ## `mrgsolve` is free, open-source software
 `mrgsolve` is distributed as a package for `R` and utilizes an ODE-solver from 
 `ODEPACK` which is freely-available in the public domain.  We develop `mrgsolve` 
 on [github](http://www.github.com/metrumresearchgroup/mrgsolve), with input and 
 contributions from the pharmacometrics modeling and simulation community.  We 
 welcome feature requests and bug reports on the GitHub site [issue tracker](http://www.github.com/metrumresearchgroup/mrgsolve/issues). 
+
+<br>
 
 ## Documentation
 * [User Guide](http://mrgsolve.github.io/user_guide): In-depth description and 
@@ -32,6 +40,8 @@ welcome feature requests and bug reports on the GitHub site [issue tracker](http
 * [Quick hit demos](`r .ref$quick`): Features that you might have a hard time 
   finding in other documentation
 
+<br>
+
 ## Links and Resources
 * [GitHub Page](http://www.github.com/metrumresearchgroup/mrgsolve): Browse 
   source code, find useful examples, get help installing, report issues
@@ -40,6 +50,7 @@ welcome feature requests and bug reports on the GitHub site [issue tracker](http
   including blog posts and other help / demonstration content
 * [Metrum Research Group](http://metrumrg.com): Our main website
 
+<hr>
 
 ## An example
 
