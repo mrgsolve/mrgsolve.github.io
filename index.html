@@ -360,7 +360,18 @@ $(document).ready(function () {
 </div>
 
 
-<p><br><br></p>
+<style type="text/css">
+.title {
+  display: none;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+<div class="row" style="padding-top: 30px; width: 90%">
+<!--div class="col-sm-6"-->
 <div id="simulate-from-pkpd-qsp-models-in-r" class="section level1">
 <h1><font class=mrgg>Simulate from PKPD &amp; QSP models in R</font> <img src="images/mrgsolve_hex.png" align="right" width="150px"></img></h1>
 <!-- [![CRAN](http://www.r-pkg.org/badges/version/mrgsolve)](https://cran.r-project.org/package=mrgsolve) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![questions](https://img.shields.io/badge/ask_for-Help-brightgreen.svg)](https://github.com/metrumresearchgroup/mrgsolve/issues) [![Metrumrg](https://img.shields.io/badge/contact-MetrumRG-brightgreen.svg)](http://metrumrg.com) -->
@@ -438,7 +449,7 @@ out</code></pre></div>
 . [8,]  1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
 <p>And plot</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(out)  </code></pre></div>
-<p><img src="figures/index-plot_1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/plot_1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The source code for this model:</p>
 <pre><code>  $PROB
   # Model: `irm1`
@@ -490,6 +501,7 @@ out</code></pre></div>
   
   $CAPTURE @annotated
   CP : Plasma concentration (mass/volume)</code></pre>
+</div>
 </div>
 </div>
 

@@ -6,7 +6,21 @@ output:
     number_sections: FALSE
 ---
 
-<br><br>
+<style type="text/css">
+.title {
+  display: none;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+<div class="row" style="padding-top: 30px; width: 90%">
+<!--div class="col-sm-6"-->
+
+
 
 # <font class=mrgg>Simulate from PKPD & QSP models in R</font> <img src="images/mrgsolve_hex.png" align="right" width="150px"></img>
 
@@ -14,6 +28,8 @@ output:
 knitr::opts_chunk$set(cache=TRUE,autodep=TRUE,message=FALSE,fig.align="center")
 source("ref.R")
 ```
+
+
 
 <!-- [![CRAN](http://www.r-pkg.org/badges/version/mrgsolve)](https://cran.r-project.org/package=mrgsolve) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![questions](https://img.shields.io/badge/ask_for-Help-brightgreen.svg)](https://github.com/metrumresearchgroup/mrgsolve/issues) [![Metrumrg](https://img.shields.io/badge/contact-MetrumRG-brightgreen.svg)](http://metrumrg.com) -->
 
@@ -88,7 +104,7 @@ out
 ```
 
 And plot
-```{r,"plot_1",fig.path="figures/index-"}
+```{r,"plot_1"}
 plot(out)  
 ```
 
@@ -98,4 +114,5 @@ The source code for this model:
 cat(mrgsolve:::code(mod),sep="\n")
 ```
 
+</div>
 
