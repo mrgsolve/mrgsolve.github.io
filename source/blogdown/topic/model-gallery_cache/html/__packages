@@ -1,8 +1,0 @@
-base
-lattice
-ggplot2
-dplyr
-mrgsolve
-magrittr
-tidyr
-bindrcpp

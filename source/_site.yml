@@ -1,0 +1,27 @@
+name: "mrgsolve-homepage"
+output_dir: ../docs
+exclude: [mrgsolve_builds]
+navbar:
+  title: "<div class = mrgg>mrgsolve::home</div>"
+  left:
+    - text: Blog
+      href: https://mrgsolve.github.io/blog
+    - text: "UserGuide"
+      href: https://mrgsolve.github.io/user_guide
+    - text: Vignettes
+      href: https://mrgsolve.github.io/vignettes
+    - text: Gallery
+      href: https://github.com/mrgsolve/gallery
+  right:
+    - text: "mrgsolve.github.io"
+      href: https://mrgsolve.github.io
+    - text: "GitHub"
+      href: https://github.com/metrumresearchgroup/mrgsolve
+output: 
+    html_document:
+      theme: default
+      highlight: pygments
+      css: css/styles.css
+      toc: true
+      toc_float: true
+      number_sections: true
