@@ -110,8 +110,8 @@ plot(out)
 
 
 The source code for this model:
-```{r,comment=" ",echo=FALSE}
-cat(mrgsolve:::code(mod),sep="\n")
+```{c,eval=FALSE, comment=" ",  code=mrgsolve:::code(mod)}
+
 ```
 
 </div>

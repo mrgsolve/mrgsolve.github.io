@@ -451,56 +451,56 @@ out</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(out)  </code></pre></div>
 <p><img src="index_files/figure-html/plot_1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The source code for this model:</p>
-<pre><code>  $PROB
-  # Model: `irm1`
-    - Indirect response model, type 1
-        - Inhibition of response input
-        - Two-compartment PK model
-        - Optional nonlinear clearance
-    - Source: `mrgsolve` internal library
-    - Date: `r Sys.Date()`
-    - Version: `r packageVersion(&quot;mrgsolve&quot;)`
-  
-  $PARAM @annotated
-  CL   :  1  : Clearance (volume/time)
-  V2   : 20  : Central volume (volume)
-  Q    :  2  : Inter-compartmental clearance (volume/time)
-  V3   : 10  : Peripheral volume of distribution (volume)
-  KA   :  1  : Absorption rate constant 1 (1/time)
-  KA2  :  1  : Absorption rate constant 2 (1/time)
-  KIN  : 10  : Response in rate constant (1/time)
-  KOUT :  2  : Response out rate constant (1/time)
-  IC50 :  2  : Concentration for 50% of max inhibition (mass/volume)
-  IMAX :  1  : Maximum inhibition 
-  n    :  1  : Emax model sigmoidicity
-  VMAX :  0  : Maximum reaction velocity (mass/time)
-  KM   :  2  : Michaelis constant (mass/volume)
-  
-  $CMT  @annotated
-  EV1    : First extravascular compartment (mass)
-  CENT   : Central compartment (mass)
-  PERIPH : Peripheral compartment (mass) 
-  RESP   : Response compartment
-  EV2    : Second extravascular compartment (mass)
-  
-  $GLOBAL
-  #define CP (CENT/V2)
-  #define CT (PERIPH/V3)
-  #define CLNL (VMAX/(KM+CP))
-  #define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))
-  
-  $MAIN
-  RESP_0 = KIN/KOUT;
-  
-  $ODE
-  dxdt_EV1    = -KA *EV1;
-  dxdt_EV2    = -KA2*EV2;
-  dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;
-  dxdt_PERIPH =  Q*CP - Q*CT;
-  dxdt_RESP   =  KIN*(1-INH) - KOUT*RESP;
-  
-  $CAPTURE @annotated
-  CP : Plasma concentration (mass/volume)</code></pre>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">$PROB
+<span class="er"># Model: `irm1`</span>
+  - Indirect response model, type <span class="dv">1</span>
+      - Inhibition of response input
+      - Two-compartment PK model
+      - Optional nonlinear clearance
+  - Source: `mrgsolve` internal library
+  - Date: `r Sys.Date()`
+  - Version: `r packageVersion(<span class="st">&quot;mrgsolve&quot;</span>)`
+
+$PARAM @annotated
+CL   :  <span class="dv">1</span>  : Clearance (volume/time)
+V2   : <span class="dv">20</span>  : Central volume (volume)
+Q    :  <span class="dv">2</span>  : Inter-compartmental clearance (volume/time)
+V3   : <span class="dv">10</span>  : Peripheral volume of distribution (volume)
+KA   :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">1</span> (<span class="dv">1</span>/time)
+KA2  :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">2</span> (<span class="dv">1</span>/time)
+KIN  : <span class="dv">10</span>  : Response in rate constant (<span class="dv">1</span>/time)
+KOUT :  <span class="dv">2</span>  : Response out rate constant (<span class="dv">1</span>/time)
+IC50 :  <span class="dv">2</span>  : Concentration <span class="cf">for</span> <span class="dv">50</span>% of max inhibition (mass/volume)
+IMAX :  <span class="dv">1</span>  : Maximum inhibition 
+n    :  <span class="dv">1</span>  : Emax model sigmoidicity
+VMAX :  <span class="dv">0</span>  : Maximum reaction velocity (mass/time)
+KM   :  <span class="dv">2</span>  : Michaelis constant (mass/volume)
+
+$CMT  @annotated
+EV1    : First extravascular compartment (mass)
+CENT   : Central compartment (mass)
+PERIPH : Peripheral compartment (mass) 
+RESP   : Response compartment
+EV2    : Second extravascular compartment (mass)
+
+$GLOBAL
+<span class="pp">#define CP (CENT/V2)</span>
+<span class="pp">#define CT (PERIPH/V3)</span>
+<span class="pp">#define CLNL (VMAX/(KM+CP))</span>
+<span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span>
+
+$MAIN
+RESP_0 = KIN/KOUT;
+
+$ODE
+dxdt_EV1    = -KA *EV1;
+dxdt_EV2    = -KA2*EV2;
+dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;
+dxdt_PERIPH =  Q*CP - Q*CT;
+dxdt_RESP   =  KIN*(<span class="dv">1</span>-INH) - KOUT*RESP;
+
+$CAPTURE @annotated
+CP : Plasma concentration (mass/volume)</code></pre></div>
 </div>
 </div>
 </div>
