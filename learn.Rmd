@@ -52,7 +52,7 @@ optimization, simulation, and reporting
 
 ## YouTube
 
-- Introduction to mrgsolve [playlist](https://youtu.be/XJs0KDfX834)
+- Introduction to mrgsolve [playlist](https://www.youtube.com/playlist?list=PL2rG4OGekWghA8kAiWpPnwX9cjo8xxbtB)
 - PBPK and QSP model implementation and utilization in R [part 1](https://youtu.be/IPwUb-ssdVA) and [part 2](https://youtu.be/sUD6ZZVzi4c)
 - Introduction to mrgsolve [video](https://youtu.be/ts3Lj3hVyiw) from 2016 ISoP Study Group
 
