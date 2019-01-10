@@ -28,7 +28,7 @@ output:
 knitr::opts_chunk$set(cache=TRUE,autodep=TRUE,message=FALSE,fig.align="center")
 source("ref.R")
 ```
- <hr></hr>
+<BR>
  
 ## Course and tutorial repositories
 
