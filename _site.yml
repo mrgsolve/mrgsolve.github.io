@@ -8,8 +8,8 @@ navbar:
       href: "https://mrgsolve.github.io/vignettes"
     - text: Blog
       href: https://mrgsolve.github.io/blog
-    - text: Gallery
-      href: https://github.com/mrgsolve/gallery
+    - text: Learn
+      href: https://mrgsolve.github.io/learn.html
     - icon: fa-github fa-lg
       href: https://github.com/mrgsolve/mrgsolve.github.io
   right:

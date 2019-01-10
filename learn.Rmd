@@ -1,0 +1,55 @@
+---
+pagetitle: "Learning Resources"
+output: 
+  html_document:
+    toc: FALSE
+    number_sections: FALSE
+---
+
+<style type="text/css">
+.title {
+  display: none;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+<div class="row" style="padding-top: 30px; width: 90%">
+<!--div class="col-sm-6"-->
+
+
+
+# Learn <font class=mrgg>mrgsolve</font> <img src="images/mrgsolve_hex.png" align="right" width="150px"></img>
+
+```{r,echo=FALSE,message=FALSE}
+knitr::opts_chunk$set(cache=TRUE,autodep=TRUE,message=FALSE,fig.align="center")
+source("ref.R")
+```
+ <hr></hr>
+ 
+## Course and tutorial repositories
+
+- Introduction to mrgsolve
+    - Presented at PAGE in June, 2018
+    - URL: https://github.com/metrumresearchgroup/page-2018-mrgsolve
+- Case studies with mrgsolve: PBPK and QSP model implementation and utilization in R
+    - Presented at University at Buffalo CDSE Days, April 2018
+    - Presented at University of Florida, April 2017
+    - URL: https://github.com/metrumresearchgroup/pbpk-qsp-mrgsolve
+
+<hr></hr>
+
+
+## YouTube
+
+- Introduction to mrgsolve [playlist](https://youtu.be/XJs0KDfX834)
+- PBPK and QSP model implementation and utilization in R [part 1](https://youtu.be/IPwUb-ssdVA) and [part2](https://youtu.be/sUD6ZZVzi4c)
+- Introduction to mrgsolve [video](https://youtu.be/ts3Lj3hVyiw) from 2016 ISoP Study Group
+
+
+
+</div>
+
