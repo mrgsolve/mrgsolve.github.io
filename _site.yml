@@ -4,10 +4,10 @@ output_dir: "."
 navbar:
   title: "<div class = mrgg>mrgsolve::home</div>"
   left:
+    - text: "Vignettes"
+      href: "https://mrgsolve.github.io/vignettes"
     - text: Blog
       href: https://mrgsolve.github.io/blog
-    - text: Vignettes
-      href: https://mrgsolve.github.io/vignettes
     - text: Gallery
       href: https://github.com/mrgsolve/gallery
     - icon: fa-github fa-lg
@@ -15,10 +15,10 @@ navbar:
   right:
     - text: "UserGuide"
       href: https://mrgsolve.github.io/user_guide
-    - text: "GitHub"
-      href: https://github.com/metrumresearchgroup/mrgsolve
     - text: "mrgsolve.github.io"
       href: https://mrgsolve.github.io
+    - icon: fa-code fa-lg
+      href: https://github.com/metrumresearchgroup/mrgsolve
 output: 
     html_document:
       theme: default
