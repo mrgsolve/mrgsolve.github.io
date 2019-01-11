@@ -20,7 +20,7 @@ output:
 <div class="row" style="padding-top: 30px; width: 90%">
 <!--div class="col-sm-6"-->
 
-
+<br>
 
 # <font class=mrgg>Simulate from PKPD & QSP models in R</font> <img src="images/mrgsolve_hex.png" align="right" width="150px"></img>
 
