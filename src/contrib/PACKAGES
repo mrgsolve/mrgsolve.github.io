@@ -1,0 +1,10 @@
+Package: mrgsolve
+Version: 0.8.12.9000
+Depends: R (>= 3.1.2), methods
+Imports: Rcpp (>= 0.12.12), dplyr (>= 0.7.8), magrittr (>= 1.5), RcppArmadillo (>= 0.7.900.2.0),
+           tibble (>= 1.2), rlang (>= 0.3.0.1), sys
+LinkingTo: Rcpp (>= 0.12.12), RcppArmadillo (>= 0.7.900.2.0), BH (>= 1.62.0-1)
+Suggests: lattice, testthat, xml2 (>= 1.2.0), rmarkdown
+License: GPL (>= 2)
+MD5sum: 624a4fe402d60390905ff04da3d00608
+NeedsCompilation: yes
