@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Simulate from PKPD &amp; QSP models in R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css/styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div class = mrgg>mrgsolve::home</div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="https://mrgsolve.github.io/blog">Blog</a>
+</li>
+<li>
+  <a href="https://mrgsolve.github.io/user_guide">UserGuide</a>
+</li>
+<li>
+  <a href="https://mrgsolve.github.io/vignettes">Vignettes</a>
+</li>
+<li>
+  <a href="https://github.com/mrgsolve/gallery">Gallery</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://mrgsolve.github.io">mrgsolve.github.io</a>
+</li>
+<li>
+  <a href="https://github.com/metrumresearchgroup/mrgsolve">GitHub</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Simulate from PKPD &amp; QSP models in R</h1>
+
+</div>
+
+
+<!-- [![CRAN](http://www.r-pkg.org/badges/version/mrgsolve)](https://cran.r-project.org/package=mrgsolve) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![questions](https://img.shields.io/badge/ask_for-Help-brightgreen.svg)](https://github.com/metrumresearchgroup/mrgsolve/issues) [![Metrumrg](https://img.shields.io/badge/contact-MetrumRG-brightgreen.svg)](http://metrumrg.com) -->
+<p><code>mrgsolve</code> is an <code>R</code> package for simulation from hierarchical, ordinary differential equation (ODE) based models typically employed in drug development.</p>
+<div id="mrgsolve-is-free-open-source-software" class="section level2">
+<h2><code>mrgsolve</code> is free, open-source software</h2>
+<p><code>mrgsolve</code> is distributed as a package for <code>R</code> and utilizes an ODE-solver from <code>ODEPACK</code> which is freely-available in the public domain. We develop <code>mrgsolve</code> on <a href="http://www.github.com/metrumresearchgroup/mrgsolve">github</a>, with input and contributions from the pharmacometrics modeling and simulation community. We welcome feature requests and bug reports on the GitHub site <a href="http://www.github.com/metrumresearchgroup/mrgsolve/issues">issue tracker</a>.</p>
+</div>
+<div id="documentation" class="section level2">
+<h2>Documentation</h2>
+<ul>
+<li><a href="http://mrgsolve.github.io/user_guide">User Guide</a>: In-depth description and discussion about how <code>mrgsolve</code> works, including code block reference</li>
+<li><a href="http://mrgsolve.github.io/docs">R documentation</a>: All <code>mrgsolve</code> documentation that you would find in the <code>R</code> help system</li>
+<li><a href="http://mrgsolve.github.io/vignettes">Vignettes</a>: Package vignettes</li>
+<li><a href="/2017/02/23/quick">Quick hit demos</a>: Features that you might have a hard time finding in other documentation</li>
+</ul>
+</div>
+<div id="links-and-resources" class="section level2">
+<h2>Links and Resources</h2>
+<ul>
+<li><a href="http://www.github.com/metrumresearchgroup/mrgsolve">GitHub Page</a>: Browse source code, find useful examples, get help installing, report issues</li>
+<li><code>mrgsolve</code> home on <a href="https://CRAN.R-project.org/package=mrgsolve">CRAN</a></li>
+<li><a href="/tax/">Site navagation</a>: A listing of all tagged content on this site, including blog posts and other help / demonstration content</li>
+<li><a href="http://metrumrg.com">Metrum Research Group</a>: Our main website</li>
+</ul>
+</div>
+<div id="an-example" class="section level2">
+<h2>An example</h2>
+<p>The following is a simple example to illustrate the basics of how <code>mrgsolve</code> works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(mrgsolve)</a></code></pre></div>
+<p>First, a model object is created. As an introduction, we will use a pre-coded model from an internal library.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">mod &lt;-<span class="st"> </span><span class="kw">mread</span>(<span class="st">&quot;irm1&quot;</span>, <span class="kw">modlib</span>())</a></code></pre></div>
+<p>An overview about this model</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">mod</a></code></pre></div>
+<pre><code>. 
+. 
+. ------------ mrgsolve model object (unix) ------------
+.   project: /Users/kyleb/Rli...gsolve/models
+.   source:        irm1.cpp
+.   shared object: irm1-so-45c5689b2c23 
+. 
+.   time:          start: 0 end: 24 delta: 1
+.                  add: &lt;none&gt;
+.                  tscale: 1
+. 
+.   compartments:  EV1 CENT PERIPH RESP EV2 [5]
+.   parameters:    CL V2 Q V3 KA KA2 KIN KOUT IC50 IMAX n
+.                  VMAX KM [13]
+.   omega:         0x0 
+.   sigma:         0x0 
+. 
+.   solver:        atol: 1e-08 rtol: 1e-08
+.                  maxsteps: 5000 hmin: 0 hmax: 0</code></pre>
+<p>Next, let’s create an intervention for the model. We do this with an event object.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">e &lt;-<span class="st"> </span><span class="kw">ev</span>(<span class="dt">amt=</span><span class="dv">100</span>, <span class="dt">ii=</span><span class="dv">24</span>, <span class="dt">addl=</span><span class="dv">3</span>)</a></code></pre></div>
+<p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>)</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">out &lt;-<span class="st"> </span>mod <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ev</span>(e) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mrgsim</span>(<span class="dt">end=</span><span class="dv">240</span>,<span class="dt">delta=</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2">out</a></code></pre></div>
+<pre><code>. Model:  irm1 
+. Dim:    2402 x 8 
+. Time:   0 to 240 
+. ID:     1 
+.      ID time    EV1   CENT  PERIPH  RESP EV2     CP
+. [1,]  1  0.0   0.00  0.000 0.00000 5.000   0 0.0000
+. [2,]  1  0.0 100.00  0.000 0.00000 5.000   0 0.0000
+. [3,]  1  0.1  90.48  9.444 0.04781 4.903   0 0.4722
+. [4,]  1  0.2  81.87 17.851 0.18294 4.688   0 0.8926
+. [5,]  1  0.3  74.08 25.323 0.39390 4.426   0 1.2662
+. [6,]  1  0.4  67.03 31.953 0.67040 4.151   0 1.5977
+. [7,]  1  0.5  60.65 37.824 1.00324 3.882   0 1.8912
+. [8,]  1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
+<p>And plot</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">plot</span>(out)  </a></code></pre></div>
+<p><img src="figures/index-plot_1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The source code for this model:</p>
+<pre><code>  $PROB
+  # Model: `irm1`
+    - Indirect response model, type 1
+        - Inhibition of response input
+        - Two-compartment PK model
+        - Optional nonlinear clearance
+    - Source: `mrgsolve` internal library
+    - Date: `r Sys.Date()`
+    - Version: `r packageVersion(&quot;mrgsolve&quot;)`
+  
+  $PARAM @annotated
+  CL   :  1  : Clearance (volume/time)
+  V2   : 20  : Central volume (volume)
+  Q    :  2  : Inter-compartmental clearance (volume/time)
+  V3   : 10  : Peripheral volume of distribution (volume)
+  KA   :  1  : Absorption rate constant 1 (1/time)
+  KA2  :  1  : Absorption rate constant 2 (1/time)
+  KIN  : 10  : Response in rate constant (1/time)
+  KOUT :  2  : Response out rate constant (1/time)
+  IC50 :  2  : Concentration for 50% of max inhibition (mass/volume)
+  IMAX :  1  : Maximum inhibition 
+  n    :  1  : Emax model sigmoidicity
+  VMAX :  0  : Maximum reaction velocity (mass/time)
+  KM   :  2  : Michaelis constant (mass/volume)
+  
+  $CMT  @annotated
+  EV1    : First extravascular compartment (mass)
+  CENT   : Central compartment (mass)
+  PERIPH : Peripheral compartment (mass) 
+  RESP   : Response compartment
+  EV2    : Second extravascular compartment (mass)
+  
+  $GLOBAL
+  #define CP (CENT/V2)
+  #define CT (PERIPH/V3)
+  #define CLNL (VMAX/(KM+CP))
+  #define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))
+  
+  $MAIN
+  RESP_0 = KIN/KOUT;
+  
+  $ODE
+  dxdt_EV1    = -KA *EV1;
+  dxdt_EV2    = -KA2*EV2;
+  dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;
+  dxdt_PERIPH =  Q*CP - Q*CT;
+  dxdt_RESP   =  KIN*(1-INH) - KOUT*RESP;
+  
+  $CAPTURE @annotated
+  CP : Plasma concentration (mass/volume)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
