@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -34,41 +35,67 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
 </style>
 <script>
@@ -84,7 +111,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -128,9 +155,7 @@ h6 {
 
 <link rel="stylesheet" href="css/styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -144,7 +169,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -249,8 +273,6 @@ $(document).ready(function () {
 });
 </script>
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
 
 <style type="text/css">
@@ -307,20 +329,17 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -408,6 +427,7 @@ $(document).ready(function () {
 <li><a href="http://mrgsolve.github.io/user_guide">User Guide</a>: In-depth description and discussion about how <code>mrgsolve</code> works, including code block reference</li>
 <li><a href="http://mrgsolve.github.io/docs">R documentation</a>: All <code>mrgsolve</code> documentation that you would find in the <code>R</code> help system</li>
 <li><a href="http://mrgsolve.github.io/vignettes">Vignettes</a>: Package vignettes</li>
+<li><a href="http://github.com/mrgsolve/gallery">Gallery</a>: A GitHub repository of short, focused how-to vignettes</li>
 <li><a href="/2017/02/23/quick">Quick hit demos</a>: Features that you might have a hard time finding in other documentation</li>
 </ul>
 <p><br></p>
@@ -425,102 +445,101 @@ $(document).ready(function () {
 <div id="an-example" class="section level2">
 <h2>An example</h2>
 <p>The following is a simple example to illustrate the basics of how <code>mrgsolve</code> works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mrgsolve)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(mrgsolve)</a></code></pre></div>
 <p>First, a model object is created. As an introduction, we will use a pre-coded model from an internal library.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw">mread</span>(<span class="st">&quot;irm1&quot;</span>, <span class="kw">modlib</span>())</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">mod &lt;-<span class="st"> </span><span class="kw">mread</span>(<span class="st">&quot;irm1&quot;</span>, <span class="kw">modlib</span>())</a></code></pre></div>
 <p>An overview about this model</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">mod</a></code></pre></div>
 <pre><code>. 
 . 
-. ------------ mrgsolve model object (unix) ------------
+. ----------------  source: irm1.cpp  ----------------
+. 
 .   project: /Users/kyleb/Rli...gsolve/models
-.   source:        irm1.cpp
-.   shared object: irm1-so-5837272bcdc6 
+.   shared object: irm1-so-158da6dfab86e 
 . 
 .   time:          start: 0 end: 24 delta: 1
 .                  add: &lt;none&gt;
-.                  tscale: 1
 . 
 .   compartments:  EV1 CENT PERIPH RESP EV2 [5]
 .   parameters:    CL V2 Q V3 KA KA2 KIN KOUT IC50 IMAX n
 .                  VMAX KM [13]
+.   captures:      CP [1]
 .   omega:         0x0 
 .   sigma:         0x0 
 . 
-.   solver:        atol: 1e-08 rtol: 1e-08
-.                  maxsteps: 5000 hmin: 0 hmax: 0</code></pre>
+.   solver:        atol: 1e-08 rtol: 1e-08 maxsteps: 5000</code></pre>
 <p>Next, let’s create an intervention for the model. We do this with an event object.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">e &lt;-<span class="st"> </span><span class="kw">ev</span>(<span class="dt">amt=</span><span class="dv">100</span>, <span class="dt">ii=</span><span class="dv">24</span>, <span class="dt">addl=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">e &lt;-<span class="st"> </span><span class="kw">ev</span>(<span class="dt">amt=</span><span class="dv">100</span>, <span class="dt">ii=</span><span class="dv">24</span>, <span class="dt">addl=</span><span class="dv">3</span>)</a></code></pre></div>
 <p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span>mod <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ev</span>(e) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mrgsim</span>(<span class="dt">end=</span><span class="dv">240</span>,<span class="dt">delta=</span><span class="fl">0.1</span>)
-out</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">out &lt;-<span class="st"> </span>mod <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ev</span>(e) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mrgsim</span>(<span class="dt">end=</span><span class="dv">240</span>,<span class="dt">delta=</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">out</a></code></pre></div>
 <pre><code>. Model:  irm1 
 . Dim:    2402 x 8 
 . Time:   0 to 240 
 . ID:     1 
-.      ID time    EV1   CENT  PERIPH  RESP EV2     CP
-. [1,]  1  0.0   0.00  0.000 0.00000 5.000   0 0.0000
-. [2,]  1  0.0 100.00  0.000 0.00000 5.000   0 0.0000
-. [3,]  1  0.1  90.48  9.444 0.04781 4.903   0 0.4722
-. [4,]  1  0.2  81.87 17.851 0.18294 4.688   0 0.8926
-. [5,]  1  0.3  74.08 25.323 0.39390 4.426   0 1.2662
-. [6,]  1  0.4  67.03 31.953 0.67040 4.151   0 1.5977
-. [7,]  1  0.5  60.65 37.824 1.00324 3.882   0 1.8912
-. [8,]  1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
+.     ID time    EV1   CENT  PERIPH  RESP EV2     CP
+. 1:   1  0.0   0.00  0.000 0.00000 5.000   0 0.0000
+. 2:   1  0.0 100.00  0.000 0.00000 5.000   0 0.0000
+. 3:   1  0.1  90.48  9.444 0.04781 4.903   0 0.4722
+. 4:   1  0.2  81.87 17.851 0.18294 4.688   0 0.8926
+. 5:   1  0.3  74.08 25.323 0.39390 4.426   0 1.2662
+. 6:   1  0.4  67.03 31.953 0.67040 4.151   0 1.5977
+. 7:   1  0.5  60.65 37.824 1.00324 3.882   0 1.8912
+. 8:   1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
 <p>And plot</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(out)  </code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">plot</span>(out)  </a></code></pre></div>
 <p><img src="index_files/figure-html/plot_1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The source code for this model:</p>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">$PROB
-<span class="er"># Model: `irm1`</span>
-  - Indirect response model, type <span class="dv">1</span>
-      - Inhibition of response input
-      - Two-compartment PK model
-      - Optional nonlinear clearance
-  - Source: `mrgsolve` internal library
-  - Date: `r Sys.Date()`
-  - Version: `r packageVersion(<span class="st">&quot;mrgsolve&quot;</span>)`
-
-$PARAM @annotated
-CL   :  <span class="dv">1</span>  : Clearance (volume/time)
-V2   : <span class="dv">20</span>  : Central volume (volume)
-Q    :  <span class="dv">2</span>  : Inter-compartmental clearance (volume/time)
-V3   : <span class="dv">10</span>  : Peripheral volume of distribution (volume)
-KA   :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">1</span> (<span class="dv">1</span>/time)
-KA2  :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">2</span> (<span class="dv">1</span>/time)
-KIN  : <span class="dv">10</span>  : Response in rate constant (<span class="dv">1</span>/time)
-KOUT :  <span class="dv">2</span>  : Response out rate constant (<span class="dv">1</span>/time)
-IC50 :  <span class="dv">2</span>  : Concentration <span class="cf">for</span> <span class="dv">50</span>% of max inhibition (mass/volume)
-IMAX :  <span class="dv">1</span>  : Maximum inhibition 
-n    :  <span class="dv">1</span>  : Emax model sigmoidicity
-VMAX :  <span class="dv">0</span>  : Maximum reaction velocity (mass/time)
-KM   :  <span class="dv">2</span>  : Michaelis constant (mass/volume)
-
-$CMT  @annotated
-EV1    : First extravascular compartment (mass)
-CENT   : Central compartment (mass)
-PERIPH : Peripheral compartment (mass) 
-RESP   : Response compartment
-EV2    : Second extravascular compartment (mass)
-
-$GLOBAL
-<span class="pp">#define CP (CENT/V2)</span>
-<span class="pp">#define CT (PERIPH/V3)</span>
-<span class="pp">#define CLNL (VMAX/(KM+CP))</span>
-<span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span>
-
-$MAIN
-RESP_0 = KIN/KOUT;
-
-$ODE
-dxdt_EV1    = -KA *EV1;
-dxdt_EV2    = -KA2*EV2;
-dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;
-dxdt_PERIPH =  Q*CP - Q*CT;
-dxdt_RESP   =  KIN*(<span class="dv">1</span>-INH) - KOUT*RESP;
-
-$CAPTURE @annotated
-CP : Plasma concentration (mass/volume)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb9-1" data-line-number="1">$PROB</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="er"># Model: `irm1`</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  - Indirect response model, type <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">      - Inhibition of response input</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">      - Two-compartment PK model</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">      - Optional nonlinear clearance</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">  - Source: `mrgsolve` internal library</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">  - Date: `r Sys.Date()`</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">  - Version: `r packageVersion(<span class="st">&quot;mrgsolve&quot;</span>)`</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">$PARAM @annotated</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">CL   :  <span class="dv">1</span>  : Clearance (volume/time)</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">V2   : <span class="dv">20</span>  : Central volume (volume)</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">Q    :  <span class="dv">2</span>  : Inter-compartmental clearance (volume/time)</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">V3   : <span class="dv">10</span>  : Peripheral volume of distribution (volume)</a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">KA   :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">1</span> (<span class="dv">1</span>/time)</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">KA2  :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">2</span> (<span class="dv">1</span>/time)</a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">KIN  : <span class="dv">10</span>  : Response in rate constant (<span class="dv">1</span>/time)</a>
+<a class="sourceLine" id="cb9-19" data-line-number="19">KOUT :  <span class="dv">2</span>  : Response out rate constant (<span class="dv">1</span>/time)</a>
+<a class="sourceLine" id="cb9-20" data-line-number="20">IC50 :  <span class="dv">2</span>  : Concentration <span class="cf">for</span> <span class="dv">50</span>% of max inhibition (mass/volume)</a>
+<a class="sourceLine" id="cb9-21" data-line-number="21">IMAX :  <span class="dv">1</span>  : Maximum inhibition </a>
+<a class="sourceLine" id="cb9-22" data-line-number="22">n    :  <span class="dv">1</span>  : Emax model sigmoidicity</a>
+<a class="sourceLine" id="cb9-23" data-line-number="23">VMAX :  <span class="dv">0</span>  : Maximum reaction velocity (mass/time)</a>
+<a class="sourceLine" id="cb9-24" data-line-number="24">KM   :  <span class="dv">2</span>  : Michaelis constant (mass/volume)</a>
+<a class="sourceLine" id="cb9-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb9-26" data-line-number="26">$CMT  @annotated</a>
+<a class="sourceLine" id="cb9-27" data-line-number="27">EV1    : First extravascular compartment (mass)</a>
+<a class="sourceLine" id="cb9-28" data-line-number="28">CENT   : Central compartment (mass)</a>
+<a class="sourceLine" id="cb9-29" data-line-number="29">PERIPH : Peripheral compartment (mass) </a>
+<a class="sourceLine" id="cb9-30" data-line-number="30">RESP   : Response compartment</a>
+<a class="sourceLine" id="cb9-31" data-line-number="31">EV2    : Second extravascular compartment (mass)</a>
+<a class="sourceLine" id="cb9-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb9-33" data-line-number="33">$GLOBAL</a>
+<a class="sourceLine" id="cb9-34" data-line-number="34"><span class="pp">#define CP (CENT/V2)</span></a>
+<a class="sourceLine" id="cb9-35" data-line-number="35"><span class="pp">#define CT (PERIPH/V3)</span></a>
+<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="pp">#define CLNL (VMAX/(KM+CP))</span></a>
+<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span></a>
+<a class="sourceLine" id="cb9-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb9-39" data-line-number="39">$MAIN</a>
+<a class="sourceLine" id="cb9-40" data-line-number="40">RESP_0 = KIN/KOUT;</a>
+<a class="sourceLine" id="cb9-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb9-42" data-line-number="42">$ODE</a>
+<a class="sourceLine" id="cb9-43" data-line-number="43">dxdt_EV1    = -KA *EV1;</a>
+<a class="sourceLine" id="cb9-44" data-line-number="44">dxdt_EV2    = -KA2*EV2;</a>
+<a class="sourceLine" id="cb9-45" data-line-number="45">dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;</a>
+<a class="sourceLine" id="cb9-46" data-line-number="46">dxdt_PERIPH =  Q*CP - Q*CT;</a>
+<a class="sourceLine" id="cb9-47" data-line-number="47">dxdt_RESP   =  KIN*(<span class="dv">1</span>-INH) - KOUT*RESP;</a>
+<a class="sourceLine" id="cb9-48" data-line-number="48"></a>
+<a class="sourceLine" id="cb9-49" data-line-number="49">$CAPTURE @annotated</a>
+<a class="sourceLine" id="cb9-50" data-line-number="50">CP : Plasma concentration (mass/volume)</a></code></pre></div>
 </div>
 </div>
 </div>
@@ -546,6 +565,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

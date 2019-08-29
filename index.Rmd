@@ -53,6 +53,8 @@ welcome feature requests and bug reports on the GitHub site [issue tracker](http
 * [R documentation](http://mrgsolve.github.io/docs): All `mrgsolve` documentation 
   that you would find in the `R` help system
 * [Vignettes](http://mrgsolve.github.io/vignettes): Package vignettes
+* [Gallery](http://github.com/mrgsolve/gallery): A GitHub repository of short, 
+  focused how-to vignettes
 * [Quick hit demos](`r .ref$quick`): Features that you might have a hard time 
   finding in other documentation
 
