@@ -43,7 +43,8 @@ differential equation (ODE) based models typically employed in drug development.
 `ODEPACK` which is freely-available in the public domain.  We develop `mrgsolve` 
 on [github](http://www.github.com/metrumresearchgroup/mrgsolve), with input and 
 contributions from the pharmacometrics modeling and simulation community.  We 
-welcome feature requests and bug reports on the GitHub site [issue tracker](http://www.github.com/metrumresearchgroup/mrgsolve/issues). 
+welcome feature requests and bug reports on the GitHub site [issue
+tracker](http://www.github.com/metrumresearchgroup/mrgsolve/issues).
 
 <br>
 
@@ -55,8 +56,8 @@ welcome feature requests and bug reports on the GitHub site [issue tracker](http
 * [Vignettes](http://mrgsolve.github.io/vignettes): Package vignettes
 * [Gallery](http://github.com/mrgsolve/gallery): A GitHub repository of short, 
   focused how-to vignettes
-* [Quick hit demos](`r .ref$quick`): Features that you might have a hard time 
-  finding in other documentation
+* [Quick hit demos](http://mrgsolve.github.io/vignettes/quick.html): Features
+that you might have a hard time finding in other documentation
 
 <br>
 
@@ -74,7 +75,8 @@ welcome feature requests and bug reports on the GitHub site [issue tracker](http
 
 The following is a simple example to illustrate the basics of how `mrgsolve` 
 works.  You can find more examples and usage vignettes in the links above or in 
-the "Help Topics" menu in the nav bar at the top of the [mrgsolve.github.io](https://mrgsolve.github.io) main page.
+the "Help Topics" menu in the nav bar at the top of the
+[mrgsolve.github.io](https://mrgsolve.github.io) main page.
 
 
 
