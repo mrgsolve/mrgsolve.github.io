@@ -52,7 +52,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -414,18 +414,19 @@ $(document).ready(function () {
 <div id="simulate-from-pkpd-qsp-models-in-r" class="section level1">
 <h1><font class=mrgg>Simulate from PKPD &amp; QSP models in R</font> <img src="images/mrgsolve_hex.png" align="right" width="150px"></img></h1>
 <!-- [![CRAN](http://www.r-pkg.org/badges/version/mrgsolve)](https://cran.r-project.org/package=mrgsolve) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![questions](https://img.shields.io/badge/ask_for-Help-brightgreen.svg)](https://github.com/metrumresearchgroup/mrgsolve/issues) [![Metrumrg](https://img.shields.io/badge/contact-MetrumRG-brightgreen.svg)](http://metrumrg.com) -->
-<p><code>mrgsolve</code> is an <code>R</code> package for simulation from hierarchical, ordinary differential equation (ODE) based models typically employed in drug development.</p>
+<p>mrgsolve is an <code>R</code> package for simulation from hierarchical, ordinary differential equation (ODE) based models typically employed in drug development.</p>
 <p><br></p>
 <div id="mrgsolve-is-free-open-source-software" class="section level2">
-<h2><code>mrgsolve</code> is free, open-source software</h2>
-<p><code>mrgsolve</code> is distributed as a package for <code>R</code> and utilizes an ODE-solver from <code>ODEPACK</code> which is freely-available in the public domain. We develop <code>mrgsolve</code> on <a href="http://www.github.com/metrumresearchgroup/mrgsolve">github</a>, with input and contributions from the pharmacometrics modeling and simulation community. We welcome feature requests and bug reports on the GitHub site <a href="http://www.github.com/metrumresearchgroup/mrgsolve/issues">issue tracker</a>.</p>
+<h2>mrgsolve is free, open-source software</h2>
+<p>mrgsolve is distributed as a package for <code>R</code> and utilizes an ODE-solver from <code>ODEPACK</code> which is freely-available in the public domain. We develop mrgsolve on <a href="http://www.github.com/metrumresearchgroup/mrgsolve">github</a>, with input and contributions from the pharmacometrics modeling and simulation community. We welcome feature requests and bug reports on the GitHub site <a href="http://www.github.com/metrumresearchgroup/mrgsolve/issues">issue tracker</a>.</p>
 <p><br></p>
 </div>
 <div id="documentation" class="section level2">
 <h2>Documentation</h2>
 <ul>
-<li><a href="http://mrgsolve.github.io/user_guide">User Guide</a>: In-depth description and discussion about how <code>mrgsolve</code> works, including code block reference</li>
-<li><a href="http://mrgsolve.github.io/docs">R documentation</a>: All <code>mrgsolve</code> documentation that you would find in the <code>R</code> help system</li>
+<li><a href="http://mrgsolve.github.io/user_guide">User Guide</a>: In-depth description and discussion about how mrgsolve works, including code block reference</li>
+<li><a href="http://mrgsolve.github.io/docs/">Package documentation</a>: This is the pkgdown site for mrgsolve.</li>
+<li><a href="http://mrgsolve.github.io/docs/reference">R documentation</a>: All mrgsolve documentation that you would find in the <code>R</code> help system</li>
 <li><a href="http://mrgsolve.github.io/vignettes">Vignettes</a>: Package vignettes</li>
 <li><a href="http://github.com/mrgsolve/gallery">Gallery</a>: A GitHub repository of short, focused how-to vignettes</li>
 <li><a href="http://mrgsolve.github.io/vignettes/quick.html">Quick hit demos</a>: Features that you might have a hard time finding in other documentation</li>
@@ -436,7 +437,7 @@ $(document).ready(function () {
 <h2>Links and Resources</h2>
 <ul>
 <li><a href="http://www.github.com/metrumresearchgroup/mrgsolve">GitHub Page</a>: Browse source code, find useful examples, get help installing, report issues</li>
-<li><code>mrgsolve</code> home on <a href="https://CRAN.R-project.org/package=mrgsolve">CRAN</a></li>
+<li>mrgsolve home on <a href="https://CRAN.R-project.org/package=mrgsolve">CRAN</a></li>
 <li><a href="/tax/">Site navagation</a>: A listing of all tagged content on this site, including blog posts and other help / demonstration content</li>
 <li><a href="http://metrumrg.com">Metrum Research Group</a>: Our main website</li>
 </ul>
@@ -444,12 +445,12 @@ $(document).ready(function () {
 </div>
 <div id="an-example" class="section level2">
 <h2>An example</h2>
-<p>The following is a simple example to illustrate the basics of how <code>mrgsolve</code> works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(mrgsolve)</a></code></pre></div>
+<p>The following is a simple example to illustrate the basics of how mrgsolve works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(mrgsolve)</a></code></pre></div>
 <p>First, a model object is created. As an introduction, we will use a pre-coded model from an internal library.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">mod &lt;-<span class="st"> </span><span class="kw">mread</span>(<span class="st">&quot;irm1&quot;</span>, <span class="kw">modlib</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">mod &lt;-<span class="st"> </span><span class="kw">mread</span>(<span class="st">&quot;irm1&quot;</span>, <span class="kw">modlib</span>())</a></code></pre></div>
 <p>An overview about this model</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">mod</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">mod</a></code></pre></div>
 <pre><code>. 
 . 
 . ----------------  source: irm1.cpp  ----------------
@@ -469,10 +470,10 @@ $(document).ready(function () {
 . 
 .   solver:        atol: 1e-08 rtol: 1e-08 maxsteps: 5000</code></pre>
 <p>Next, let’s create an intervention for the model. We do this with an event object.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">e &lt;-<span class="st"> </span><span class="kw">ev</span>(<span class="dt">amt=</span><span class="dv">100</span>, <span class="dt">ii=</span><span class="dv">24</span>, <span class="dt">addl=</span><span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">e &lt;-<span class="st"> </span><span class="kw">ev</span>(<span class="dt">amt=</span><span class="dv">100</span>, <span class="dt">ii=</span><span class="dv">24</span>, <span class="dt">addl=</span><span class="dv">3</span>)</a></code></pre></div>
 <p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>)</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">out &lt;-<span class="st"> </span>mod <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ev</span>(e) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mrgsim</span>(<span class="dt">end=</span><span class="dv">240</span>,<span class="dt">delta=</span><span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">out</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">out &lt;-<span class="st"> </span>mod <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ev</span>(e) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mrgsim</span>(<span class="dt">end=</span><span class="dv">240</span>,<span class="dt">delta=</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2">out</a></code></pre></div>
 <pre><code>. Model:  irm1 
 . Dim:    2402 x 8 
 . Time:   0 to 240 
@@ -487,59 +488,59 @@ $(document).ready(function () {
 . 7:   1  0.5  60.65 37.824 1.00324 3.882   0 1.8912
 . 8:   1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
 <p>And plot</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">plot</span>(out)  </a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">plot</span>(out)  </a></code></pre></div>
 <p><img src="index_files/figure-html/plot_1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The source code for this model:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb9-1" data-line-number="1">$PROB</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="er"># Model: `irm1`</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">  - Indirect response model, type <span class="dv">1</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">      - Inhibition of response input</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">      - Two-compartment PK model</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">      - Optional nonlinear clearance</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">  - Source: `mrgsolve` internal library</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">  - Date: `r Sys.Date()`</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">  - Version: `r packageVersion(<span class="st">&quot;mrgsolve&quot;</span>)`</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">$PARAM @annotated</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">CL   :  <span class="dv">1</span>  : Clearance (volume/time)</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">V2   : <span class="dv">20</span>  : Central volume (volume)</a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">Q    :  <span class="dv">2</span>  : Inter-compartmental clearance (volume/time)</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15">V3   : <span class="dv">10</span>  : Peripheral volume of distribution (volume)</a>
-<a class="sourceLine" id="cb9-16" data-line-number="16">KA   :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">1</span> (<span class="dv">1</span>/time)</a>
-<a class="sourceLine" id="cb9-17" data-line-number="17">KA2  :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">2</span> (<span class="dv">1</span>/time)</a>
-<a class="sourceLine" id="cb9-18" data-line-number="18">KIN  : <span class="dv">10</span>  : Response in rate constant (<span class="dv">1</span>/time)</a>
-<a class="sourceLine" id="cb9-19" data-line-number="19">KOUT :  <span class="dv">2</span>  : Response out rate constant (<span class="dv">1</span>/time)</a>
-<a class="sourceLine" id="cb9-20" data-line-number="20">IC50 :  <span class="dv">2</span>  : Concentration <span class="cf">for</span> <span class="dv">50</span>% of max inhibition (mass/volume)</a>
-<a class="sourceLine" id="cb9-21" data-line-number="21">IMAX :  <span class="dv">1</span>  : Maximum inhibition </a>
-<a class="sourceLine" id="cb9-22" data-line-number="22">n    :  <span class="dv">1</span>  : Emax model sigmoidicity</a>
-<a class="sourceLine" id="cb9-23" data-line-number="23">VMAX :  <span class="dv">0</span>  : Maximum reaction velocity (mass/time)</a>
-<a class="sourceLine" id="cb9-24" data-line-number="24">KM   :  <span class="dv">2</span>  : Michaelis constant (mass/volume)</a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26">$CMT  @annotated</a>
-<a class="sourceLine" id="cb9-27" data-line-number="27">EV1    : First extravascular compartment (mass)</a>
-<a class="sourceLine" id="cb9-28" data-line-number="28">CENT   : Central compartment (mass)</a>
-<a class="sourceLine" id="cb9-29" data-line-number="29">PERIPH : Peripheral compartment (mass) </a>
-<a class="sourceLine" id="cb9-30" data-line-number="30">RESP   : Response compartment</a>
-<a class="sourceLine" id="cb9-31" data-line-number="31">EV2    : Second extravascular compartment (mass)</a>
-<a class="sourceLine" id="cb9-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb9-33" data-line-number="33">$GLOBAL</a>
-<a class="sourceLine" id="cb9-34" data-line-number="34"><span class="pp">#define CP (CENT/V2)</span></a>
-<a class="sourceLine" id="cb9-35" data-line-number="35"><span class="pp">#define CT (PERIPH/V3)</span></a>
-<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="pp">#define CLNL (VMAX/(KM+CP))</span></a>
-<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span></a>
-<a class="sourceLine" id="cb9-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb9-39" data-line-number="39">$MAIN</a>
-<a class="sourceLine" id="cb9-40" data-line-number="40">RESP_0 = KIN/KOUT;</a>
-<a class="sourceLine" id="cb9-41" data-line-number="41"></a>
-<a class="sourceLine" id="cb9-42" data-line-number="42">$ODE</a>
-<a class="sourceLine" id="cb9-43" data-line-number="43">dxdt_EV1    = -KA *EV1;</a>
-<a class="sourceLine" id="cb9-44" data-line-number="44">dxdt_EV2    = -KA2*EV2;</a>
-<a class="sourceLine" id="cb9-45" data-line-number="45">dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;</a>
-<a class="sourceLine" id="cb9-46" data-line-number="46">dxdt_PERIPH =  Q*CP - Q*CT;</a>
-<a class="sourceLine" id="cb9-47" data-line-number="47">dxdt_RESP   =  KIN*(<span class="dv">1</span>-INH) - KOUT*RESP;</a>
-<a class="sourceLine" id="cb9-48" data-line-number="48"></a>
-<a class="sourceLine" id="cb9-49" data-line-number="49">$CAPTURE @annotated</a>
-<a class="sourceLine" id="cb9-50" data-line-number="50">CP : Plasma concentration (mass/volume)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb9-1" title="1">$PROB</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="er"># Model: `irm1`</span></a>
+<a class="sourceLine" id="cb9-3" title="3">  - Indirect response model, type <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-4" title="4">      - Inhibition of response input</a>
+<a class="sourceLine" id="cb9-5" title="5">      - Two-compartment PK model</a>
+<a class="sourceLine" id="cb9-6" title="6">      - Optional nonlinear clearance</a>
+<a class="sourceLine" id="cb9-7" title="7">  - Source: `mrgsolve` internal library</a>
+<a class="sourceLine" id="cb9-8" title="8">  - Date: `r Sys.Date()`</a>
+<a class="sourceLine" id="cb9-9" title="9">  - Version: `r packageVersion(<span class="st">&quot;mrgsolve&quot;</span>)`</a>
+<a class="sourceLine" id="cb9-10" title="10"></a>
+<a class="sourceLine" id="cb9-11" title="11">$PARAM @annotated</a>
+<a class="sourceLine" id="cb9-12" title="12">CL   :  <span class="dv">1</span>  : Clearance (volume/time)</a>
+<a class="sourceLine" id="cb9-13" title="13">V2   : <span class="dv">20</span>  : Central volume (volume)</a>
+<a class="sourceLine" id="cb9-14" title="14">Q    :  <span class="dv">2</span>  : Inter-compartmental clearance (volume/time)</a>
+<a class="sourceLine" id="cb9-15" title="15">V3   : <span class="dv">10</span>  : Peripheral volume of distribution (volume)</a>
+<a class="sourceLine" id="cb9-16" title="16">KA   :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">1</span> (<span class="dv">1</span>/time)</a>
+<a class="sourceLine" id="cb9-17" title="17">KA2  :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">2</span> (<span class="dv">1</span>/time)</a>
+<a class="sourceLine" id="cb9-18" title="18">KIN  : <span class="dv">10</span>  : Response in rate constant (<span class="dv">1</span>/time)</a>
+<a class="sourceLine" id="cb9-19" title="19">KOUT :  <span class="dv">2</span>  : Response out rate constant (<span class="dv">1</span>/time)</a>
+<a class="sourceLine" id="cb9-20" title="20">IC50 :  <span class="dv">2</span>  : Concentration <span class="cf">for</span> <span class="dv">50</span>% of max inhibition (mass/volume)</a>
+<a class="sourceLine" id="cb9-21" title="21">IMAX :  <span class="dv">1</span>  : Maximum inhibition </a>
+<a class="sourceLine" id="cb9-22" title="22">n    :  <span class="dv">1</span>  : Emax model sigmoidicity</a>
+<a class="sourceLine" id="cb9-23" title="23">VMAX :  <span class="dv">0</span>  : Maximum reaction velocity (mass/time)</a>
+<a class="sourceLine" id="cb9-24" title="24">KM   :  <span class="dv">2</span>  : Michaelis constant (mass/volume)</a>
+<a class="sourceLine" id="cb9-25" title="25"></a>
+<a class="sourceLine" id="cb9-26" title="26">$CMT  @annotated</a>
+<a class="sourceLine" id="cb9-27" title="27">EV1    : First extravascular compartment (mass)</a>
+<a class="sourceLine" id="cb9-28" title="28">CENT   : Central compartment (mass)</a>
+<a class="sourceLine" id="cb9-29" title="29">PERIPH : Peripheral compartment (mass) </a>
+<a class="sourceLine" id="cb9-30" title="30">RESP   : Response compartment</a>
+<a class="sourceLine" id="cb9-31" title="31">EV2    : Second extravascular compartment (mass)</a>
+<a class="sourceLine" id="cb9-32" title="32"></a>
+<a class="sourceLine" id="cb9-33" title="33">$GLOBAL</a>
+<a class="sourceLine" id="cb9-34" title="34"><span class="pp">#define CP (CENT/V2)</span></a>
+<a class="sourceLine" id="cb9-35" title="35"><span class="pp">#define CT (PERIPH/V3)</span></a>
+<a class="sourceLine" id="cb9-36" title="36"><span class="pp">#define CLNL (VMAX/(KM+CP))</span></a>
+<a class="sourceLine" id="cb9-37" title="37"><span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span></a>
+<a class="sourceLine" id="cb9-38" title="38"></a>
+<a class="sourceLine" id="cb9-39" title="39">$MAIN</a>
+<a class="sourceLine" id="cb9-40" title="40">RESP_0 = KIN/KOUT;</a>
+<a class="sourceLine" id="cb9-41" title="41"></a>
+<a class="sourceLine" id="cb9-42" title="42">$ODE</a>
+<a class="sourceLine" id="cb9-43" title="43">dxdt_EV1    = -KA *EV1;</a>
+<a class="sourceLine" id="cb9-44" title="44">dxdt_EV2    = -KA2*EV2;</a>
+<a class="sourceLine" id="cb9-45" title="45">dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;</a>
+<a class="sourceLine" id="cb9-46" title="46">dxdt_PERIPH =  Q*CP - Q*CT;</a>
+<a class="sourceLine" id="cb9-47" title="47">dxdt_RESP   =  KIN*(<span class="dv">1</span>-INH) - KOUT*RESP;</a>
+<a class="sourceLine" id="cb9-48" title="48"></a>
+<a class="sourceLine" id="cb9-49" title="49">$CAPTURE @annotated</a>
+<a class="sourceLine" id="cb9-50" title="50">CP : Plasma concentration (mass/volume)</a></code></pre></div>
 </div>
 </div>
 </div>

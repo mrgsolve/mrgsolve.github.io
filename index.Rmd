@@ -33,14 +33,14 @@ source("ref.R")
 
 <!-- [![CRAN](http://www.r-pkg.org/badges/version/mrgsolve)](https://cran.r-project.org/package=mrgsolve) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![questions](https://img.shields.io/badge/ask_for-Help-brightgreen.svg)](https://github.com/metrumresearchgroup/mrgsolve/issues) [![Metrumrg](https://img.shields.io/badge/contact-MetrumRG-brightgreen.svg)](http://metrumrg.com) -->
 
-`mrgsolve` is an `R` package for simulation from hierarchical, ordinary 
+mrgsolve is an `R` package for simulation from hierarchical, ordinary 
 differential equation (ODE) based models typically employed in drug development.
 
 <br>
 
-## `mrgsolve` is free, open-source software
-`mrgsolve` is distributed as a package for `R` and utilizes an ODE-solver from 
-`ODEPACK` which is freely-available in the public domain.  We develop `mrgsolve` 
+## mrgsolve is free, open-source software
+mrgsolve is distributed as a package for `R` and utilizes an ODE-solver from 
+`ODEPACK` which is freely-available in the public domain.  We develop mrgsolve 
 on [github](http://www.github.com/metrumresearchgroup/mrgsolve), with input and 
 contributions from the pharmacometrics modeling and simulation community.  We 
 welcome feature requests and bug reports on the GitHub site [issue
@@ -50,9 +50,11 @@ tracker](http://www.github.com/metrumresearchgroup/mrgsolve/issues).
 
 ## Documentation
 * [User Guide](http://mrgsolve.github.io/user_guide): In-depth description and 
-  discussion about how `mrgsolve` works, including code block reference
-* [R documentation](http://mrgsolve.github.io/docs): All `mrgsolve` documentation 
-  that you would find in the `R` help system
+  discussion about how mrgsolve works, including code block reference
+* [Package documentation](http://mrgsolve.github.io/docs/): This is the 
+  pkgdown site for mrgsolve.
+* [R documentation](http://mrgsolve.github.io/docs/reference): All mrgsolve 
+  documentation that you would find in the `R` help system
 * [Vignettes](http://mrgsolve.github.io/vignettes): Package vignettes
 * [Gallery](http://github.com/mrgsolve/gallery): A GitHub repository of short, 
   focused how-to vignettes
@@ -64,7 +66,7 @@ that you might have a hard time finding in other documentation
 ## Links and Resources
 * [GitHub Page](http://www.github.com/metrumresearchgroup/mrgsolve): Browse 
   source code, find useful examples, get help installing, report issues
-* `mrgsolve` home on [CRAN](https://CRAN.R-project.org/package=mrgsolve)
+* mrgsolve home on [CRAN](https://CRAN.R-project.org/package=mrgsolve)
 * [Site navagation](/tax/): A listing of all tagged content on this site, 
   including blog posts and other help / demonstration content
 * [Metrum Research Group](http://metrumrg.com): Our main website
@@ -73,7 +75,7 @@ that you might have a hard time finding in other documentation
 
 ## An example
 
-The following is a simple example to illustrate the basics of how `mrgsolve` 
+The following is a simple example to illustrate the basics of how mrgsolve 
 works.  You can find more examples and usage vignettes in the links above or in 
 the "Help Topics" menu in the nav bar at the top of the
 [mrgsolve.github.io](https://mrgsolve.github.io) main page.
