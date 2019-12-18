@@ -33,6 +33,13 @@ source("ref.R")
 ## Course and tutorial repositories
 
 - Introduction to mrgsolve
+    - Presented at the University of Minnesota Pharmacometrics Summer School, July 2019
+    - URL: https://github.com/kylebaron/mrsolve-mpss
+- Integrating the R Package mrgsolve With Available Optimization Routines for 
+  Parameter Estimation With PK, PK-PD and QSP Models
+    - Present at the University at Buffalo CDSE Days, April 2019
+    - URL: https://github.com/metrumresearchgroup/ub-cdse-2019
+- Introduction to mrgsolve
     - Presented at PAGE in June, 2018
     - URL: https://github.com/metrumresearchgroup/page-2018-mrgsolve
 - Case studies with mrgsolve: PBPK and QSP model implementation and utilization in R
@@ -46,6 +53,7 @@ source("ref.R")
 optimization, simulation, and reporting
     - Presented at ACoP 8 2017
     - URL: https://github.com/metrumresearchgroup/lvl2-workshop
+
 
 <hr></hr>
 
