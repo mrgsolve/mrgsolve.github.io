@@ -55,6 +55,8 @@ tracker](http://www.github.com/metrumresearchgroup/mrgsolve/issues).
   pkgdown site for mrgsolve.
 * [R documentation](http://mrgsolve.github.io/docs/reference): All mrgsolve 
   documentation that you would find in the `R` help system
+* [Doxygen documentation](http://mrgsolve.github.io/doxygen): How to use some 
+  of the provided C++ functions in your model
 * [Vignettes](http://mrgsolve.github.io/vignettes): Package vignettes
 * [Gallery](http://github.com/mrgsolve/gallery): A GitHub repository of short, 
   focused how-to vignettes
