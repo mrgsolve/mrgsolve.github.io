@@ -34,7 +34,7 @@ source("ref.R")
 
 - Introduction to mrgsolve
     - Presented at the University of Minnesota Pharmacometrics Summer School, July 2019
-    - URL: https://github.com/kylebaron/mrgsolve-mpss
+    - URL: https://github.com/kylebaron/mpss-mrgsolve
 - Integrating the R Package mrgsolve With Available Optimization Routines for 
   Parameter Estimation With PK, PK-PD and QSP Models
     - Present at the University at Buffalo CDSE Days, April 2019

@@ -13,12 +13,22 @@
 
 <title>mrgsolve.github.io</title>
 
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
@@ -31,29 +41,47 @@
   gtag('config', 'UA-92528248-1');
 </script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -62,9 +90,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -118,39 +146,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 <link rel="stylesheet" href="css/styles.css" type="text/css" />
 
@@ -161,10 +159,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -181,40 +175,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -242,7 +209,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -254,7 +221,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -265,10 +232,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -280,7 +260,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -367,7 +346,7 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="https://github.com/mrgsolve/mrgsolve.github.io">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -381,7 +360,7 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="https://github.com/metrumresearchgroup/mrgsolve">
-    <span class="fa fa-code fa-lg"></span>
+    <span class="fas fa-code fa-lg"></span>
      
   </a>
 </li>
@@ -390,7 +369,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -447,11 +426,11 @@ $(document).ready(function () {
 <div id="an-example" class="section level2">
 <h2>An example</h2>
 <p>The following is a simple example to illustrate the basics of how mrgsolve works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(mrgsolve)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mrgsolve)</span></code></pre></div>
 <p>First, a model object is created. As an introduction, we will use a pre-coded model from an internal library.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">mod &lt;-<span class="st"> </span><span class="kw">mread</span>(<span class="st">&quot;irm1&quot;</span>, <span class="kw">modlib</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">mread</span>(<span class="st">&quot;irm1&quot;</span>, <span class="fu">modlib</span>())</span></code></pre></div>
 <p>An overview about this model</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">mod</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mod</span></code></pre></div>
 <pre><code>. 
 . 
 . ----------------  source: irm1.cpp  ----------------
@@ -471,10 +450,10 @@ $(document).ready(function () {
 . 
 .   solver:        atol: 1e-08 rtol: 1e-08 maxsteps: 5000</code></pre>
 <p>Next, let’s create an intervention for the model. We do this with an event object.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">e &lt;-<span class="st"> </span><span class="kw">ev</span>(<span class="dt">amt=</span><span class="dv">100</span>, <span class="dt">ii=</span><span class="dv">24</span>, <span class="dt">addl=</span><span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">ev</span>(<span class="at">amt=</span><span class="dv">100</span>, <span class="at">ii=</span><span class="dv">24</span>, <span class="at">addl=</span><span class="dv">3</span>)</span></code></pre></div>
 <p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>)</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">out &lt;-<span class="st"> </span>mod <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ev</span>(e) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mrgsim</span>(<span class="dt">end=</span><span class="dv">240</span>,<span class="dt">delta=</span><span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">out</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> mod <span class="sc">%&gt;%</span> <span class="fu">ev</span>(e) <span class="sc">%&gt;%</span> <span class="fu">mrgsim</span>(<span class="at">end=</span><span class="dv">240</span>,<span class="at">delta=</span><span class="fl">0.1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>out</span></code></pre></div>
 <pre><code>. Model:  irm1 
 . Dim:    2402 x 8 
 . Time:   0 to 240 
@@ -489,59 +468,59 @@ $(document).ready(function () {
 . 7:   1  0.5  60.65 37.824 1.00324 3.882   0 1.8912
 . 8:   1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
 <p>And plot</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">plot</span>(out)  </a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out)  </span></code></pre></div>
 <p><img src="index_files/figure-html/plot_1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The source code for this model:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb9-1" data-line-number="1">$PROB</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="er"># Model: `irm1`</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">  - Indirect response model, type <span class="dv">1</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">      - Inhibition of response input</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">      - Two-compartment PK model</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">      - Optional nonlinear clearance</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">  - Source: `mrgsolve` internal library</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">  - Date: `r Sys.Date()`</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">  - Version: `r packageVersion(<span class="st">&quot;mrgsolve&quot;</span>)`</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">$PARAM @annotated</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">CL   :  <span class="dv">1</span>  : Clearance (volume/time)</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">V2   : <span class="dv">20</span>  : Central volume (volume)</a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">Q    :  <span class="dv">2</span>  : Inter-compartmental clearance (volume/time)</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15">V3   : <span class="dv">10</span>  : Peripheral volume of distribution (volume)</a>
-<a class="sourceLine" id="cb9-16" data-line-number="16">KA   :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">1</span> (<span class="dv">1</span>/time)</a>
-<a class="sourceLine" id="cb9-17" data-line-number="17">KA2  :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">2</span> (<span class="dv">1</span>/time)</a>
-<a class="sourceLine" id="cb9-18" data-line-number="18">KIN  : <span class="dv">10</span>  : Response in rate constant (<span class="dv">1</span>/time)</a>
-<a class="sourceLine" id="cb9-19" data-line-number="19">KOUT :  <span class="dv">2</span>  : Response out rate constant (<span class="dv">1</span>/time)</a>
-<a class="sourceLine" id="cb9-20" data-line-number="20">IC50 :  <span class="dv">2</span>  : Concentration <span class="cf">for</span> <span class="dv">50</span>% of max inhibition (mass/volume)</a>
-<a class="sourceLine" id="cb9-21" data-line-number="21">IMAX :  <span class="dv">1</span>  : Maximum inhibition </a>
-<a class="sourceLine" id="cb9-22" data-line-number="22">n    :  <span class="dv">1</span>  : Emax model sigmoidicity</a>
-<a class="sourceLine" id="cb9-23" data-line-number="23">VMAX :  <span class="dv">0</span>  : Maximum reaction velocity (mass/time)</a>
-<a class="sourceLine" id="cb9-24" data-line-number="24">KM   :  <span class="dv">2</span>  : Michaelis constant (mass/volume)</a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26">$CMT  @annotated</a>
-<a class="sourceLine" id="cb9-27" data-line-number="27">EV1    : First extravascular compartment (mass)</a>
-<a class="sourceLine" id="cb9-28" data-line-number="28">CENT   : Central compartment (mass)</a>
-<a class="sourceLine" id="cb9-29" data-line-number="29">PERIPH : Peripheral compartment (mass) </a>
-<a class="sourceLine" id="cb9-30" data-line-number="30">RESP   : Response compartment</a>
-<a class="sourceLine" id="cb9-31" data-line-number="31">EV2    : Second extravascular compartment (mass)</a>
-<a class="sourceLine" id="cb9-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb9-33" data-line-number="33">$GLOBAL</a>
-<a class="sourceLine" id="cb9-34" data-line-number="34"><span class="pp">#define CP (CENT/V2)</span></a>
-<a class="sourceLine" id="cb9-35" data-line-number="35"><span class="pp">#define CT (PERIPH/V3)</span></a>
-<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="pp">#define CLNL (VMAX/(KM+CP))</span></a>
-<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span></a>
-<a class="sourceLine" id="cb9-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb9-39" data-line-number="39">$MAIN</a>
-<a class="sourceLine" id="cb9-40" data-line-number="40">RESP_0 = KIN/KOUT;</a>
-<a class="sourceLine" id="cb9-41" data-line-number="41"></a>
-<a class="sourceLine" id="cb9-42" data-line-number="42">$ODE</a>
-<a class="sourceLine" id="cb9-43" data-line-number="43">dxdt_EV1    = -KA *EV1;</a>
-<a class="sourceLine" id="cb9-44" data-line-number="44">dxdt_EV2    = -KA2*EV2;</a>
-<a class="sourceLine" id="cb9-45" data-line-number="45">dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;</a>
-<a class="sourceLine" id="cb9-46" data-line-number="46">dxdt_PERIPH =  Q*CP - Q*CT;</a>
-<a class="sourceLine" id="cb9-47" data-line-number="47">dxdt_RESP   =  KIN*(<span class="dv">1</span>-INH) - KOUT*RESP;</a>
-<a class="sourceLine" id="cb9-48" data-line-number="48"></a>
-<a class="sourceLine" id="cb9-49" data-line-number="49">$CAPTURE @annotated</a>
-<a class="sourceLine" id="cb9-50" data-line-number="50">CP : Plasma concentration (mass/volume)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>$PROB</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="er"># Model: `irm1`</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  - Indirect response model, type <span class="dv">1</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      - Inhibition of response input</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      - Two-compartment PK model</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      - Optional nonlinear clearance</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  - Source: `mrgsolve` internal library</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  - Date: `r Sys.Date()`</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  - Version: `r packageVersion(<span class="st">&quot;mrgsolve&quot;</span>)`</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>$PARAM @annotated</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>CL   :  <span class="dv">1</span>  : Clearance (volume/time)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>V2   : <span class="dv">20</span>  : Central volume (volume)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>Q    :  <span class="dv">2</span>  : Inter-compartmental clearance (volume/time)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>V3   : <span class="dv">10</span>  : Peripheral volume of distribution (volume)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>KA   :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">1</span> (<span class="dv">1</span>/time)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>KA2  :  <span class="dv">1</span>  : Absorption rate constant <span class="dv">2</span> (<span class="dv">1</span>/time)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>KIN  : <span class="dv">10</span>  : Response in rate constant (<span class="dv">1</span>/time)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>KOUT :  <span class="dv">2</span>  : Response out rate constant (<span class="dv">1</span>/time)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>IC50 :  <span class="dv">2</span>  : Concentration <span class="cf">for</span> <span class="dv">50</span>% of max inhibition (mass/volume)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>IMAX :  <span class="dv">1</span>  : Maximum inhibition </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>n    :  <span class="dv">1</span>  : Emax model sigmoidicity</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>VMAX :  <span class="dv">0</span>  : Maximum reaction velocity (mass/time)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>KM   :  <span class="dv">2</span>  : Michaelis constant (mass/volume)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>$CMT  @annotated</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>EV1    : First extravascular compartment (mass)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>CENT   : Central compartment (mass)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>PERIPH : Peripheral compartment (mass) </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>RESP   : Response compartment</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>EV2    : Second extravascular compartment (mass)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>$GLOBAL</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CP (CENT/V2)</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CT (PERIPH/V3)</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CLNL (VMAX/(KM+CP))</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>$MAIN</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>RESP_0 = KIN/KOUT;</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>$ODE</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>dxdt_EV1    = -KA *EV1;</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>dxdt_EV2    = -KA2*EV2;</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>dxdt_CENT   =  KA *EV1 + KA2*EV2 - (CL+CLNL+Q)*CP  + Q*CT;</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>dxdt_PERIPH =  Q*CP - Q*CT;</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>dxdt_RESP   =  KIN*(<span class="dv">1</span>-INH) - KOUT*RESP;</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>$CAPTURE @annotated</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>CP : Plasma concentration (mass/volume)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -559,7 +538,7 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -577,7 +556,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
