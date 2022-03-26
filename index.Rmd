@@ -66,6 +66,12 @@ that you might have a hard time finding in other documentation
 <br>
 
 ## Links and Resources
+* [Benchmarks](http://github.com/mrgsolve/nmtests#readme): We simulate data for 
+  certain scenarios from both NONMEM and mrgsolve and compare the outputs. 
+  All the code needed to run or confirm the outputs is included in the git 
+  repository. mrgsolve does not match NONMEM in every way; but there is 
+  substantial overlap so that a wide variety of models estimated in NONMEM
+  can be simulated in mrgsolve. 
 * [GitHub Page](http://www.github.com/metrumresearchgroup/mrgsolve): Browse 
   source code, find useful examples, get help installing, report issues
 * mrgsolve home on [CRAN](https://CRAN.R-project.org/package=mrgsolve)
