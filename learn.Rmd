@@ -22,7 +22,7 @@ output:
 
 
 
-# **<font class=mrgg>Learn</font> mrgsolve** <img src="images/MRG-Solve-Hex.png" align="right" width="200px"></img>
+# **<font class=mrgg>Learn</font> mrgsolve** <img src="images/MRG-Solve-Hex.png" align="right" width="150px"></img>
 
 ```{r,echo=FALSE,message=FALSE}
 knitr::opts_chunk$set(cache=TRUE,autodep=TRUE,message=FALSE,fig.align="center")
