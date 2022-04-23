@@ -13,7 +13,7 @@
 
 <title>mrgsolve.github.io</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -49,6 +49,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -174,6 +175,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -326,7 +330,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -391,44 +395,82 @@ $(document).ready(function () {
 <!--div class="col-sm-6"-->
 <p><br></p>
 <div id="simulate-from-pkpd-qsp-models-in-r" class="section level1">
-<h1><font class=mrgg>Simulate from PKPD &amp; QSP models in R</font> <img src="images/mrgsolve_hex.png" align="right" width="150px"></img></h1>
+<h1><font class=mrgg>Simulate from PKPD &amp; QSP models in R</font>
+<img src="images/MRG-Solve-Hex.png" align="right" width="200px"></img></h1>
 <!-- [![CRAN](http://www.r-pkg.org/badges/version/mrgsolve)](https://cran.r-project.org/package=mrgsolve) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![questions](https://img.shields.io/badge/ask_for-Help-brightgreen.svg)](https://github.com/metrumresearchgroup/mrgsolve/issues) [![Metrumrg](https://img.shields.io/badge/contact-MetrumRG-brightgreen.svg)](http://metrumrg.com) -->
-<p>mrgsolve is an <code>R</code> package for simulation from hierarchical, ordinary differential equation (ODE) based models typically employed in drug development.</p>
+<p>mrgsolve is an <code>R</code> package for simulation from
+hierarchical, ordinary differential equation (ODE) based models
+typically employed in drug development.</p>
 <p><br></p>
 <div id="mrgsolve-is-free-open-source-software" class="section level2">
 <h2>mrgsolve is free, open-source software</h2>
-<p>mrgsolve is distributed as a package for <code>R</code> and utilizes an ODE-solver from <code>ODEPACK</code> which is freely-available in the public domain. We develop mrgsolve on <a href="http://www.github.com/metrumresearchgroup/mrgsolve">github</a>, with input and contributions from the pharmacometrics modeling and simulation community. We welcome feature requests and bug reports on the GitHub site <a href="http://www.github.com/metrumresearchgroup/mrgsolve/issues">issue tracker</a>.</p>
+<p>mrgsolve is distributed as a package for <code>R</code> and utilizes
+an ODE-solver from <code>ODEPACK</code> which is freely-available in the
+public domain. We develop mrgsolve on <a
+href="http://www.github.com/metrumresearchgroup/mrgsolve">github</a>,
+with input and contributions from the pharmacometrics modeling and
+simulation community. We welcome feature requests and bug reports on the
+GitHub site <a
+href="http://www.github.com/metrumresearchgroup/mrgsolve/issues">issue
+tracker</a>.</p>
 <p><br></p>
 </div>
 <div id="documentation" class="section level2">
 <h2>Documentation</h2>
 <ul>
-<li><a href="http://mrgsolve.github.io/user_guide">User Guide</a>: In-depth description and discussion about how mrgsolve works, including code block reference</li>
-<li><a href="http://mrgsolve.github.io/docs/">Package documentation</a>: This is the pkgdown site for mrgsolve.</li>
-<li><a href="http://mrgsolve.github.io/docs/reference">R documentation</a>: All mrgsolve documentation that you would find in the <code>R</code> help system</li>
-<li><a href="http://mrgsolve.github.io/doxygen">Doxygen documentation</a>: How to use some of the provided C++ functions in your model</li>
-<li><a href="http://mrgsolve.github.io/vignettes">Vignettes</a>: Package vignettes</li>
-<li><a href="http://github.com/mrgsolve/gallery">Gallery</a>: A GitHub repository of short, focused how-to vignettes</li>
-<li><a href="http://mrgsolve.github.io/vignettes/quick.html">Quick hit demos</a>: Features that you might have a hard time finding in other documentation</li>
+<li><a href="http://mrgsolve.github.io/user_guide">User Guide</a>:
+In-depth description and discussion about how mrgsolve works, including
+code block reference</li>
+<li><a href="http://mrgsolve.github.io/docs/">Package documentation</a>:
+This is the pkgdown site for mrgsolve.</li>
+<li><a href="http://mrgsolve.github.io/docs/reference">R
+documentation</a>: All mrgsolve documentation that you would find in the
+<code>R</code> help system</li>
+<li><a href="http://mrgsolve.github.io/doxygen">Doxygen
+documentation</a>: How to use some of the provided C++ functions in your
+model</li>
+<li><a href="http://mrgsolve.github.io/vignettes">Vignettes</a>: Package
+vignettes</li>
+<li><a href="http://github.com/mrgsolve/gallery">Gallery</a>: A GitHub
+repository of short, focused how-to vignettes</li>
+<li><a href="http://mrgsolve.github.io/vignettes/quick.html">Quick hit
+demos</a>: Features that you might have a hard time finding in other
+documentation</li>
 </ul>
 <p><br></p>
 </div>
 <div id="links-and-resources" class="section level2">
 <h2>Links and Resources</h2>
 <ul>
-<li><a href="http://github.com/mrgsolve/nmtests#readme">Benchmarks</a>: We simulate data for certain scenarios from both NONMEM and mrgsolve and compare the outputs. All the code needed to run or confirm the outputs is included in the git repository. mrgsolve does not match NONMEM in every way; but there is substantial overlap so that a wide variety of models estimated in NONMEM can be simulated in mrgsolve.</li>
-<li><a href="http://www.github.com/metrumresearchgroup/mrgsolve">GitHub Page</a>: Browse source code, find useful examples, get help installing, report issues</li>
-<li>mrgsolve home on <a href="https://CRAN.R-project.org/package=mrgsolve">CRAN</a></li>
-<li><a href="/tax/">Site navagation</a>: A listing of all tagged content on this site, including blog posts and other help / demonstration content</li>
-<li><a href="http://metrumrg.com">Metrum Research Group</a>: Our main website</li>
+<li><a href="http://github.com/mrgsolve/nmtests#readme">Benchmarks</a>:
+We simulate data for certain scenarios from both NONMEM and mrgsolve and
+compare the outputs. All the code needed to run or confirm the outputs
+is included in the git repository. mrgsolve does not match NONMEM in
+every way; but there is substantial overlap so that a wide variety of
+models estimated in NONMEM can be simulated in mrgsolve.</li>
+<li><a href="http://www.github.com/metrumresearchgroup/mrgsolve">GitHub
+Page</a>: Browse source code, find useful examples, get help installing,
+report issues</li>
+<li>mrgsolve home on <a
+href="https://CRAN.R-project.org/package=mrgsolve">CRAN</a></li>
+<li><a href="/tax/">Site navagation</a>: A listing of all tagged content
+on this site, including blog posts and other help / demonstration
+content</li>
+<li><a href="http://metrumrg.com">Metrum Research Group</a>: Our main
+website</li>
 </ul>
 <hr>
 </div>
 <div id="an-example" class="section level2">
 <h2>An example</h2>
-<p>The following is a simple example to illustrate the basics of how mrgsolve works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
+<p>The following is a simple example to illustrate the basics of how
+mrgsolve works. You can find more examples and usage vignettes in the
+links above or in the “Help Topics” menu in the nav bar at the top of
+the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main
+page.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mrgsolve)</span></code></pre></div>
-<p>First, a model object is created. As an introduction, we will use a pre-coded model from an internal library.</p>
+<p>First, a model object is created. As an introduction, we will use a
+pre-coded model from an internal library.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">mread</span>(<span class="st">&quot;irm1&quot;</span>, <span class="fu">modlib</span>())</span></code></pre></div>
 <p>An overview about this model</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mod</span></code></pre></div>
@@ -437,7 +479,7 @@ $(document).ready(function () {
 . -----------------  source: irm1.cpp  -----------------
 . 
 .   project: /Users/kyleb/Rli...gsolve/models
-.   shared object: irm1-so-e23540f58c70 
+.   shared object: irm1-so-130923981aca4 
 . 
 .   time:          start: 0 end: 24 delta: 1
 .                  add: &lt;none&gt;
@@ -451,9 +493,11 @@ $(document).ready(function () {
 . 
 .   solver:        atol: 1e-08 rtol: 1e-08 maxsteps: 20k
 . ------------------------------------------------------</code></pre>
-<p>Next, let’s create an intervention for the model. We do this with an event object.</p>
+<p>Next, let’s create an intervention for the model. We do this with an
+event object.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">ev</span>(<span class="at">amt=</span><span class="dv">100</span>, <span class="at">ii=</span><span class="dv">24</span>, <span class="at">addl=</span><span class="dv">3</span>)</span></code></pre></div>
-<p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>)</p>
+<p>Now, we simulate with our model object (<code>mod</code>) and the
+event object (<code>e</code>)</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> mod <span class="sc">%&gt;%</span> <span class="fu">ev</span>(e) <span class="sc">%&gt;%</span> <span class="fu">mrgsim</span>(<span class="at">end=</span><span class="dv">240</span>,<span class="at">delta=</span><span class="fl">0.1</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>out</span></code></pre></div>
 <pre><code>. Model:  irm1 

@@ -22,7 +22,7 @@ output:
 
 <br>
 
-# <font class=mrgg>Simulate from PKPD & QSP models in R</font> <img src="images/mrgsolve_hex.png" align="right" width="150px"></img>
+# <font class=mrgg>Simulate from PKPD & QSP models in R</font> <img src="images/MRG-Solve-Hex.png" align="right" width="200px"></img>
 
 ```{r,echo=FALSE,message=FALSE}
 knitr::opts_chunk$set(cache=TRUE,autodep=TRUE,message=FALSE,fig.align="center")

@@ -13,7 +13,7 @@
 
 <title>Learning Resources</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -55,6 +55,7 @@
 
 
 
+
 <link rel="stylesheet" href="css/styles.css" type="text/css" />
 
 
@@ -79,6 +80,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -231,7 +235,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -295,41 +299,55 @@ $(document).ready(function () {
 <div class="row" style="padding-top: 30px; width: 90%">
 <!--div class="col-sm-6"-->
 <div id="learn-mrgsolve" class="section level1">
-<h1><strong><font class=mrgg>Learn</font> mrgsolve</strong> <img src="images/mrgsolve_hex.png" align="right" width="150px"></img></h1>
+<h1><strong><font class=mrgg>Learn</font> mrgsolve</strong>
+<img src="images/mrgsolve_hex.png" align="right" width="150px"></img></h1>
 <p><BR></p>
 <div id="course-and-tutorial-repositories" class="section level2">
 <h2>Course and tutorial repositories</h2>
 <ul>
 <li>Introduction to mrgsolve
 <ul>
-<li>Presented at the University of Minnesota Pharmacometrics Summer School, July 2019</li>
-<li>URL: <a href="https://github.com/kylebaron/mpss-mrgsolve" class="uri">https://github.com/kylebaron/mpss-mrgsolve</a></li>
+<li>Presented at the University of Minnesota Pharmacometrics Summer
+School, July 2019</li>
+<li>URL: <a href="https://github.com/kylebaron/mpss-mrgsolve"
+class="uri">https://github.com/kylebaron/mpss-mrgsolve</a></li>
 </ul></li>
-<li>Integrating the R Package mrgsolve With Available Optimization Routines for Parameter Estimation With PK, PK-PD and QSP Models
+<li>Integrating the R Package mrgsolve With Available Optimization
+Routines for Parameter Estimation With PK, PK-PD and QSP Models
 <ul>
 <li>Present at the University at Buffalo CDSE Days, April 2019</li>
-<li>URL: <a href="https://github.com/metrumresearchgroup/ub-cdse-2019" class="uri">https://github.com/metrumresearchgroup/ub-cdse-2019</a></li>
+<li>URL: <a href="https://github.com/metrumresearchgroup/ub-cdse-2019"
+class="uri">https://github.com/metrumresearchgroup/ub-cdse-2019</a></li>
 </ul></li>
 <li>Introduction to mrgsolve
 <ul>
 <li>Presented at PAGE in June, 2018</li>
-<li>URL: <a href="https://github.com/metrumresearchgroup/page-2018-mrgsolve" class="uri">https://github.com/metrumresearchgroup/page-2018-mrgsolve</a></li>
+<li>URL: <a
+href="https://github.com/metrumresearchgroup/page-2018-mrgsolve"
+class="uri">https://github.com/metrumresearchgroup/page-2018-mrgsolve</a></li>
 </ul></li>
-<li>Case studies with mrgsolve: PBPK and QSP model implementation and utilization in R
+<li>Case studies with mrgsolve: PBPK and QSP model implementation and
+utilization in R
 <ul>
 <li>Presented at University at Buffalo CDSE Days, April 2018</li>
 <li>Presented at University of Florida, April 2017</li>
-<li>URL: <a href="https://github.com/metrumresearchgroup/pbpk-qsp-mrgsolve" class="uri">https://github.com/metrumresearchgroup/pbpk-qsp-mrgsolve</a></li>
+<li>URL: <a
+href="https://github.com/metrumresearchgroup/pbpk-qsp-mrgsolve"
+class="uri">https://github.com/metrumresearchgroup/pbpk-qsp-mrgsolve</a></li>
 </ul></li>
 <li>Model Visualization Tutorial
 <ul>
 <li>Presented in Washington, DC March 2017</li>
-<li>URL: <a href="https://github.com/metrumresearchgroup/model-vis-tutorial" class="uri">https://github.com/metrumresearchgroup/model-vis-tutorial</a></li>
+<li>URL: <a
+href="https://github.com/metrumresearchgroup/model-vis-tutorial"
+class="uri">https://github.com/metrumresearchgroup/model-vis-tutorial</a></li>
 </ul></li>
-<li>R as a single‐step platform for PK/PD and PBPK/QSP M&amp;S: integration of model estimation, optimization, simulation, and reporting
+<li>R as a single‐step platform for PK/PD and PBPK/QSP M&amp;S:
+integration of model estimation, optimization, simulation, and reporting
 <ul>
 <li>Presented at ACoP 8 2017</li>
-<li>URL: <a href="https://github.com/metrumresearchgroup/lvl2-workshop" class="uri">https://github.com/metrumresearchgroup/lvl2-workshop</a></li>
+<li>URL: <a href="https://github.com/metrumresearchgroup/lvl2-workshop"
+class="uri">https://github.com/metrumresearchgroup/lvl2-workshop</a></li>
 </ul></li>
 </ul>
 <hr>
@@ -338,9 +356,14 @@ $(document).ready(function () {
 <div id="youtube" class="section level2">
 <h2>YouTube</h2>
 <ul>
-<li>Introduction to mrgsolve <a href="https://www.youtube.com/playlist?list=PL2rG4OGekWghA8kAiWpPnwX9cjo8xxbtB">playlist</a></li>
-<li>PBPK and QSP model implementation and utilization in R <a href="https://youtu.be/IPwUb-ssdVA">part 1</a> and <a href="https://youtu.be/sUD6ZZVzi4c">part 2</a></li>
-<li>Introduction to mrgsolve <a href="https://youtu.be/ts3Lj3hVyiw">video</a> from 2016 ISoP Study Group</li>
+<li>Introduction to mrgsolve <a
+href="https://www.youtube.com/playlist?list=PL2rG4OGekWghA8kAiWpPnwX9cjo8xxbtB">playlist</a></li>
+<li>PBPK and QSP model implementation and utilization in R <a
+href="https://youtu.be/IPwUb-ssdVA">part 1</a> and <a
+href="https://youtu.be/sUD6ZZVzi4c">part 2</a></li>
+<li>Introduction to mrgsolve <a
+href="https://youtu.be/ts3Lj3hVyiw">video</a> from 2016 ISoP Study
+Group</li>
 </ul>
 </div>
 </div>
