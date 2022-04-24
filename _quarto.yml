@@ -5,14 +5,34 @@ project:
 website:
   title: "mrgsolve.org"
   navbar:
-    background: "#097f5f"
-    right:
+    background: "#E0E0E0"
+    foreground: "#097f5f"
+    left:
+      - text: UserGuide
+        href: https://mrgsolve.org/user_guide
       - text: Blog
         href: https://mrgsolve.org/blog
+      - text: Vignettes
+        href: https://mrgsolve.org/vignettes
       - text: Learn
         href: https://mrgsolve.org/learn.html
-      - text: Home
-        href: https://mrgsolve.org
+      - text: Docs
+        href: https://mrgsolve.org/docs
+      - text: Models
+        href: https://github.com/mrgsolve/depot
+      - text: Source
+        menu: 
+          - text: GitHub
+            href: https://github.com/metrumresearchgroup/mrgsolve
+          - text: CRAN
+            href: https://cran.r-project.org/package=mrgsolve
+      - text: Help
+        menu: 
+          - text: Discuss
+            href: https://github.com/metrumresearchgroup/mrgsolve/discussions
+          - text: Report an issue
+            href: https://github.com/metrumresearchgroup/mrgsolve/issues
+    right:
       - icon: github
         href: https://github.com/metrumresearchgroup/mrgsolve
       - icon: twitter
