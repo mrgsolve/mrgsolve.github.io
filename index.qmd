@@ -9,9 +9,11 @@ source("ref.R")
 
 # <font class=mrgg>Simulate from PKPD & QSP models in R</font> <img src="MRG-Solve-Hex.png" align="right" width="150"></img>
 
-mrgsolve is an `R` package for
+Welcome to the online home for mrgsolve. mrgsolve is an `R` package for
 simulation from hierarchical, ordinary  differential equation (ODE) based 
-models typically employed in drug development.
+models typically employed in drug development. This site fuctions as a portal
+to all of the online resources  that are available to help you better learn and 
+use mrgsolve. 
 
 
 <br>
