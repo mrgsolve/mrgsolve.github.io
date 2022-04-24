@@ -243,21 +243,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="an-example">An example</h2>
 <p>The following is a simple example to illustrate the basics of how mrgsolve works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mrgsolve)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(mrgsolve)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First, a model object is created. As an introduction, we will use a pre-coded model from an internal library.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">modlib</span>(<span class="st">"irm1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">modlib</span>(<span class="st">"irm1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>An overview about this model ::: {.cell}</p>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mod</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>mod</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>. 
 . 
 . -----------------  source: irm1.cpp  -----------------
 . 
 .   project: /Users/kyleb/Rli...gsolve/models
-.   shared object: irm1-so-166e69afb41 
+.   shared object: irm1-so-16fc74570b9f 
 . 
 .   time:          start: 0 end: 24 delta: 1
 .                  add: &lt;none&gt;
@@ -274,11 +274,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>:::</p>
 <p>Next, let’s create an intervention for the model. We do this with an event object. ::: {.cell}</p>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">ev</span>(<span class="at">amt=</span><span class="dv">100</span>, <span class="at">ii=</span><span class="dv">24</span>, <span class="at">addl=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>e <span class="ot">&lt;-</span> <span class="fu">ev</span>(<span class="at">amt=</span><span class="dv">100</span>, <span class="at">ii=</span><span class="dv">24</span>, <span class="at">addl=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>:::</p>
 <p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>) ::: {.cell}</p>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> mod <span class="sc">%&gt;%</span> <span class="fu">ev</span>(e) <span class="sc">%&gt;%</span> <span class="fu">mrgsim</span>(<span class="at">end=</span><span class="dv">240</span>,<span class="at">delta=</span><span class="fl">0.1</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>out <span class="ot">&lt;-</span> mod <span class="sc">%&gt;%</span> <span class="fu">ev</span>(e) <span class="sc">%&gt;%</span> <span class="fu">mrgsim</span>(<span class="at">end=</span><span class="dv">240</span>,<span class="at">delta=</span><span class="fl">0.1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>. Model:  irm1 
 . Dim:    2402 x 8 
@@ -296,62 +296,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>:::</p>
 <p>And plot ::: {.cell}</p>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(out)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/plot_1-1.png" class="img-fluid" width="672"></p>
 </div>
 <p>:::</p>
 <p>The source code for this model: ::: {.cell}</p>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>$PROB</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="er"># Model: `irm1`</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span> Indirect response model<span class="op">,</span> type <span class="dv">1</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> Inhibition of response input</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> Two<span class="op">-</span>compartment PK model</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> Optional nonlinear clearance</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span> Source<span class="op">:</span> `mrgsolve` internal library</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span> Date<span class="op">:</span> `r Sys<span class="op">.</span>Date<span class="op">()</span>`</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span> Version<span class="op">:</span> `r packageVersion<span class="op">(</span><span class="st">"mrgsolve"</span><span class="op">)</span>`</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>$PARAM @annotated</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>CL   <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Clearance <span class="op">(</span>volume<span class="op">/</span>time<span class="op">)</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>V2   <span class="op">:</span> <span class="dv">20</span>  <span class="op">:</span> Central volume <span class="op">(</span>volume<span class="op">)</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>Q    <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Inter<span class="op">-</span>compartmental clearance <span class="op">(</span>volume<span class="op">/</span>time<span class="op">)</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>V3   <span class="op">:</span> <span class="dv">10</span>  <span class="op">:</span> Peripheral volume of distribution <span class="op">(</span>volume<span class="op">)</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>KA   <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Absorption rate constant <span class="dv">1</span> <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>KA2  <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Absorption rate constant <span class="dv">2</span> <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>KIN  <span class="op">:</span> <span class="dv">10</span>  <span class="op">:</span> Response in rate constant <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>KOUT <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Response out rate constant <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>IC50 <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Concentration <span class="cf">for</span> <span class="dv">50</span><span class="op">%</span> of max inhibition <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>IMAX <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Maximum inhibition </span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>n    <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Emax model sigmoidicity</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>VMAX <span class="op">:</span>  <span class="dv">0</span>  <span class="op">:</span> Maximum reaction velocity <span class="op">(</span>mass<span class="op">/</span>time<span class="op">)</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>KM   <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Michaelis constant <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>$CMT  @annotated</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>EV1    <span class="op">:</span> First extravascular compartment <span class="op">(</span>mass<span class="op">)</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>CENT   <span class="op">:</span> Central compartment <span class="op">(</span>mass<span class="op">)</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>PERIPH <span class="op">:</span> Peripheral compartment <span class="op">(</span>mass<span class="op">)</span> </span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>RESP   <span class="op">:</span> Response compartment</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>EV2    <span class="op">:</span> Second extravascular compartment <span class="op">(</span>mass<span class="op">)</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>$GLOBAL</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CP (CENT/V2)</span></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CT (PERIPH/V3)</span></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CLNL (VMAX/(KM+CP))</span></span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span></span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>$MAIN</span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>RESP_0 <span class="op">=</span> KIN<span class="op">/</span>KOUT<span class="op">;</span></span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>$ODE</span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>dxdt_EV1    <span class="op">=</span> <span class="op">-</span>KA <span class="op">*</span>EV1<span class="op">;</span></span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>dxdt_EV2    <span class="op">=</span> <span class="op">-</span>KA2<span class="op">*</span>EV2<span class="op">;</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>dxdt_CENT   <span class="op">=</span>  KA <span class="op">*</span>EV1 <span class="op">+</span> KA2<span class="op">*</span>EV2 <span class="op">-</span> <span class="op">(</span>CL<span class="op">+</span>CLNL<span class="op">+</span>Q<span class="op">)*</span>CP  <span class="op">+</span> Q<span class="op">*</span>CT<span class="op">;</span></span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>dxdt_PERIPH <span class="op">=</span>  Q<span class="op">*</span>CP <span class="op">-</span> Q<span class="op">*</span>CT<span class="op">;</span></span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>dxdt_RESP   <span class="op">=</span>  KIN<span class="op">*(</span><span class="dv">1</span><span class="op">-</span>INH<span class="op">)</span> <span class="op">-</span> KOUT<span class="op">*</span>RESP<span class="op">;</span></span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>$CAPTURE @annotated</span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>CP <span class="op">:</span> Plasma concentration <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1"></a>$PROB</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="er"># Model: `irm1`</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="op">-</span> Indirect response model<span class="op">,</span> type <span class="dv">1</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>      <span class="op">-</span> Inhibition of response input</span>
+<span id="cb9-5"><a href="#cb9-5"></a>      <span class="op">-</span> Two<span class="op">-</span>compartment PK model</span>
+<span id="cb9-6"><a href="#cb9-6"></a>      <span class="op">-</span> Optional nonlinear clearance</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="op">-</span> Source<span class="op">:</span> `mrgsolve` internal library</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="op">-</span> Date<span class="op">:</span> `r Sys<span class="op">.</span>Date<span class="op">()</span>`</span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="op">-</span> Version<span class="op">:</span> `r packageVersion<span class="op">(</span><span class="st">"mrgsolve"</span><span class="op">)</span>`</span>
+<span id="cb9-10"><a href="#cb9-10"></a></span>
+<span id="cb9-11"><a href="#cb9-11"></a>$PARAM @annotated</span>
+<span id="cb9-12"><a href="#cb9-12"></a>CL   <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Clearance <span class="op">(</span>volume<span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>V2   <span class="op">:</span> <span class="dv">20</span>  <span class="op">:</span> Central volume <span class="op">(</span>volume<span class="op">)</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>Q    <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Inter<span class="op">-</span>compartmental clearance <span class="op">(</span>volume<span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>V3   <span class="op">:</span> <span class="dv">10</span>  <span class="op">:</span> Peripheral volume of distribution <span class="op">(</span>volume<span class="op">)</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a>KA   <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Absorption rate constant <span class="dv">1</span> <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a>KA2  <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Absorption rate constant <span class="dv">2</span> <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a>KIN  <span class="op">:</span> <span class="dv">10</span>  <span class="op">:</span> Response in rate constant <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a>KOUT <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Response out rate constant <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a>IC50 <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Concentration <span class="cf">for</span> <span class="dv">50</span><span class="op">%</span> of max inhibition <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span>
+<span id="cb9-21"><a href="#cb9-21"></a>IMAX <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Maximum inhibition </span>
+<span id="cb9-22"><a href="#cb9-22"></a>n    <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Emax model sigmoidicity</span>
+<span id="cb9-23"><a href="#cb9-23"></a>VMAX <span class="op">:</span>  <span class="dv">0</span>  <span class="op">:</span> Maximum reaction velocity <span class="op">(</span>mass<span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-24"><a href="#cb9-24"></a>KM   <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Michaelis constant <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span>
+<span id="cb9-25"><a href="#cb9-25"></a></span>
+<span id="cb9-26"><a href="#cb9-26"></a>$CMT  @annotated</span>
+<span id="cb9-27"><a href="#cb9-27"></a>EV1    <span class="op">:</span> First extravascular compartment <span class="op">(</span>mass<span class="op">)</span></span>
+<span id="cb9-28"><a href="#cb9-28"></a>CENT   <span class="op">:</span> Central compartment <span class="op">(</span>mass<span class="op">)</span></span>
+<span id="cb9-29"><a href="#cb9-29"></a>PERIPH <span class="op">:</span> Peripheral compartment <span class="op">(</span>mass<span class="op">)</span> </span>
+<span id="cb9-30"><a href="#cb9-30"></a>RESP   <span class="op">:</span> Response compartment</span>
+<span id="cb9-31"><a href="#cb9-31"></a>EV2    <span class="op">:</span> Second extravascular compartment <span class="op">(</span>mass<span class="op">)</span></span>
+<span id="cb9-32"><a href="#cb9-32"></a></span>
+<span id="cb9-33"><a href="#cb9-33"></a>$GLOBAL</span>
+<span id="cb9-34"><a href="#cb9-34"></a><span class="pp">#define CP (CENT/V2)</span></span>
+<span id="cb9-35"><a href="#cb9-35"></a><span class="pp">#define CT (PERIPH/V3)</span></span>
+<span id="cb9-36"><a href="#cb9-36"></a><span class="pp">#define CLNL (VMAX/(KM+CP))</span></span>
+<span id="cb9-37"><a href="#cb9-37"></a><span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span></span>
+<span id="cb9-38"><a href="#cb9-38"></a></span>
+<span id="cb9-39"><a href="#cb9-39"></a>$MAIN</span>
+<span id="cb9-40"><a href="#cb9-40"></a>RESP_0 <span class="op">=</span> KIN<span class="op">/</span>KOUT<span class="op">;</span></span>
+<span id="cb9-41"><a href="#cb9-41"></a></span>
+<span id="cb9-42"><a href="#cb9-42"></a>$ODE</span>
+<span id="cb9-43"><a href="#cb9-43"></a>dxdt_EV1    <span class="op">=</span> <span class="op">-</span>KA <span class="op">*</span>EV1<span class="op">;</span></span>
+<span id="cb9-44"><a href="#cb9-44"></a>dxdt_EV2    <span class="op">=</span> <span class="op">-</span>KA2<span class="op">*</span>EV2<span class="op">;</span></span>
+<span id="cb9-45"><a href="#cb9-45"></a>dxdt_CENT   <span class="op">=</span>  KA <span class="op">*</span>EV1 <span class="op">+</span> KA2<span class="op">*</span>EV2 <span class="op">-</span> <span class="op">(</span>CL<span class="op">+</span>CLNL<span class="op">+</span>Q<span class="op">)*</span>CP  <span class="op">+</span> Q<span class="op">*</span>CT<span class="op">;</span></span>
+<span id="cb9-46"><a href="#cb9-46"></a>dxdt_PERIPH <span class="op">=</span>  Q<span class="op">*</span>CP <span class="op">-</span> Q<span class="op">*</span>CT<span class="op">;</span></span>
+<span id="cb9-47"><a href="#cb9-47"></a>dxdt_RESP   <span class="op">=</span>  KIN<span class="op">*(</span><span class="dv">1</span><span class="op">-</span>INH<span class="op">)</span> <span class="op">-</span> KOUT<span class="op">*</span>RESP<span class="op">;</span></span>
+<span id="cb9-48"><a href="#cb9-48"></a></span>
+<span id="cb9-49"><a href="#cb9-49"></a>$CAPTURE @annotated</span>
+<span id="cb9-50"><a href="#cb9-50"></a>CP <span class="op">:</span> Plasma concentration <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>:::</p>
 </section></section></main></div>
 
