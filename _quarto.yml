@@ -1,0 +1,29 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "mrgsolve.org"
+  navbar:
+    background: "#097f5f"
+    right:
+      - text: Blog
+        href: https://mrgsolve.org/blog
+      - text: Learn
+        href: https://mrgsolve.org/learn.html
+      - text: Home
+        href: https://mrgsolve.org
+      - icon: github
+        href: https://github.com/metrumresearchgroup/mrgsolve
+      - icon: twitter
+        href: https://twitter.com/mrgsolve
+
+format:
+  html:
+    theme: default
+    css: styles.css
+    toc: true
+    linkcolor: "#097f5f"
+
+
+
