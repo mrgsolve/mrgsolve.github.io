@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.299">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>mrgsolve.org -</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">mrgsolve.org</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://mrgsolve.org/blog">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://mrgsolve.org/learn.html">Learn</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://mrgsolve.org">Home</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/metrumresearchgroup/mrgsolve"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/mrgsolve"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="simulate-from-pkpd-qsp-models-in-r" class="level1">
+<h1><font class="mrgg">Simulate from PKPD &amp; QSP models in R</font> <img src="MRG-Solve-Hex.png" align="right" width="150"></h1>
+<p>mrgsolve is an <code>R</code> package for simulation from hierarchical, ordinary differential equation (ODE) based models typically employed in drug development.</p>
+<p><br></p>
+<section id="mrgsolve-is-free-open-source-software" class="level2">
+<h2 class="anchored" data-anchor-id="mrgsolve-is-free-open-source-software">mrgsolve is free, open-source software</h2>
+<p>mrgsolve is distributed as a package for <code>R</code> and utilizes an ODE-solver from <code>ODEPACK</code> which is freely-available in the public domain. We develop mrgsolve on <a href="http://www.github.com/metrumresearchgroup/mrgsolve">github</a>, with input and contributions from the pharmacometrics modeling and simulation community. We welcome feature requests and bug reports on the GitHub site <a href="http://www.github.com/metrumresearchgroup/mrgsolve/issues">issue tracker</a>.</p>
+<p><br></p>
+</section>
+<section id="documentation" class="level2">
+<h2 class="anchored" data-anchor-id="documentation">Documentation</h2>
+<ul>
+<li><a href="http://mrgsolve.github.io/user_guide">User Guide</a>: In-depth description and discussion about how mrgsolve works, including code block reference</li>
+<li><a href="http://mrgsolve.github.io/docs/">Package documentation</a>: This is the pkgdown site for mrgsolve.</li>
+<li><a href="http://mrgsolve.github.io/docs/reference">R documentation</a>: All mrgsolve documentation that you would find in the <code>R</code> help system</li>
+<li><a href="http://mrgsolve.github.io/doxygen">Doxygen documentation</a>: How to use some of the provided C++ functions in your model</li>
+<li><a href="http://mrgsolve.github.io/vignettes">Vignettes</a>: Package vignettes</li>
+<li><a href="http://github.com/mrgsolve/gallery">Gallery</a>: A GitHub repository of short, focused how-to vignettes</li>
+<li><a href="http://mrgsolve.github.io/vignettes/quick.html">Quick hit demos</a>: Features that you might have a hard time finding in other documentation</li>
+</ul>
+<p><br></p>
+</section>
+<section id="links-and-resources" class="level2">
+<h2 class="anchored" data-anchor-id="links-and-resources">Links and Resources</h2>
+<ul>
+<li><a href="http://github.com/mrgsolve/nmtests#readme">Benchmarks</a>: We simulate data for certain scenarios from both NONMEM and mrgsolve and compare the outputs. All the code needed to run or confirm the outputs is included in the git repository. mrgsolve does not match NONMEM in every way; but there is substantial overlap so that a wide variety of models estimated in NONMEM can be simulated in mrgsolve.</li>
+<li><a href="http://www.github.com/metrumresearchgroup/mrgsolve">GitHub Page</a>: Browse source code, find useful examples, get help installing, report issues</li>
+<li>mrgsolve home on <a href="https://CRAN.R-project.org/package=mrgsolve">CRAN</a></li>
+<li><a href="./tax/">Site navagation</a>: A listing of all tagged content on this site, including blog posts and other help / demonstration content</li>
+<li><a href="http://metrumrg.com">Metrum Research Group</a>: Our main website</li>
+</ul>
+<hr>
+</section>
+<section id="an-example" class="level2">
+<h2 class="anchored" data-anchor-id="an-example">An example</h2>
+<p>The following is a simple example to illustrate the basics of how mrgsolve works. You can find more examples and usage vignettes in the links above or in the “Help Topics” menu in the nav bar at the top of the <a href="https://mrgsolve.github.io">mrgsolve.github.io</a> main page.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mrgsolve)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First, a model object is created. As an introduction, we will use a pre-coded model from an internal library.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">modlib</span>(<span class="st">"irm1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>An overview about this model ::: {.cell}</p>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mod</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>. 
+. 
+. -----------------  source: irm1.cpp  -----------------
+. 
+.   project: /Users/kyleb/Rli...gsolve/models
+.   shared object: irm1-so-4d97cc167d0 
+. 
+.   time:          start: 0 end: 24 delta: 1
+.                  add: &lt;none&gt;
+. 
+.   compartments:  EV1 CENT PERIPH RESP EV2 [5]
+.   parameters:    CL V2 Q V3 KA KA2 KIN KOUT IC50 IMAX n
+.                  VMAX KM [13]
+.   captures:      CP [1]
+.   omega:         0x0 
+.   sigma:         0x0 
+. 
+.   solver:        atol: 1e-08 rtol: 1e-08 maxsteps: 20k
+. ------------------------------------------------------</code></pre>
+</div>
+<p>:::</p>
+<p>Next, let’s create an intervention for the model. We do this with an event object. ::: {.cell}</p>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">ev</span>(<span class="at">amt=</span><span class="dv">100</span>, <span class="at">ii=</span><span class="dv">24</span>, <span class="at">addl=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>:::</p>
+<p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>) ::: {.cell}</p>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> mod <span class="sc">%&gt;%</span> <span class="fu">ev</span>(e) <span class="sc">%&gt;%</span> <span class="fu">mrgsim</span>(<span class="at">end=</span><span class="dv">240</span>,<span class="at">delta=</span><span class="fl">0.1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>. Model:  irm1 
+. Dim:    2402 x 8 
+. Time:   0 to 240 
+. ID:     1 
+.     ID time    EV1   CENT  PERIPH  RESP EV2     CP
+. 1:   1  0.0   0.00  0.000 0.00000 5.000   0 0.0000
+. 2:   1  0.0 100.00  0.000 0.00000 5.000   0 0.0000
+. 3:   1  0.1  90.48  9.444 0.04781 4.903   0 0.4722
+. 4:   1  0.2  81.87 17.851 0.18294 4.688   0 0.8926
+. 5:   1  0.3  74.08 25.323 0.39390 4.426   0 1.2662
+. 6:   1  0.4  67.03 31.953 0.67040 4.151   0 1.5977
+. 7:   1  0.5  60.65 37.824 1.00324 3.882   0 1.8912
+. 8:   1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
+</div>
+<p>:::</p>
+<p>And plot ::: {.cell}</p>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/plot_1-1.png" class="img-fluid" width="672"></p>
+</div>
+<p>:::</p>
+<p>The source code for this model: ::: {.cell}</p>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>$PROB</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="er"># Model: `irm1`</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span> Indirect response model<span class="op">,</span> type <span class="dv">1</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> Inhibition of response input</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> Two<span class="op">-</span>compartment PK model</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> Optional nonlinear clearance</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span> Source<span class="op">:</span> `mrgsolve` internal library</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span> Date<span class="op">:</span> `r Sys<span class="op">.</span>Date<span class="op">()</span>`</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span> Version<span class="op">:</span> `r packageVersion<span class="op">(</span><span class="st">"mrgsolve"</span><span class="op">)</span>`</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>$PARAM @annotated</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>CL   <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Clearance <span class="op">(</span>volume<span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>V2   <span class="op">:</span> <span class="dv">20</span>  <span class="op">:</span> Central volume <span class="op">(</span>volume<span class="op">)</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>Q    <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Inter<span class="op">-</span>compartmental clearance <span class="op">(</span>volume<span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>V3   <span class="op">:</span> <span class="dv">10</span>  <span class="op">:</span> Peripheral volume of distribution <span class="op">(</span>volume<span class="op">)</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>KA   <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Absorption rate constant <span class="dv">1</span> <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>KA2  <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Absorption rate constant <span class="dv">2</span> <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>KIN  <span class="op">:</span> <span class="dv">10</span>  <span class="op">:</span> Response in rate constant <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>KOUT <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Response out rate constant <span class="op">(</span><span class="dv">1</span><span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>IC50 <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Concentration <span class="cf">for</span> <span class="dv">50</span><span class="op">%</span> of max inhibition <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>IMAX <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Maximum inhibition </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>n    <span class="op">:</span>  <span class="dv">1</span>  <span class="op">:</span> Emax model sigmoidicity</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>VMAX <span class="op">:</span>  <span class="dv">0</span>  <span class="op">:</span> Maximum reaction velocity <span class="op">(</span>mass<span class="op">/</span>time<span class="op">)</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>KM   <span class="op">:</span>  <span class="dv">2</span>  <span class="op">:</span> Michaelis constant <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>$CMT  @annotated</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>EV1    <span class="op">:</span> First extravascular compartment <span class="op">(</span>mass<span class="op">)</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>CENT   <span class="op">:</span> Central compartment <span class="op">(</span>mass<span class="op">)</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>PERIPH <span class="op">:</span> Peripheral compartment <span class="op">(</span>mass<span class="op">)</span> </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>RESP   <span class="op">:</span> Response compartment</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>EV2    <span class="op">:</span> Second extravascular compartment <span class="op">(</span>mass<span class="op">)</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>$GLOBAL</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CP (CENT/V2)</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CT (PERIPH/V3)</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CLNL (VMAX/(KM+CP))</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="pp">#define INH (IMAX*pow(CP,n)/(pow(IC50,n)+pow(CP,n)))</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>$MAIN</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>RESP_0 <span class="op">=</span> KIN<span class="op">/</span>KOUT<span class="op">;</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>$ODE</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>dxdt_EV1    <span class="op">=</span> <span class="op">-</span>KA <span class="op">*</span>EV1<span class="op">;</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>dxdt_EV2    <span class="op">=</span> <span class="op">-</span>KA2<span class="op">*</span>EV2<span class="op">;</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>dxdt_CENT   <span class="op">=</span>  KA <span class="op">*</span>EV1 <span class="op">+</span> KA2<span class="op">*</span>EV2 <span class="op">-</span> <span class="op">(</span>CL<span class="op">+</span>CLNL<span class="op">+</span>Q<span class="op">)*</span>CP  <span class="op">+</span> Q<span class="op">*</span>CT<span class="op">;</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>dxdt_PERIPH <span class="op">=</span>  Q<span class="op">*</span>CP <span class="op">-</span> Q<span class="op">*</span>CT<span class="op">;</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>dxdt_RESP   <span class="op">=</span>  KIN<span class="op">*(</span><span class="dv">1</span><span class="op">-</span>INH<span class="op">)</span> <span class="op">-</span> KOUT<span class="op">*</span>RESP<span class="op">;</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>$CAPTURE @annotated</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>CP <span class="op">:</span> Plasma concentration <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>:::</p>
+</section></section></main></div>
+
+
+
+
+
+ <!-- /main -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+ <!-- /content -->
+
+
+
+</body></html>
