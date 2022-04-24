@@ -4,7 +4,7 @@ toc: false
 ---
 
 
-# Learn mrgsolve <img src="MRG-Solve-Hex.png" align="right" width="150px"></img>
+# <font class=mrgg>Learn mrgsolve</font> <img src="MRG-Solve-Hex.png" align="right" width="150"></img>
 
 ```{r,echo=FALSE,message=FALSE}
 #| message: false
