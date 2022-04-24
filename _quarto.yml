@@ -5,8 +5,8 @@ project:
 website:
   title: "mrgsolve.org"
   navbar:
-    background: "#E0E0E0"
-    foreground: "#097f5f"
+    background: "white"
+    foreground: "#797979"
     left:
       - text: UserGuide
         href: https://mrgsolve.org/user_guide
