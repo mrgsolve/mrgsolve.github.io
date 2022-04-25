@@ -14,7 +14,7 @@ simulation from hierarchical, ordinary  differential equation (ODE) based
 models typically employed in drug development. mrgsolve has been used for a 
 wide variety of model applications, including pharamacokinetics (PK), 
 pharmacokinetics/pharmacodynamics (PK/PD), physiologically-based pharmacokinetic
-(PBPK) modeling, and quantitative systems pharmacology. This site fuctions as a portal to all of the online resources  that are available to help you learn 
+(PBPK) modeling, and quantitative systems pharmacology. This site functions as a portal to all of the online resources  that are available to help you learn 
 mrgsolve and use it well to create useful simulations. 
 
 
@@ -57,8 +57,6 @@ that you might have a hard time finding in other documentation
 * [GitHub Page](http://www.github.com/metrumresearchgroup/mrgsolve): Browse 
   source code, find useful examples, get help installing, report issues
 * mrgsolve home on [CRAN](https://CRAN.R-project.org/package=mrgsolve)
-* [Site navagation](/tax/): A listing of all tagged content on this site, 
-  including blog posts and other help / demonstration content
 * [Metrum Research Group](http://metrumrg.com): Our main website
 
 <hr>
