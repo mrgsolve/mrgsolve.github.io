@@ -253,7 +253,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">modlib</span>(<span class="st">"irm1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>An overview about this model ::: {.cell}</p>
+<p>An overview about this model</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>mod</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>. 
@@ -261,7 +262,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 . -----------------  source: irm1.cpp  -----------------
 . 
 .   project: /Users/kyleb/Rli...gsolve/models
-.   shared object: irm1-so-35d767ecb9eb 
+.   shared object: irm1-so-954b59b9df51 
 . 
 .   time:          start: 0 end: 24 delta: 1
 .                  add: &lt;none&gt;
@@ -276,11 +277,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 .   solver:        atol: 1e-08 rtol: 1e-08 maxsteps: 20k
 . ------------------------------------------------------</code></pre>
 </div>
-<p>:::</p>
-<p>Next, let’s create an intervention for the model. We do this with an event object. ::: {.cell}</p>
+</div>
+<p>Next, let’s create an intervention for the model. We do this with an event object.</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>e <span class="ot">&lt;-</span> <span class="fu">ev</span>(<span class="at">amt=</span><span class="dv">100</span>, <span class="at">ii=</span><span class="dv">24</span>, <span class="at">addl=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
-<p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>) ::: {.cell}</p>
+</div>
+<p>Now, we simulate with our model object (<code>mod</code>) and the event object (<code>e</code>)</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>out <span class="ot">&lt;-</span> mod <span class="sc">%&gt;%</span> <span class="fu">ev</span>(e) <span class="sc">%&gt;%</span> <span class="fu">mrgsim</span>(<span class="at">end=</span><span class="dv">240</span>,<span class="at">delta=</span><span class="fl">0.1</span>)</span>
 <span id="cb6-2"><a href="#cb6-2"></a>out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -298,14 +301,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 . 7:   1  0.5  60.65 37.824 1.00324 3.882   0 1.8912
 . 8:   1  0.6  54.88 43.013 1.38417 3.628   0 2.1507</code></pre>
 </div>
-<p>:::</p>
-<p>And plot ::: {.cell}</p>
+</div>
+<p>And plot</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(out)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/plot_1-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
-<p>:::</p>
-<p>The source code for this model: ::: {.cell}</p>
+</div>
+<p>The source code for this model:</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1"></a>$PROB</span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="er"># Model: `irm1`</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a>  <span class="op">-</span> Indirect response model<span class="op">,</span> type <span class="dv">1</span></span>
@@ -356,14 +361,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-48"><a href="#cb9-48"></a></span>
 <span id="cb9-49"><a href="#cb9-49"></a>$CAPTURE @annotated</span>
 <span id="cb9-50"><a href="#cb9-50"></a>CP <span class="op">:</span> Plasma concentration <span class="op">(</span>mass<span class="op">/</span>volume<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
-</section></section></main></div>
+</div>
 
 
+</section>
+</section>
 
-
-
- <!-- /main -->
+</main> <!-- /main -->
 <script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
@@ -443,7 +447,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
- <!-- /content -->
+</div> <!-- /content -->
 
 
 

@@ -76,41 +76,42 @@ the "Help Topics" menu in the nav bar at the top of the
 library(mrgsolve)
 ```
 
-
-
-First, a model object is created.  As an introduction, we will use a pre-coded model 
-from an internal library.
+First, a model object is created.  As an introduction, we will use a pre-coded
+model from an internal library.
 
 ```{r,message=FALSE}
 mod <- modlib("irm1")
 ```
 
 An overview about this model
-```{r, comment='.'}
+
+```{r, comment = '.'}
 mod
 ```
 
-Next, let's create an intervention for the model.  We do this with an event object.
+Next, let's create an intervention for the model.  We do this with an event
+object.
+
 ```{r}
 e <- ev(amt=100, ii=24, addl=3)
 ```
 
 Now, we simulate with our model object (`mod`) and the event object (`e`)
-```{r,comment='.'}
+
+```{r, comment = '.'}
 out <- mod %>% ev(e) %>% mrgsim(end=240,delta=0.1)
 out
 ```
 
 And plot
-```{r,"plot_1"}
+
+```{r}
 plot(out)  
 ```
 
 
 The source code for this model:
-```{c,eval=FALSE, comment=" ",  code=mrgsolve:::code(mod)}
+
+```{c, eval = FALSE, comment = " ",  code = mod@code}
 
 ```
-
-</div>
-
