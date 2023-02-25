@@ -9,7 +9,7 @@ website:
     foreground: "#797979"
     left:
       - text: UserGuide
-        href: https://mrgsolve.org/user_guide
+        href: https://mrgsolve.org/user-guide
       - text: Blog
         href: https://mrgsolve.org/blog
       - text: Vignettes
