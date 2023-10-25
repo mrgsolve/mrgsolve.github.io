@@ -12,7 +12,7 @@ source("ref.R")
 Welcome to the online home for mrgsolve. mrgsolve is an `R` package for
 simulation from hierarchical, ordinary  differential equation (ODE) based 
 models typically employed in drug development. mrgsolve has been used for a 
-wide variety of model applications, including pharamacokinetics (PK), 
+wide variety of model applications, including pharmacokinetics (PK), 
 pharmacokinetics/pharmacodynamics (PK/PD), physiologically-based pharmacokinetic
 (PBPK) modeling, and quantitative systems pharmacology. This site functions as a portal to all of the online resources  that are available to help you learn 
 mrgsolve and use it well to create useful simulations. 
