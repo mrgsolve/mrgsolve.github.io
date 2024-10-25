@@ -35,18 +35,23 @@ welcome questions about your model or simulation code on the
 
 ## Documentation
 * [User Guide](http://mrgsolve.org/user_guide): In-depth description and 
-  discussion about how mrgsolve works, including code block reference
+  discussion about how mrgsolve works, including code block reference.
 * [Package documentation](http://mrgsolve.org/docs/): This is the 
-  pkgdown site for mrgsolve.
+  pkgdown site for mrgsolve, including usage vignettes.
 * [R documentation](http://mrgsolve.org/docs/reference): All mrgsolve 
-  documentation that you would find in the `R` help system
+  documentation that you would find in the `R` help system.
 * [Doxygen documentation](http://mrgsolve.org/doxygen): How to use some 
-  of the provided C++ functions in your model
-* [Vignettes](http://mrgsolve.org/vignettes): Package vignettes
+  of the provided C++ functions in your model.
+* [Vignettes](http://mrgsolve.org/vignettes): Package vignettes.
 * [Gallery](http://github.com/mrgsolve/gallery): A GitHub repository of short, 
-  focused how-to vignettes
+  focused how-to vignettes.
+* [Dynamic dosing](https://github.com/mrgsolve/dynamic-dosing) resources: 
+  this is a repository of examples illustrating how to dynamically. 
+  implement dosing regimens or other modeled events from inside your model code. 
+  Included is a [vignette](http://mrgsolve.org/dynamic-dosing) with ten 
+  fully-worked examples with source code and outputs.
 * [Quick hit demos](http://mrgsolve.org/vignettes/quick.html): Features
-that you might have a hard time finding in other documentation
+  that you might have a hard time finding in other documentation.
 
 <br>
 
