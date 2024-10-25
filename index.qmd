@@ -88,7 +88,7 @@ First, a model object is created.  As an introduction, we will use a pre-coded
 model from an internal library.
 
 ```{r,message=FALSE}
-mod <- modlib("irm1")
+mod <- modlib("1005")
 ```
 
 An overview about this model
@@ -101,20 +101,25 @@ Next, let's create an intervention for the model.  We do this with an event
 object.
 
 ```{r}
-e <- ev(amt=100, ii=24, addl=3)
+e <- ev(amt = 1000, ii = 24, addl = 3) %>% ev_rep(1:10)
+e
 ```
 
 Now, we simulate with our model object (`mod`) and the event object (`e`)
 
 ```{r, comment = '.'}
-out <- mod %>% ev(e) %>% mrgsim(end=240,delta=0.1)
+set.seed(1234)
+out <- 
+  mod %>% 
+  ev(e) %>% 
+  mrgsim(end = 240, delta = 0.1)
 out
 ```
 
 And plot
 
 ```{r}
-plot(out)  
+plot(out, IPRED ~ time)  
 ```
 
 
