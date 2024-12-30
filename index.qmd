@@ -42,7 +42,9 @@ welcome questions about your model or simulation code on the
   documentation that you would find in the `R` help system.
 * [Doxygen documentation](http://mrgsolve.org/doxygen): How to use some 
   of the provided C++ functions in your model.
-* [Vignettes](http://mrgsolve.org/vignettes): Package vignettes.
+* [Vignette](http://mrgsolve.org/package-vignette): A vignette to help you get
+  started with mrgsolve, available in [html](http://mrgsolve.org/package-vignette) 
+  or [pdf](http://mrgsolve.org/package-vignette/mrgsolve-vignette.pdf) format.
 * [Gallery](http://github.com/mrgsolve/gallery): A GitHub repository of short, 
   focused how-to vignettes.
 * [Dynamic dosing](https://github.com/mrgsolve/dynamic-dosing) resources: 
