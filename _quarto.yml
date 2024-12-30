@@ -12,8 +12,12 @@ website:
         href: https://mrgsolve.org/user-guide
       - text: Blog
         href: https://mrgsolve.org/blog
-      - text: Vignettes
-        href: https://mrgsolve.org/vignettes
+      - text: Vignette
+        menu: 
+          - text: mrgsolve basics - html format
+            href: https://mrgsolve.org/package-vignette
+          - text: mrgsolve basics - pdf format
+            href: https://mrgsolve.org/package-vignette/mrgsolve-vignette.pdf
       - text: Learn
         href: learn.html
       - text: Docs
