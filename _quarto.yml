@@ -15,9 +15,9 @@ website:
       - text: Vignette
         menu: 
           - text: mrgsolve basics - html format
-            href: https://mrgsolve.org/package-vignette
+            href: https://mrgsolve.org/vignette
           - text: mrgsolve basics - pdf format
-            href: https://mrgsolve.org/package-vignette/mrgsolve-vignette.pdf
+            href: https://mrgsolve.org/vignette/mrgsolve-vignette.pdf
       - text: Learn
         href: learn.html
       - text: Docs
