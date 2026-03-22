@@ -4,6 +4,7 @@ project:
 
 website:
   title: "mrgsolve.org"
+  favicon: MRG-Solve-Hex.png
   navbar:
     background: "white"
     foreground: "#797979"
