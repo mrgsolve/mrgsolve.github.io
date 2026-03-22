@@ -36,8 +36,8 @@ welcome questions about your model or simulation code on the
 ## Documentation
 * [User Guide](http://mrgsolve.org/user-guide): In-depth description and 
   discussion about how mrgsolve works, including code block reference. The 
-  user guide is available in [html](http://mrgsolve.org/user-guide) and 
-  [pdf](https://mrgsolve.org/user-guide/mrgsolve-user-guide.pdf) versions.
+  user guide is available in [html](http://mrgsolve.org/user-guide) or 
+  [pdf](https://mrgsolve.org/user-guide/mrgsolve-user-guide.pdf) format.
 * [Package documentation](http://mrgsolve.org/docs/): This is the 
   pkgdown site for mrgsolve, including usage vignettes.
 * [R documentation](http://mrgsolve.org/docs/reference): All mrgsolve 
